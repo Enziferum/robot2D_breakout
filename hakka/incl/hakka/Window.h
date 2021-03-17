@@ -27,18 +27,20 @@ source distribution.
 
 #include "Vector2.h"
 #include "Event.h"
+#include "Color.h"
 
 namespace hakka{
     class Window{
     public:
         Window();
+        Window(const vec2u& size, const std::string& name, const bool& vsync = true);
         ~Window();
 
         bool pollEvents(Event& event);
         bool isOpen() const;
         void close();
 
-        void clear();
+        void clear(const Color& color = Color::Black);
         void display();
 
         const vec2u& get_size();
@@ -63,5 +65,7 @@ namespace hakka{
 
         vec2u m_win_size;
         std::string m_name;
+
+        bool m_vsync;
     };
 }

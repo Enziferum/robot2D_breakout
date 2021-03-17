@@ -30,6 +30,7 @@ namespace hakka{
     class RenderWindow: public Window, public RenderTarget{
     public:
         RenderWindow();
+        RenderWindow(const vec2u& size, const std::string& name, const bool& vsync = true);
         ~RenderWindow();
 
     protected:

@@ -20,9 +20,12 @@ source distribution.
 *********************************************************************/
 
 #include <iostream>
+
 #include "game/App.h"
+#include "game/Audio.h"
 
 App::App() {
+    setup();
 }
 
 void App::run() {
@@ -39,10 +42,10 @@ void App::run() {
 
 void App::handleEvents(hakka::Event& event) {
     while (m_window.pollEvents(event)){
-        if(event.type == hakka::Event::KeyPressed){
-            if (event.key.code == GLFW_KEY_ESCAPE)
-                m_window.close();
-        }
+//        if(event.type == hakka::Event::KeyPressed){
+//            if (event.key.code == GLFW_KEY_ESCAPE)
+//                m_window.close();
+//        }
 
 //        for(auto& it: m_states)
 //            it.second->handleEvents(event);
@@ -73,7 +76,10 @@ void App::render() {
 }
 
 void App::setup() {
-
+    Audio::getInstanse() -> loadFile("res/audio/breakout.wav",
+                                     "breakout", AudioType::music);
+    Audio::getInstanse() -> play("breakout", true);
+    Audio::getInstanse() -> setVolume("breakout", 80.f);
 }
 
 void App::addState(const int id, State::Ptr ptr) {

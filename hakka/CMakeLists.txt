@@ -15,7 +15,13 @@ endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
+cmake_policy(SET CMP0074 NEW)
+
+#install onw-self
 find_package(glfw3 3.3 REQUIRED)
+find_package(Freetype REQUIRED)
+
+message(STATUS "Found freetype in ${FREETYPE_INCLUDE_DIRS}")
 message(STATUS "Found GLFW3 in ${GLFW3_INCLUDE_DIRS}")
 
 set(CMAKE_CXX_STANDARD 14)
@@ -40,7 +46,9 @@ else()
 endif ()
 include_directories(${STB_IMAGE_INCLUDE_DIRS})
 
+include_directories(${FREETYPE_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/incl)
+
 file(GLOB SRC src/*.cpp)
 
 if(WIN32)
@@ -57,7 +65,25 @@ if(BUILD_STB_IMAGE)
     add_dependencies(${PROJECT_NAME} stb_image_ext)
 endif()
 
-set(LIBS ${LIBS} glfw)
+find_path(
+        GLAD_INCLUDES_DIR
+        glad
+        PATH_SUFFIXES
+        incl
+        PATHS
+        ${CMAKE_BINARY_DIR}/third-party/glad-build/
+)
+include_directories(${GLAD_INCLUDES_DIR})
+find_library(
+        GLAD_LIBRARY
+        glad
+        PATH_SUFFIXES
+        lib
+        PATHS
+        ${CMAKE_BINARY_DIR}/third-party/glad-build/lib)
+
+
+set(LIBS ${LIBS} glfw ${FREETYPE_LIBRARIES} ${GLAD_LIBRARY})
 
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 target_include_directories(${PROJECT_NAME} PUBLIC

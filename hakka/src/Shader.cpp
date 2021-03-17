@@ -113,6 +113,11 @@ namespace hakka{
 
     void ShaderHandler::set_parameter(const char* name, const int& value) const{
         glUniform1i(glGetUniformLocation(shaderProgram, name), value);
+        glUniform1f(glGetUniformLocation(shaderProgram, name), value);
+    }
+
+    void ShaderHandler::set_parameter(const char* name, const float& value) const{
+        glUniform1f(glGetUniformLocation(shaderProgram, name), value);
     }
 
     void ShaderHandler::set_parameter(const char* name, const float *matrix) const{

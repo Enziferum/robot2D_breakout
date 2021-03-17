@@ -17,5 +17,5 @@ set(GLAD_INCLUDE_DIRS
         CACHE PATH "Glad include directory"
         )
 
-link_directories("${CMAKE_BINARY_DIR}/third-party/glad-build/dist/lib")
+link_directories("${CMAKE_BINARY_DIR}/third-party/glad-build/lib")
 set(GLAD_LIBRARIES glad CACHE PATH "glad library")

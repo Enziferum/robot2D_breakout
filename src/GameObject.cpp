@@ -25,12 +25,14 @@ source distribution.
 
 GameObject::GameObject():
 m_solid(false),
-m_destroyed(false){
+m_destroyed(false),
+color(hakka::Color::White) {
 
 }
 
 void GameObject::draw(hakka::RenderTarget& target,
                       hakka::RenderStates states) const {
+    states.color = color;
     target.draw(m_sprite, states);
 }
 
@@ -75,7 +77,7 @@ void BallObject::reset(const hakka::vec2f &pos, const hakka::vec2f &vel) {
 
 }
 
-BallObject::BallObject(): stuck(true),
-        velocity() {
+BallObject::BallObject():GameObject(), stuck(true), wallbreaker(false), sticky(false),
+        velocity(){
 
 }

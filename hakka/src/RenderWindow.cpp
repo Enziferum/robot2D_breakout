@@ -38,4 +38,9 @@ namespace hakka{
         //todo update views
         glViewport(0, 0, w, h);
     }
+
+    RenderWindow::RenderWindow(const vec2u &size, const std::string &name, const bool &vsync) : Window(size, name,
+                                                                                                       vsync),
+                                                                                                RenderTarget(m_win_size) {
+    }
 }

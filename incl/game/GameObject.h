@@ -21,7 +21,7 @@ source distribution.
 
 #pragma once
 
-#include "../../hakka/incl/hakka/Sprite.h"
+#include "hakka/Sprite.h"
 
 class GameObject: public hakka::Drawable{
 public:
@@ -39,6 +39,7 @@ public:
     hakka::vec2f m_pos;
     bool m_solid;
     bool m_destroyed;
+    hakka::Color color;
 };
 
 class BallObject: public GameObject{
@@ -54,4 +55,6 @@ public:
     float border;
     float radius;
     bool stuck;
+    bool wallbreaker;
+    bool sticky;
 };

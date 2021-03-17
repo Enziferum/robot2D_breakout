@@ -21,13 +21,61 @@ source distribution.
 
 #pragma once
 
+#include <string>
+#include <vector>
+
+#include "Drawable.h"
+#include "Font.h"
+#include "Color.h"
+
 namespace hakka{
-    class Text{
+
+    class Text: public Drawable{
     public:
         Text();
-        ~Text();
+        ~Text() override = default;
 
+        void setText(const std::string& size);
+        void setPos(const hakka::vec2f& pos);
+        hakka::vec2f& getPos();
+        void setScale(const float& scale);
+        float& getScale();
+
+        void setCharacterSize(const unsigned int& size);
+        void setFont(const Font& font);
+    protected:
+        void draw(RenderTarget &target, RenderStates states) const override;
 
     private:
+        void setup_GL();
+        void update_geometry() const;
+    private:
+        struct vertex{
+            float x;
+            float y;
+            float tex_x;
+            float tex_y;
+        };
+
+        struct renderBuffer{
+            unsigned int texture;
+            std::vector<vertex> verts;
+        };
+
+        mutable std::vector<renderBuffer> m_buffer;
+
+        unsigned int VAO;
+        unsigned int VBO;
+        unsigned int m_chars_size;
+        mutable bool m_needupdate;
+        std::string m_text;
+
+        mutable hakka::vec2f m_pos;
+        float m_scale;
+
+        Color m_color;
+        const Font* m_font;
+
+        ShaderHandler m_textShader;
     };
 }

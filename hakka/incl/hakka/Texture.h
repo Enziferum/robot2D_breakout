@@ -35,6 +35,8 @@ namespace hakka{
         vec2u& get_size();
         const vec2u& get_size() const;
 
+        void generate(const vec2u& size, void* data);
+        const unsigned int& get_id()const;
         void bind()const;
     private:
         void setup_GL();

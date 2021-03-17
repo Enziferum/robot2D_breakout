@@ -24,11 +24,22 @@ source distribution.
 
 namespace hakka{
 
-    Window::Window(): m_window(nullptr) {
+    Window::Window():
+    m_window(nullptr),
+    m_win_size(800, 600),
+    m_name("Hakka"),
+    m_vsync(true){
         setup();
-        setup_WGL();
-        setup_callbacks();
     }
+
+    Window::Window(const vec2u& size, const std::string& name, const bool& vsync):
+            m_window(nullptr),
+            m_win_size(size.x, size.y),
+            m_name(name),
+            m_vsync(vsync){
+        setup();
+    }
+
 
     Window::~Window() {
         glfwTerminate();
@@ -40,13 +51,8 @@ namespace hakka{
         if (!glfwInit())
             return;
 
-        //todo init outhere
-        m_win_size.x = 640;
-        m_win_size.y = 480;
-        m_name = "Hakka";
 
         //todo window params
-
         /* Create a windowed mode window and its OpenGL context */
         m_window = glfwCreateWindow(m_win_size.x, m_win_size.y,
                                     m_name.c_str(), NULL, NULL);
@@ -58,7 +64,11 @@ namespace hakka{
 
         /* Make the window's context current */
         glfwMakeContextCurrent(m_window);
-        glfwSwapInterval(1);
+        if(m_vsync)
+            glfwSwapInterval(1);
+
+        setup_WGL();
+        setup_callbacks();
     }
 
     void Window::setup_callbacks() {
@@ -86,9 +96,8 @@ namespace hakka{
         return m_event_queue.empty();
     }
 
-    void Window::clear() {
-        //0.2f, 0.3f, 0.3f
-        glClearColor(0.f, 0.f, 0.f, 1.0f);
+    void Window::clear(const Color& color) {
+        glClearColor(color.r, color.g, color.b, color.alpha);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
@@ -151,7 +160,7 @@ namespace hakka{
         }
 
         //todo in rendertarget
-        glViewport(0, 0, 640, 480);
+        glViewport(0, 0, m_win_size.x, m_win_size.y);
     }
 
     void Window::mouse_callback(GLFWwindow* wnd, int button, int action, int mods) {

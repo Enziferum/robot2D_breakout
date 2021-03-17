@@ -125,6 +125,9 @@ namespace hakka{
                  0.0f, -1.0f, 1.0f);
 
         m_spriteShaders.set_parameter("projection", &mat.mat[0][0]);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void RenderTarget::draw(const RenderStates& states) {
@@ -154,7 +157,7 @@ namespace hakka{
         if(states.customVao)
             glBindVertexArray(*states.customVao);
         else
-            glBindVertexArray(this->VAO);
+            glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindVertexArray(0);
     }

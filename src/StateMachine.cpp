@@ -25,7 +25,7 @@ source distribution.
 
 
 IStateMachine::IStateMachine():
-    m_window() {
+    m_window(hakka::vec2u(800, 600), "Hakka_Breakout") {
 }
 
 IStateMachine::~IStateMachine() {}

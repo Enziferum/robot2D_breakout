@@ -63,7 +63,7 @@ IntroState::IntroState(IStateMachine& machine) :
 
 void IntroState::setup() {
     auto size = m_window.get_size();
-    m_texture.loadFromFile("res/textures/hakka.png");
+    m_texture.loadFromFile("res/textures/hakka.png", true);
 
     m_background.setTexture(m_texture);
     m_background.setScale(hakka::vec2f(256.f, 256.f));
@@ -71,8 +71,9 @@ void IntroState::setup() {
     m_background.setPosition(hakka::vec2f(size.x / 2.f - tx_size.x / 2,
                                           size.y / 2.f - tx_size.y / 2));
 
-    m_background.setColor(hakka::Color::Magenta);
+    //m_background.setColor(hakka::Color::Green);
     m_timer.onTick([this](float dt){
+        m_timer.reset();
         m_machine.pushState(2);
     });
 }

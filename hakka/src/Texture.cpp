@@ -26,7 +26,7 @@ source distribution.
 
 namespace hakka{
 
-    Texture::Texture() {
+    Texture::Texture():m_size() {
         setup_GL();
     }
 
@@ -86,5 +86,16 @@ namespace hakka{
 
     void Texture::bind() const {
         glBindTexture(GL_TEXTURE_2D, m_texture);
+    }
+
+    void Texture::generate(const vec2u& size, void *data) {
+        m_size = size;
+
+        // create Texture
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, size.x, size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    }
+
+    const unsigned int& Texture::get_id() const {
+        return m_texture;
     }
 }
