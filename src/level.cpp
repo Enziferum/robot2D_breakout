@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -25,15 +25,15 @@ source distribution.
 #include <map>
 
 #include "game/Level.h"
-#include "hakka/RenderTarget.h"
+#include "robot2D/Graphics/RenderTarget.h"
 
 
-std::map<int, hakka::Color> tile_colors = {
-        {1, hakka::Color::from_gl(0.8f, 0.8f, 0.7f)},
-        {2, hakka::Color::from_gl(0.2f, 0.6f, 1.0f)},
-        {3, hakka::Color::from_gl(0.0f, 0.7f, 0.0f)},
-        {4, hakka::Color::from_gl(0.8f, 0.8f, 0.4f)},
-        {5, hakka::Color::from_gl(1.0f, 0.5f, 0.0)},
+std::map<int, robot2D::Color> tile_colors = {
+        {1, robot2D::Color::from_gl(0.8f, 0.8f, 0.7f)},
+        {2, robot2D::Color::from_gl(0.2f, 0.6f, 1.0f)},
+        {3, robot2D::Color::from_gl(0.0f, 0.7f, 0.0f)},
+        {4, robot2D::Color::from_gl(0.8f, 0.8f, 0.4f)},
+        {5, robot2D::Color::from_gl(1.0f, 0.5f, 0.0)},
 };
 
 
@@ -41,8 +41,8 @@ Level::Level() {
 
 }
 
-bool Level::loadLevel(const std::string& path, const hakka::vec2f& size,
-                      const hakka::ResourceHandler<hakka::Texture>& handler) {
+bool Level::loadLevel(const std::string& path, const robot2D::vec2f& size,
+                      const robot2D::ResourceHandler<robot2D::Texture>& handler) {
     std::ifstream file(path.c_str());
     if(!file.is_open())
         return false;
@@ -62,7 +62,7 @@ bool Level::loadLevel(const std::string& path, const hakka::vec2f& size,
     if(rows.empty())
         return false;
 
-    hakka::vec2f tile_sz;
+    robot2D::vec2f tile_sz;
     size_t rh = rows.size();
     size_t rw = rows[0].size();
     tile_sz.x = static_cast<float>(size.x / rw);
@@ -83,7 +83,7 @@ bool Level::loadLevel(const std::string& path, const hakka::vec2f& size,
                 object.m_sprite.setTexture(handler.get("block"));
             }
 
-            hakka::vec2f pos(tile_sz.x * x,
+            robot2D::vec2f pos(tile_sz.x * x,
                              tile_sz.y * y);
 
             object.m_pos = pos;
@@ -100,10 +100,27 @@ bool Level::loadLevel(const std::string& path, const hakka::vec2f& size,
     return true;
 }
 
-void Level::draw(hakka::RenderTarget &target, hakka::RenderStates states) const {
+void Level::update(float dt) {
+    m_tiles.erase(std::remove_if(m_tiles.begin(), m_tiles.end(),[](const GameObject& object){
+        return object.m_destroyed;
+    }),m_tiles.end());
+}
+
+void Level::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
     for(auto& it: m_tiles){
         if(it.m_destroyed)
             continue;
         target.draw(it, states);
     }
 }
+
+bool Level::destroyed() const {
+    bool res = true;
+
+    for(auto& it: m_tiles)
+        res *= it.m_destroyed;
+
+    return res;
+}
+
+

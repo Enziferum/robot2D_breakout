@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -21,24 +21,27 @@ source distribution.
 
 #pragma once
 
-#include "hakka/Sprite.h"
-#include "hakka/ResourceHandler.h"
-#include "hakka/Text.h"
+#include "robot2D/Core/State.h"
+#include "robot2D/Core/IStateMachine.h"
 
-#include "State.h"
+#include "robot2D/Graphics/Sprite.h"
+#include "robot2D/Util/ResourceHandler.h"
+#include "robot2D/Graphics/Text.h"
+
 #include "Level.h"
 #include "ParticleEmitter.h"
 #include "PostProcessing.h"
 #include "PowerUp.h"
+#include "ParallaxEffect.h"
 
-class GameState: public State{
+class GameState: public robot2D::State{
 public:
     using Ptr = std::shared_ptr<GameState>;
 public:
-    GameState(IStateMachine& machine);
+    GameState(robot2D::IStateMachine& machine);
     ~GameState() override;
 
-    void handleEvents(const hakka::Event& event) override;
+    void handleEvents(const robot2D::Event& event) override;
     void update(float dt) override;
     void render() override;
 
@@ -51,10 +54,12 @@ private:
     void reset_game();
     void spawn_power_up(GameObject& box);
     void activate_power(PowerUp& power);
+
+    void changeLevel();
 private:
-    hakka::ResourceHandler<hakka::Texture> m_textures;
-    hakka::ResourceHandler<hakka::Font> m_fonts;
-    hakka::Sprite m_background;
+    robot2D::ResourceHandler<robot2D::Texture> m_textures;
+    robot2D::ResourceHandler<robot2D::Font> m_fonts;
+    robot2D::Sprite m_background;
 
     //effects
     PostProcessing m_postProcessing;
@@ -75,9 +80,12 @@ private:
     bool m_keysProcessed[1024];
 
     //gui stuff
-    hakka::Text m_text;
+    robot2D::Text m_text;
     int last_lives = 3;
     int m_lives = 3;
 
     bool m_pause;
+    robot2D::Text m_won;
+
+    ParallaxEffect m_parallax;
 };

@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -21,27 +21,27 @@ source distribution.
 
 #include <iostream>
 #include "game/GameObject.h"
-#include "hakka/RenderTarget.h"
+#include "robot2D/Graphics/RenderTarget.h"
 
 GameObject::GameObject():
 m_solid(false),
 m_destroyed(false),
-color(hakka::Color::White) {
+color(robot2D::Color::White) {
 
 }
 
-void GameObject::draw(hakka::RenderTarget& target,
-                      hakka::RenderStates states) const {
+void GameObject::draw(robot2D::RenderTarget& target,
+                      robot2D::RenderStates states) const {
     states.color = color;
     target.draw(m_sprite, states);
 }
 
-void GameObject::setSize(const hakka::vec2f& size) {
+void GameObject::setSize(const robot2D::vec2f& size) {
     m_size = size;
     m_sprite.setScale(m_size);
 }
 
-void GameObject::setPos(const hakka::vec2f &pos) {
+void GameObject::setPos(const robot2D::vec2f &pos) {
     m_pos = pos;
     m_sprite.setPosition(m_pos);
 }
@@ -73,7 +73,7 @@ void BallObject::move(float dt) {
     m_sprite.setPosition(m_pos);
 }
 
-void BallObject::reset(const hakka::vec2f &pos, const hakka::vec2f &vel) {
+void BallObject::reset(const robot2D::vec2f &pos, const robot2D::vec2f &vel) {
 
 }
 

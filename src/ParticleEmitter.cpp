@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -20,7 +20,7 @@ source distribution.
 *********************************************************************/
 
 
-#include "hakka/RenderTarget.h"
+#include "robot2D/Graphics/RenderTarget.h"
 #include "game/ParticleEmitter.h"
 
 constexpr int new_particle_sz = 2;
@@ -45,7 +45,7 @@ void ParticleEmitter::setup() {
 
 
 void ParticleEmitter::update(float dt, int new_sz, const BallObject& bind,
-                             const hakka::vec2f& offset) {
+                             const robot2D::vec2f& offset) {
     //add new particles
     for(int it = 0; it < new_sz; ++it){
         int unusedParticle = find_first_unused();
@@ -64,7 +64,7 @@ void ParticleEmitter::update(float dt, int new_sz, const BallObject& bind,
 }
 
 
-void ParticleEmitter::draw(hakka::RenderTarget& target, hakka::RenderStates states) const {
+void ParticleEmitter::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     m_particleShader.use();
 
@@ -76,7 +76,7 @@ void ParticleEmitter::draw(hakka::RenderTarget& target, hakka::RenderStates stat
         m_particleShader.set_parameter("color", it.r, it.g, it.b, it.alpha);
 
         states.texture = m_texture;
-        states.shader = const_cast<hakka::ShaderHandler*>(&m_particleShader);
+        states.shader = const_cast<robot2D::ShaderHandler*>(&m_particleShader);
         //states.customVao = &VAO;
 
         target.draw(states);
@@ -106,7 +106,7 @@ int ParticleEmitter::find_first_unused() {
 }
 
 void ParticleEmitter::respawn_particle(Particle& particle, const BallObject& obj,
-                                       const hakka::vec2f& offset) {
+                                       const robot2D::vec2f& offset) {
     float random = ((rand() % 100) - 50) / 10.0f;
     float rColor = 0.5f + ((rand() % 100) / 100.0f);
     particle.m_pos.x = obj.m_pos.x + random + offset.x;

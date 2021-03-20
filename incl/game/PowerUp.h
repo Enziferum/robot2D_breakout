@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka_game - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -42,7 +42,7 @@ public:
 public:
     PowerUpType m_type;
     bool activated;
-    hakka::vec2f velocity;
+    robot2D::vec2f velocity;
     float duration;
-    hakka::Color color;
+    robot2D::Color color;
 };

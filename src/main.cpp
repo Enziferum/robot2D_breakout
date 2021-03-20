@@ -1,29 +1,28 @@
-#include "game/App.h"
+#include <iostream>
+#include "robot2D/Core/App.h"
 
 #include "game/GameState.h"
 #include "game/IntroState.h"
-#include "game/MenuState.h"
+//demo state
+#include "game/EcsState.h"
+#include "game/Audio.h"
+#include "game/States.h"
 
-enum States{
-    Intro = 0,
-    Menu = 1,
-    Game,
-    Pause
-};
 
 int main() {
-    App app;
+    Audio::getInstanse() -> loadFile("res/audio/breakout.wav",
+                                     "breakout", AudioType::music);
+    Audio::getInstanse() -> play("breakout", true);
+    Audio::getInstanse() -> setVolume("breakout", 80.f);
 
-    MenuState::Ptr  menu_state = std::make_shared<MenuState>(app);
-    GameState::Ptr game_state = std::make_shared<GameState>(app);
-    IntroState::Ptr introState = std::make_shared<IntroState>(app);
+    robot2D::App my_app;
 
-    app.addState(States::Intro, introState);
-    app.addState(States::Menu, menu_state);
-    app.addState(States::Game, game_state);
+    my_app.register_state<IntroState>(States::Intro, my_app);
+    my_app.register_state<GameState>(States::Game, my_app);
 
-    app.setCurrentState(States::Intro);
-    app.run();
+    my_app.setCurrent(States::Intro);
+
+    my_app.run();
 
     return 0;
 }

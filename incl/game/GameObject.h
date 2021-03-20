@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -21,25 +21,25 @@ source distribution.
 
 #pragma once
 
-#include "hakka/Sprite.h"
+#include "robot2D/Graphics/Sprite.h"
 
-class GameObject: public hakka::Drawable{
+class GameObject: public robot2D::Drawable{
 public:
     GameObject();
     ~GameObject() = default;
 
-    void setPos(const hakka::vec2f& pos);
-    void setSize(const hakka::vec2f& size);
+    void setPos(const robot2D::vec2f& pos);
+    void setSize(const robot2D::vec2f& size);
 protected:
-    void draw(hakka::RenderTarget &target,
-              hakka::RenderStates states) const override;
+    void draw(robot2D::RenderTarget &target,
+              robot2D::RenderStates states) const override;
 public:
-    hakka::Sprite m_sprite;
-    hakka::vec2f m_size;
-    hakka::vec2f m_pos;
+    robot2D::Sprite m_sprite;
+    robot2D::vec2f m_size;
+    robot2D::vec2f m_pos;
     bool m_solid;
     bool m_destroyed;
-    hakka::Color color;
+    robot2D::Color color;
 };
 
 class BallObject: public GameObject{
@@ -48,9 +48,9 @@ public:
     ~BallObject() = default;
 
     void move(float dt);
-    void reset(const hakka::vec2f& pos, const hakka::vec2f& vel);
+    void reset(const robot2D::vec2f& pos, const robot2D::vec2f& vel);
 public:
-    hakka::vec2f velocity;
+    robot2D::vec2f velocity;
 
     float border;
     float radius;

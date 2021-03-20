@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -21,9 +21,10 @@ source distribution.
 
 #include <vector>
 
-#include "../../hakka/incl/hakka/Vector2.h"
-#include "../../hakka/incl/hakka/Shader.h"
-#include "../../hakka/incl/hakka/Drawable.h"
+#include <robot2D/Core/Vector2.h>
+#include <robot2D/Graphics/Shader.h>
+#include <robot2D/Graphics/Drawable.h>
+
 #include "GameObject.h"
 
 struct Particle{
@@ -32,7 +33,7 @@ struct Particle{
     lifeTime(0.f)
     {}
 
-    hakka::vec2f m_pos, m_velocity;
+    robot2D::vec2f m_pos, m_velocity;
     float r, g, b, alpha;
     float lifeTime;
 
@@ -42,27 +43,27 @@ struct Particle{
 };
 
 
-class ParticleEmitter: public hakka::Drawable{
+class ParticleEmitter: public robot2D::Drawable{
 public:
     ParticleEmitter();
     ~ParticleEmitter() = default;
 
-    void setTexture(hakka::Texture& tex){
+    void setTexture(robot2D::Texture& tex){
         m_texture = &tex;
     }
     void update(float dt, int new_sz, const BallObject& bind,
-                const hakka::vec2f& offset);
+                const robot2D::vec2f& offset);
 protected:
-    void draw(hakka::RenderTarget &target,
-              hakka::RenderStates states) const override;
+    void draw(robot2D::RenderTarget &target,
+              robot2D::RenderStates states) const override;
     void setup();
     void setup_GL();
 
     int find_first_unused();
-    void respawn_particle(Particle& particle, const BallObject& bind, const hakka::vec2f& offset);
+    void respawn_particle(Particle& particle, const BallObject& bind, const robot2D::vec2f& offset);
 private:
     std::vector<Particle> m_particles;
-    hakka::ShaderHandler m_particleShader;
+    robot2D::ShaderHandler m_particleShader;
 
-    hakka::Texture* m_texture;
+    robot2D::Texture* m_texture;
 };

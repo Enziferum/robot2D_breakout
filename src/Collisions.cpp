@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -21,7 +21,7 @@ source distribution.
 #include <cmath>
 #include "game/Collisions.h"
 
-float length(const hakka::vec2f& vec){
+float length(const robot2D::vec2f& vec){
     return std::sqrt(vec.x * vec.x
                         + vec.y * vec.y);
 }
@@ -30,8 +30,8 @@ float clamp(float value, float min, float max){
     return std::max(min, std::min(max, value));
 }
 
-hakka::vec2f normalize(const hakka::vec2f& vec){
-    hakka::vec2f res;
+robot2D::vec2f normalize(const robot2D::vec2f& vec){
+    robot2D::vec2f res;
 
     float inv_len = 1.f / length(vec);
     res.x = vec.x * inv_len;
@@ -40,18 +40,18 @@ hakka::vec2f normalize(const hakka::vec2f& vec){
     return res;
 }
 
-float dot(const hakka::vec2f& left, const hakka::vec2f& right){
+float dot(const robot2D::vec2f& left, const robot2D::vec2f& right){
     float x = left.x * right.x;
     float y = left.y * right.y;
     return x + y;
 }
 
-Direction find_direction(const hakka::vec2f& vec){
-    hakka::vec2f compass[] = {
-            hakka::vec2f(0.0f, 1.0f),	// up
-            hakka::vec2f(1.0f, 0.0f),	// right
-            hakka::vec2f(0.0f, -1.0f),	// down
-            hakka::vec2f(-1.0f, 0.0f)	// left
+Direction find_direction(const robot2D::vec2f& vec){
+    robot2D::vec2f compass[] = {
+            robot2D::vec2f(0.0f, 1.0f),	// up
+            robot2D::vec2f(1.0f, 0.0f),	// right
+            robot2D::vec2f(0.0f, -1.0f),	// down
+            robot2D::vec2f(-1.0f, 0.0f)	// left
     };
     float max = 0.0f;
     unsigned int best_match = -1;
@@ -88,23 +88,23 @@ bool checkCollision(const GameObject &lob, const GameObject &rob) {
 }
 
 Collision checkCollision(const BallObject& lob, const GameObject& rob) {
-    hakka::vec2f center(lob.m_pos.x + lob.radius,
+    robot2D::vec2f center(lob.m_pos.x + lob.radius,
                         lob.m_pos.y + lob.radius);
 
-    hakka::vec2f aabb_half_extents(rob.m_size.x / 2.f,
+    robot2D::vec2f aabb_half_extents(rob.m_size.x / 2.f,
                                    rob.m_size.y / 2.f);
-    hakka::vec2f aabb_center(rob.m_pos.x + aabb_half_extents.x,
+    robot2D::vec2f aabb_center(rob.m_pos.x + aabb_half_extents.x,
                              rob.m_pos.y + aabb_half_extents.y);
-    hakka::vec2f distance = center - aabb_center;
-    hakka::vec2f clamped;
+    robot2D::vec2f distance = center - aabb_center;
+    robot2D::vec2f clamped;
     clamped.x = clamp(distance.x, -aabb_half_extents.x, aabb_half_extents.x);
     clamped.y = clamp(distance.y, -aabb_half_extents.y, aabb_half_extents.y);
 
-    hakka::vec2f closest = aabb_center + clamped;
+    robot2D::vec2f closest = aabb_center + clamped;
     distance = closest - center;
 
     if (length(distance) <= lob.radius)
         return std::make_tuple(true, find_direction(distance), distance);
     else
-        return std::make_tuple(false, Direction::up, hakka::vec2f());
+        return std::make_tuple(false, Direction::up, robot2D::vec2f());
 }

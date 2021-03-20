@@ -22,47 +22,38 @@ source distribution.
 #pragma once
 
 #include <vector>
-#include <list>
-#include <map>
+#include <memory>
+#include "robot2D/Drawable.h"
 
-#include <SFML/Audio.hpp>
+#include "System.h"
+#include "Entity.h"
 
-enum class AudioType{
-    none,
-    music,
-    sound
-};
-
-class Audio{
-public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
-
-    bool loadFile(const char* filename, const char* id, AudioType type);
-
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
-
-    void pause(const char* id, bool status);
-
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
-
-    void update_sounds();
-private:
-    Audio() = default;
-
-    AudioType getType(const char* id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
-};
+namespace robot2D{
+    class Scene: public Drawable{
+    public:
+        Scene();
+        ~Scene() = default;
 
 
+        template<typename T, typename ...Args>
+        void addSystem(Args&&...args);
+    protected:
+        void draw(RenderTarget &target, RenderStates states) const override;
+
+    private:
+        //renderable content
+        SystemManager m_systemManager;
+        EntityManager m_entityManager;
+
+        std::vector<Drawable*> m_drawables;
+    };
+
+
+    template<typename T, typename... Args>
+    void Scene::addSystem(Args&&... args) {
+        auto system = std::make_shared<T>(std::forward<Args>(args)...);
+        if(std::is_base_of<Drawable, T>::value){
+            m_drawables.push_back(dynamic_cast<Drawable*>(system));
+        }
+    }
+}

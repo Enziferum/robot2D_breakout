@@ -21,48 +21,26 @@ source distribution.
 
 #pragma once
 
-#include <vector>
-#include <list>
-#include <map>
+#include "robot2D/Graphics/Transformable.h"
+#include "robot2D/Graphics/Sprite.h"
 
-#include <SFML/Audio.hpp>
+namespace ecs{
+    class TransformComponent final: public robot2D::Transformable{
+    public:
+        TransformComponent();
+        ~TransformComponent();
 
-enum class AudioType{
-    none,
-    music,
-    sound
-};
+    };
 
-class Audio{
-public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+    class SpriteComponent final{
+    public:
+        SpriteComponent();
+        ~SpriteComponent() = default;
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
-
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
-
-    void pause(const char* id, bool status);
-
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
-
-    void update_sounds();
-private:
-    Audio() = default;
-
-    AudioType getType(const char* id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
-};
-
-
+        void setTexture(const robot2D::Texture& texture);
+        robot2D::Texture& getTexture();
+        const robot2D::Texture& getTexture() const;
+    private:
+        const robot2D::Texture* m_texture;
+    };
+}

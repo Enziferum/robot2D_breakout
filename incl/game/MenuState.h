@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka_game - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -20,27 +20,30 @@ source distribution.
 *********************************************************************/
 
 #pragma once
-#include "State.h"
-#include "hakka/Text.h"
-#include "hakka/Sprite.h"
-#include "hakka/ResourceHandler.h"
 
-class MenuState: public State{
+#include "robot2D/Core/State.h"
+#include "robot2D/Core/IStateMachine.h"
+
+#include "robot2D/Graphics/Text.h"
+#include "robot2D/Graphics/Sprite.h"
+#include "robot2D/Util/ResourceHandler.h"
+
+class MenuState: public robot2D::State{
 public:
     using Ptr = std::shared_ptr<MenuState>;
 public:
-    MenuState(IStateMachine& machine);
+    MenuState(robot2D::IStateMachine& machine);
     ~MenuState()override = default;
 
-    void handleEvents(const hakka::Event& event);
+    void handleEvents(const robot2D::Event& event);
     void update(float dt) override;
     void render() override;
 private:
     void setup();
 
 private:
-    hakka::ResourceHandler<hakka::Texture> m_textures;
-    hakka::Sprite m_background;
-    hakka::Font m_font;
-    hakka::Text m_name;
+    robot2D::ResourceHandler<robot2D::Texture> m_textures;
+    robot2D::Sprite m_background;
+    robot2D::Font m_font;
+    robot2D::Text m_name;
 };

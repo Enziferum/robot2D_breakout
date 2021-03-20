@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -23,8 +23,9 @@ source distribution.
 #include <functional>
 #include <utility>
 
-#include "State.h"
-#include "hakka/Sprite.h"
+#include "robot2D/Core/State.h"
+#include "robot2D/Core/IStateMachine.h"
+#include "robot2D/Graphics/Sprite.h"
 
 //todo be based on chrono
 class Timer{
@@ -44,21 +45,21 @@ private:
     bool m_endless;
 };
 
-class IntroState: public State{
+class IntroState: public robot2D::State{
 public:
     using Ptr = std::shared_ptr<IntroState>;
 public:
-    IntroState(IStateMachine& machine);
+    IntroState(robot2D::IStateMachine& machine);
     ~IntroState()override = default;
 
-    void handleEvents(const hakka::Event& event)override;
+    void handleEvents(const robot2D::Event& event)override;
     void update(float dt)override;
     void render()override;
 
 private:
     void setup();
 private:
-    hakka::Sprite m_background;
-    hakka::Texture m_texture;
+    robot2D::Sprite m_background;
+    robot2D::Texture m_texture;
     Timer m_timer;
 };

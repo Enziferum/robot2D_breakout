@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka_game - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -19,11 +19,10 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-//#include "hakka/GL.h"
-#include <glad/glad.h>
+#include <robot2D/Graphics/GL.h>
 #include <iostream>
 
-#include "hakka/RenderTarget.h"
+#include "robot2D/Graphics/RenderTarget.h"
 #include "game/PostProcessing.h"
 
 PostProcessing::PostProcessing(): m_size(800, 600),
@@ -43,7 +42,7 @@ void PostProcessing::update(float dt) {
     }
 }
 
-void PostProcessing::draw(hakka::RenderTarget& target, hakka::RenderStates states) const {
+void PostProcessing::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
     m_effectShader.use();
     m_effectShader.set_parameter("shake", m_shake);
     m_effectShader.set_parameter("chaos", m_chaos);
@@ -52,7 +51,7 @@ void PostProcessing::draw(hakka::RenderTarget& target, hakka::RenderStates state
 
     states.texture = &m_texture;
     states.customVao = &VAO;
-    states.shader = const_cast<hakka::ShaderHandler*>(&m_effectShader);
+    states.shader = const_cast<robot2D::ShaderHandler*>(&m_effectShader);
     target.draw(states);
 }
 
@@ -127,7 +126,7 @@ void PostProcessing::afterRender() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // binds both READ and WRITE framebuffer to default framebuffer
 }
 
-void PostProcessing::set_size(const hakka::vec2u& size) {
+void PostProcessing::set_size(const robot2D::vec2u& size) {
     m_size = size;
 }
 

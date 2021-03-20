@@ -21,48 +21,27 @@ source distribution.
 
 #pragma once
 
-#include <vector>
-#include <list>
-#include <map>
+#include "robot2D/Util/ResourceHandler.h"
+#include "robot2D/Core/IStateMachine.h"
+#include "robot2D/Core/State.h"
+#include "Scene.h"
 
-#include <SFML/Audio.hpp>
-
-enum class AudioType{
-    none,
-    music,
-    sound
-};
-
-class Audio{
+class EcsState: public robot2D::State{
 public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+    using Ptr = std::shared_ptr<EcsState>;
+public:
+    EcsState(robot2D::IStateMachine& machine);
+    ~EcsState()override = default;
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
 
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
+    void handleEvents(const robot2D::Event &event) override;
+    void update(float dt) override;
+    void render() override;
 
-    void pause(const char* id, bool status);
-
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
-
-    void update_sounds();
 private:
-    Audio() = default;
-
-    AudioType getType(const char* id);
+    void setup();
+    void setup_ecs();
 private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
+    ecs::Scene m_scene;
+    robot2D::ResourceHandler<robot2D::Texture> m_textures;
 };
-
-

@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -30,10 +30,10 @@ enum class Direction{
     right
 };
 
-using Collision = std::tuple<bool, Direction, hakka::vec2f>;
+using Collision = std::tuple<bool, Direction, robot2D::vec2f>;
 
-float length(const hakka::vec2f& vec);
-hakka::vec2f normalize(const hakka::vec2f& vec);
+float length(const robot2D::vec2f& vec);
+robot2D::vec2f normalize(const robot2D::vec2f& vec);
 
 bool checkCollision(const GameObject& lob, const GameObject& rob);
 Collision checkCollision(const BallObject& lob, const GameObject& rob);

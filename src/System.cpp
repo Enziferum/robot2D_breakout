@@ -19,50 +19,41 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#pragma once
+#include "game/System.h"
 
-#include <vector>
-#include <list>
-#include <map>
+namespace ecs{
+    System::System():
+        m_active(true),
+        m_scene(nullptr) {
 
-#include <SFML/Audio.hpp>
+    }
 
-enum class AudioType{
-    none,
-    music,
-    sound
-};
+    System::~System() {}
 
-class Audio{
-public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+    void System::process(float dt) {
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
+    }
 
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
+    void System::on_addEntity(Entity entity) {
 
-    void pause(const char* id, bool status);
+    }
 
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
+    void System::setActive(const bool &status) {
+        m_active = status;
+    }
 
-    void update_sounds();
-private:
-    Audio() = default;
+    std::vector<Entity> &System::getEntites() {
+        return m_entities;
+    }
 
-    AudioType getType(const char* id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
-};
+    const std::vector<Entity> &System::getEntites() const {
+        return m_entities;
+    }
+
+    void System::addEntity(Entity entity) {
+        m_entities.push_back(entity);
+        on_addEntity(entity);
+    }
 
 
+}

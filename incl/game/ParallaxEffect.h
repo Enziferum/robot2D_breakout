@@ -21,48 +21,23 @@ source distribution.
 
 #pragma once
 
-#include <vector>
-#include <list>
-#include <map>
+#include "robot2D/Graphics/Drawable.h"
+#include "robot2D/Graphics/Texture.h"
+#include "robot2D/Graphics/Shader.h"
 
-#include <SFML/Audio.hpp>
-
-enum class AudioType{
-    none,
-    music,
-    sound
-};
-
-class Audio{
+class ParallaxEffect: public robot2D::Drawable{
 public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+    ParallaxEffect();
+    ~ParallaxEffect() = default;
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
+    void setTexture(const robot2D::Texture& texture);
+    void update(float dt);
+protected:
+    virtual void draw(robot2D::RenderTarget&, robot2D::RenderStates states) const override;
 
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
-
-    void pause(const char* id, bool status);
-
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
-
-    void update_sounds();
 private:
-    Audio() = default;
-
-    AudioType getType(const char* id);
+    void setup_GL();
 private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
+    robot2D::ShaderHandler m_shaderHandler;
+    const robot2D::Texture* m_texture;
 };
-
-

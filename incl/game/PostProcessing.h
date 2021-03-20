@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-hakka_game - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -21,31 +21,31 @@ source distribution.
 
 #pragma once
 
-#include "hakka/Drawable.h"
-#include "hakka/Shader.h"
+#include "robot2D/Graphics/Drawable.h"
+#include "robot2D/Graphics/Shader.h"
 
-class PostProcessing: public hakka::Drawable{
+class PostProcessing: public robot2D::Drawable{
 public:
     PostProcessing();
     ~PostProcessing()override = default;
 
-    void set_size(const hakka::vec2u& size);
+    void set_size(const robot2D::vec2u& size);
     void update(float dt);
     void preRender();
     void afterRender();
 
     void setValue(const std::string& id, const bool& value);
 protected:
-    virtual void draw(hakka::RenderTarget& target, hakka::RenderStates states)const override;
+    virtual void draw(robot2D::RenderTarget& target, robot2D::RenderStates states)const override;
 
 private:
     void setup_GL();
     void init_RenderData();
 private:
-    hakka::ShaderHandler m_effectShader;
-    hakka::Texture m_texture;
+    robot2D::ShaderHandler m_effectShader;
+    robot2D::Texture m_texture;
 
-    hakka::vec2u m_size;
+    robot2D::vec2u m_size;
 
     //params
     bool m_shake;

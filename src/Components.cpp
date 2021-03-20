@@ -19,50 +19,33 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#pragma once
+#include "game/Components.h"
 
-#include <vector>
-#include <list>
-#include <map>
+namespace ecs{
 
-#include <SFML/Audio.hpp>
+    TransformComponent::TransformComponent() {
 
-enum class AudioType{
-    none,
-    music,
-    sound
-};
+    }
 
-class Audio{
-public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+    TransformComponent::~TransformComponent() {
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
+    }
 
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
+    SpriteComponent::SpriteComponent() {
 
-    void pause(const char* id, bool status);
+    }
 
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
+    void SpriteComponent::setTexture(const robot2D::Texture &texture) {
 
-    void update_sounds();
-private:
-    Audio() = default;
+    }
 
-    AudioType getType(const char* id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
-};
+    robot2D::Texture &SpriteComponent::getTexture() {
+        return const_cast<robot2D::Texture &>(*m_texture);
+    }
+
+    const robot2D::Texture &SpriteComponent::getTexture() const {
+        return *m_texture;
+    }
 
 
+}

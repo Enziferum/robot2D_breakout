@@ -19,50 +19,50 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#pragma once
+#include "robot2D/Graphics/RenderTarget.h"
+#include "game/Scene.h"
 
-#include <vector>
-#include <list>
-#include <map>
+namespace ecs{
+    Scene::Scene():
+    m_systems(),
+    m_drawables() {
 
-#include <SFML/Audio.hpp>
+    }
 
-enum class AudioType{
-    none,
-    music,
-    sound
-};
+    Entity Scene::addEntity() {
+        m_entityBuffer.push_back(m_entityManager.addEntity());
+        return m_entityBuffer.back();
+    }
 
-class Audio{
-public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+    void Scene::forwardEvent(const robot2D::Event& event) {
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
+    }
 
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
+    void Scene::update(float dt) {
 
-    void pause(const char* id, bool status);
-
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
-
-    void update_sounds();
-private:
-    Audio() = default;
-
-    AudioType getType(const char* id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
-};
+        if(!m_entityBuffer.empty()) {
+            for (auto& it: m_systems) {
+                //check
+            }
+            m_entityBuffer.clear();
+        }
 
 
+        for(auto& it: m_systems) {
+            if(!it->m_active)
+                continue;
+            it->process(dt);
+        }
+    }
+
+    void Scene::draw(robot2D::RenderTarget &target, robot2D::RenderStates state) const {
+        for(auto& it: m_drawables)
+            target.draw(*it);
+    }
+
+    void Scene::destroyEntity(Entity entity) {
+
+    }
+
+
+}

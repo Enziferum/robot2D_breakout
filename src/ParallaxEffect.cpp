@@ -19,50 +19,31 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#pragma once
+#include "game/ParallaxEffect.h"
 
-#include <vector>
-#include <list>
-#include <map>
+ParallaxEffect::ParallaxEffect():
+    m_texture(nullptr) {
 
-#include <SFML/Audio.hpp>
+}
 
-enum class AudioType{
-    none,
-    music,
-    sound
-};
+void ParallaxEffect::setTexture(const robot2D::Texture &texture) {
+    m_texture = &texture;
+}
 
-class Audio{
-public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+void ParallaxEffect::update(float dt) {
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
+}
 
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
+void ParallaxEffect::draw(robot2D::RenderTarget &, robot2D::RenderStates states) const {
+    if(!m_texture)
+        return;
+}
 
-    void pause(const char* id, bool status);
+void ParallaxEffect::setup_GL() {
+    if(!m_shaderHandler.createShader(0, ""))
+        return;
+    if(!m_shaderHandler.createShader(0, ""))
+        return;
 
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
-
-    void update_sounds();
-private:
-    Audio() = default;
-
-    AudioType getType(const char* id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
-};
-
-
+    m_shaderHandler.use();
+}

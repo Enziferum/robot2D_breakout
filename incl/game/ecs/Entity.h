@@ -21,48 +21,32 @@ source distribution.
 
 #pragma once
 
-#include <vector>
-#include <list>
-#include <map>
+namespace robot2D{
+    class Entity{
+    public:
+        Entity();
+        ~Entity() = default;
 
-#include <SFML/Audio.hpp>
+        template<typename T>
+        T& addComponent(const T&);
 
-enum class AudioType{
-    none,
-    music,
-    sound
-};
+        template<typename T, typename ...Args>
+        T& addComponent(Args&&...args);
 
-class Audio{
-public:
-    static Audio* getInstanse();
-    Audio(const Audio&)=delete;
-    Audio(const Audio&&)=delete;
-    Audio& operator=(const Audio&)=delete;
-    Audio& operator=(const Audio&&)=delete;
-    ~Audio() = default;
+        template<typename T>
+        T& getComponent();
 
-    bool loadFile(const char* filename, const char* id, AudioType type);
+        template<typename T>
+        bool hasComponent() const;
+    private:
+    };
 
-    void play(const char* id, bool looped = false);
-    void stop(const char* id);
-
-    void pause(const char* id, bool status);
-
-    void setVolume(const char* id, const float& volume);
-    const float& getVolume(const char* id) const;
-
-    void update_sounds();
-private:
-    Audio() = default;
-
-    AudioType getType(const char* id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<std::string, float> m_volumes;
-    std::map<std::string, sf::SoundBuffer> m_soundBuffers;
-    std::map<std::string, AudioType> m_audiotypes;
-};
+    class EntityManager{
+    public:
+        EntityManager();
+        ~EntityManager();
 
 
+    private:
+    };
+}
