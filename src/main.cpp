@@ -3,8 +3,7 @@
 
 #include "game/GameState.h"
 #include "game/IntroState.h"
-//demo state
-#include "game/EcsState.h"
+
 #include "game/Audio.h"
 #include "game/States.h"
 
