@@ -37,7 +37,6 @@ const float ball_radius = 12.5f;
 GameState::GameState(robot2D::IStateMachine& machine):
     State(machine), m_keys(), m_keysProcessed() ,
     m_pause(false){
-    std::cout << "Try to setup" <<std::endl;
     setup();
 }
 

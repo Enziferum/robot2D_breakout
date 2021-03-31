@@ -15,7 +15,11 @@ find_package(robot2D_ext REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/incl)
 file(GLOB SRC src/*.cpp)
 
-set(LIBS robot2D sfml-audio)
+#for demo moves
+
+add_subdirectory(ecs/robot2D_ecs)
+
+set(LIBS robot2D robot2D_ecs sfml-audio)
 
 add_executable(${PROJECT_NAME} ${SRC})
 target_link_libraries(${PROJECT_NAME} ${LIBS})
