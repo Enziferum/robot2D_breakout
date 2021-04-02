@@ -77,7 +77,6 @@ void ParticleEmitter::draw(robot2D::RenderTarget& target, robot2D::RenderStates 
 
         states.texture = m_texture;
         states.shader = const_cast<robot2D::ShaderHandler*>(&m_particleShader);
-        //states.customVao = &VAO;
 
         target.draw(states);
     }
