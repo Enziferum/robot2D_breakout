@@ -21,7 +21,7 @@ source distribution.
 
 #pragma once
 
-enum States{
+enum States {
     Intro = 0,
     Menu = 1,
     Game = 2,

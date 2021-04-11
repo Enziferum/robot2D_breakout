@@ -27,11 +27,12 @@ source distribution.
 #include "robot2D/Graphics/Drawable.h"
 #include "robot2D/Core/Vector2.h"
 #include "robot2D/Util/ResourceHandler.h"
+#include <robot2D/Graphics/Shader.h>
 
 #include "GameObject.h"
 #include "IDs.h"
 
-class Level: public robot2D::Drawable{
+class Level: public robot2D::Drawable {
 public:
     Level();
     ~Level() = default;
@@ -46,6 +47,7 @@ public:
     bool destroyed() const;
     std::vector<GameObject>& getTiles();
 protected:
+
     void draw(robot2D::RenderTarget& target,
               robot2D::RenderStates states) const override;
 private:
@@ -54,4 +56,8 @@ private:
 
     //size of level
     size_t rw, rh;
+
+    robot2D::ShaderHandler m_shader;
+
+    size_t last_size = 0;
 };

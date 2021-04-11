@@ -99,8 +99,6 @@ int ParticleEmitter::find_first_unused() {
             return it;
         }
     }
-    // all particles are taken,
-    // override the first one (note that if it repeatedly hits this case, more particles should be reserved)
     lastUsedParticle = 0;
     return 0;
 }

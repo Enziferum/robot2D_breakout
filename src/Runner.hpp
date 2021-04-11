@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -19,34 +19,32 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <vector>
+#pragma once
 
-#include <robot2D/Graphics/Shader.h>
-#include <robot2D/Graphics/Drawable.h>
+#include "robot2D/Core/App.h"
+#include <robot2D/Util/ResourceHandler.h>
 
-#include "GameObject.h"
-#include "Particle.h"
+namespace {
+    enum Icon {
+        Default
+    };
+}
 
 
-
-class ParticleEmitter: public robot2D::Drawable{
+class Runner{
 public:
-    ParticleEmitter();
-    ~ParticleEmitter()override = default;
+    Runner();
+    Runner(const Runner&) = delete;
+    Runner(const Runner&&) = delete;
+    Runner& operator=(const Runner&) = delete;
+    Runner& operator=(const Runner&&) = delete;
+    ~Runner() = default;
 
-    void setTexture(robot2D::Texture& tex);
-    void update(float dt, int new_sz, const BallObject& bind,
-                const robot2D::vec2f& offset);
-protected:
-    void draw(robot2D::RenderTarget &target,
-              robot2D::RenderStates states) const override;
-    void setup();
-
-    int find_first_unused();
-    void respawn_particle(Particle& particle, const BallObject& bind, const robot2D::vec2f& offset);
+    void run();
 private:
-    std::vector<Particle> m_particles;
-    robot2D::ShaderHandler m_particleShader;
+    void init();
 
-    robot2D::Texture* m_texture;
+private:
+    robot2D::ResourceHandler<robot2D::Texture, Icon> icons;
+    robot2D::App my_app;
 };

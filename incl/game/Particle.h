@@ -3,10 +3,11 @@
 //
 
 #pragma once
+
 #include <robot2D/Core/Vector2.h>
 #include <robot2D/Graphics/Color.h>
 
-struct Particle{
+struct Particle {
     Particle();
     ~Particle() = default;
 

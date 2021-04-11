@@ -30,6 +30,7 @@ source distribution.
 #include "robot2D/Util/ResourceHandler.h"
 #include "robot2D/Graphics/Text.h"
 
+
 #include "InputManager.h"
 #include "Level.h"
 #include "ParticleEmitter.h"
@@ -39,7 +40,8 @@ source distribution.
 #include "Timer.h"
 #include "IDs.h"
 
-class GameState: public robot2D::State{
+
+class GameState: public robot2D::State {
 public:
     GameState(robot2D::IStateMachine& machine);
     ~GameState() override = default;
@@ -68,9 +70,7 @@ private:
         Pause,
         LevelChange
     };
-
     mState m_state;
-
     robot2D::vec2u m_windowSize;
 
     robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> m_textures;

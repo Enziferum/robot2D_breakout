@@ -53,6 +53,7 @@ void MenuState::load_resources() {
     if(!m_textures.loadFromFile("back", back_path)){
         LOG_ERROR("Can't load texture %", back_path)
     }
+
     //m_font.loadFromFile("", 20);
 }
 

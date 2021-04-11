@@ -24,6 +24,7 @@ source distribution.
 class World {
 public:
     World();
+
     World(const World& ) = delete;
     World(const World&& ) = delete;
     World& operator=(const World& ) = delete;

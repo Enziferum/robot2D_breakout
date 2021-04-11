@@ -188,7 +188,7 @@ void GameState::handleEvents(const robot2D::Event& event) {
         return;
     }
 
-    if(m_state == mState::LevelChange){
+    if(m_state == mState::LevelChange) {
 
     }
 
@@ -239,7 +239,7 @@ void GameState::update(float dt) {
     m_particleEmitter.update(dt, emitter_new_sz, m_ball, robot2D::vec2f(6.25f,
                                                          6.25f));
     update_powerups(dt);
-    //todo in other way
+
     if(m_levels[currlevel].destroyed())
         changeLevel();
 
@@ -286,7 +286,7 @@ bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, PowerUpType type)
 {
     // Check if another PowerUp of the same type is still active
     // in which case we don't disable its effect (yet)
-    for (const PowerUp &powerUp : powerUps)
+    for (const PowerUp& powerUp : powerUps)
     {
         if (powerUp.activated)
             if (powerUp.m_type == type)

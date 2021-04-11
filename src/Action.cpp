@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -19,34 +19,20 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <vector>
+#include "game/Action.h"
 
-#include <robot2D/Graphics/Shader.h>
-#include <robot2D/Graphics/Drawable.h>
+namespace robot2D {
 
-#include "GameObject.h"
-#include "Particle.h"
+    bool Action::test() const {
+        return false;
+    }
 
+    bool Action::operator==(const Event& evt) const {
+        return event.type == evt.type;
+    }
 
-
-class ParticleEmitter: public robot2D::Drawable{
-public:
-    ParticleEmitter();
-    ~ParticleEmitter()override = default;
-
-    void setTexture(robot2D::Texture& tex);
-    void update(float dt, int new_sz, const BallObject& bind,
-                const robot2D::vec2f& offset);
-protected:
-    void draw(robot2D::RenderTarget &target,
-              robot2D::RenderStates states) const override;
-    void setup();
-
-    int find_first_unused();
-    void respawn_particle(Particle& particle, const BallObject& bind, const robot2D::vec2f& offset);
-private:
-    std::vector<Particle> m_particles;
-    robot2D::ShaderHandler m_particleShader;
-
-    robot2D::Texture* m_texture;
-};
+    bool Action::operator==(const Action& other) const {
+        return (event.type == other.event.type)
+        && (other._type == _type);
+    }
+}

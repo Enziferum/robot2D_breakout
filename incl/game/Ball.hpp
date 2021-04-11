@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -19,34 +19,24 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <vector>
-
-#include <robot2D/Graphics/Shader.h>
-#include <robot2D/Graphics/Drawable.h>
+#pragma once
 
 #include "GameObject.h"
-#include "Particle.h"
 
-
-
-class ParticleEmitter: public robot2D::Drawable{
+class Ball: public GameObject {
 public:
-    ParticleEmitter();
-    ~ParticleEmitter()override = default;
+    Ball();
+    ~Ball() override = default;
 
-    void setTexture(robot2D::Texture& tex);
-    void update(float dt, int new_sz, const BallObject& bind,
-                const robot2D::vec2f& offset);
-protected:
-    void draw(robot2D::RenderTarget &target,
-              robot2D::RenderStates states) const override;
-    void setup();
-
-    int find_first_unused();
-    void respawn_particle(Particle& particle, const BallObject& bind, const robot2D::vec2f& offset);
+    void move(float dt);
+    void reset(const robot2D::vec2f& pos,
+               const robot2D::vec2f& vel);
 private:
-    std::vector<Particle> m_particles;
-    robot2D::ShaderHandler m_particleShader;
+    robot2D::vec2f velocity;
 
-    robot2D::Texture* m_texture;
+    float border;
+    float radius;
+    bool stuck;
+    bool wallbreaker;
+    bool sticky; // ??
 };

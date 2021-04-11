@@ -18,12 +18,11 @@ and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any
 source distribution.
 *********************************************************************/
-
 #pragma once
 
 #include "robot2D/Graphics/Sprite.h"
 
-class GameObject: public robot2D::Drawable{
+class GameObject: public robot2D::Drawable {
 public:
     GameObject();
     ~GameObject() = default;
