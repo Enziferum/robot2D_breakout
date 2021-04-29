@@ -25,6 +25,9 @@ source distribution.
 #include "game/MenuState.h"
 #include "game/gui/Button.h"
 
+const std::string back_path = "res/textures/cityskyline.png";
+const std::string menu_buttonPath = "res/textures/menu_button.png";
+
 MenuState::MenuState(robot2D::IStateMachine& machine) :
 State(machine) {
     setup();
@@ -44,17 +47,18 @@ void MenuState::update(float dt) {
 
 void MenuState::render() {
     m_window.draw(m_background);
-  //  m_window.draw(m_name);
+    //m_window.draw(m_name);
     m_window.draw(m_gui);
 }
 
 void MenuState::load_resources() {
-    auto back_path = "res/textures/cityskyline.png";
     if(!m_textures.loadFromFile("back", back_path)){
-        LOG_ERROR("Can't load texture %", back_path)
+        LOG_ERROR("Can't load texture %", back_path.c_str())
     }
 
-    //m_font.loadFromFile("", 20);
+    if(!m_textures.loadFromFile("button", menu_buttonPath, true)){
+        LOG_ERROR("Can't load texture %",  menu_buttonPath.c_str())
+    }
 }
 
 void MenuState::setup() {
@@ -62,14 +66,24 @@ void MenuState::setup() {
 
     auto size = m_window.get_size();
 
+    const auto button_size = robot2D::vec2f(100, 50);
+
     auto start_btn = gui::Button::create();
-    start_btn->onTouch([this]() {
+    start_btn -> setTexture(m_textures.get("button"));
+    start_btn -> setPosition(robot2D::vec2f(size.x / 2 - button_size.x / 2, size.y / 2
+                                                                    - button_size.y / 2));
+    start_btn -> setScale(button_size);
+    start_btn -> onTouch([this]() {
        m_machine.pushState(States::Game);
     });
 
 
     auto end_btn = gui::Button::create();
-    end_btn->onTouch([this](){
+    end_btn -> setTexture(m_textures.get("button"));
+    end_btn -> setScale(button_size);
+    auto pos = start_btn -> getPosition();
+    end_btn -> setPosition(robot2D::vec2f(pos.x, pos.y + 100 - button_size.y / 2));
+    end_btn -> onTouch([this](){
         //todo set close callback
         m_window.close();
     });

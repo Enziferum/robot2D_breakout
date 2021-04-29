@@ -39,11 +39,17 @@ source distribution.
 #include "PowerUp.h"
 #include "Timer.h"
 #include "IDs.h"
+
+
+#include "AppContext.hpp"
+#include "ContextIDs.hpp"
+#include "AudioPlayer.hpp"
 #include "Configuration.hpp"
+
 
 class GameState: public robot2D::State {
 public:
-    GameState(robot2D::IStateMachine& machine);
+    GameState(robot2D::IStateMachine& machine, AppContext<ContextID>& );
     ~GameState() override = default;
 
     void handleEvents(const robot2D::Event& event) override;
@@ -65,6 +71,11 @@ private:
 
     void changeLevel();
 private:
+    AppContext<ContextID>& m_context;
+    AudioPlayer* m_audioPlayer;
+    GameConfiguration* m_gameConfiguration;
+
+
     enum class mState{
         Play,
         Pause,

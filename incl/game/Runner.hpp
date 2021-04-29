@@ -24,6 +24,11 @@ source distribution.
 #include "robot2D/Extra/App.h"
 #include <robot2D/Util/ResourceHandler.h>
 
+#include "AppContext.hpp"
+#include "ContextIDs.hpp"
+#include "Configuration.hpp"
+#include "AudioPlayer.hpp"
+
 namespace {
     enum Icon {
         Default
@@ -45,6 +50,10 @@ private:
     void init();
 
 private:
-    robot2D::ResourceHandler<robot2D::Texture, Icon> icons;
+    //robot2D::ResourceHandler<robot2D::Texture, Icon> icons;
     robot2D::App my_app;
+
+    AppContext<ContextID> m_context;
+    AudioPlayer m_audioPlayer;
+    Configuration m_configuration;
 };

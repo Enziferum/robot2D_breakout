@@ -33,7 +33,7 @@ namespace gui{
 
     void Gui::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
         for(auto& it: m_nodes)
-            target.draw(*it, states);
+            target.draw(*it);
     }
 
     void Gui::pack(INode::Ptr node) {

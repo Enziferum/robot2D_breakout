@@ -20,44 +20,62 @@ source distribution.
 *********************************************************************/
 
 #include <robot2D/Util/Logger.h>
+
 #include "game/IntroState.h"
 #include "game/MenuState.h"
 #include "game/GameState.h"
-
-
-#include "game/Audio.h"
 #include "game/States.h"
+#include "game/Runner.hpp"
 
 
-#include "Runner.hpp"
+const std::string resourceiniPath = "res/config.ini";
+const std::string gameiniPath = "res/game.ini";
+const std::string iconPath = "res/textures/icon.png";
+const std::string musicPath = "res/audio/breakout.wav";
 
 Runner::Runner(): my_app{robot2D::vec2u(800, 600),
                          "robot2D Game", true } {
     init();
 }
 
-void Runner::run() {
-
-    my_app.register_state<IntroState>(States::Intro, my_app);
-    my_app.register_state<MenuState>(States::Menu, my_app);
-    my_app.register_state<GameState>(States::Game, my_app);
-    my_app.setCurrent(States::Game);
-
-    robot2D::ResourceHandler<robot2D::Texture, Icon> g_icons;
-    g_icons.loadFromFile(Icon::Default, "res/textures/icon.png", true);
-
-    std::vector<robot2D::Texture> icons = {g_icons.get(Icon::Default)};
-
-    my_app.setIcon(icons);
-
-    my_app.run();
-}
 
 void Runner::init() {
     logger::debug = true;
 
-    Audio::getInstanse() -> loadFile("res/audio/breakout.wav",
-                                     AudioFileID::breakout, AudioType::music);
-    Audio::getInstanse() -> play(AudioFileID::breakout, true);
-    Audio::getInstanse() -> setVolume(AudioFileID::breakout, 80.f);
+    m_audioPlayer.loadFile(musicPath.c_str(),
+                           AudioFileID::breakout, AudioType::music);
+
+    m_audioPlayer.play(AudioFileID::breakout, true);
+    m_audioPlayer.setVolume(AudioFileID::breakout, 100.f);
+
+    if(!m_configuration.loadResources(resourceiniPath)){
+        return;
+    }
+
+    if(!m_configuration.loadGameSettings(gameiniPath)){
+        return;
+    }
+
+    if(!m_context.storeInBuffer(ContextID::Configuration, (void*)(&m_configuration))) {
+        return;
+    }
+    if(!m_context.storeInBuffer(ContextID::Audio, (void*)(&m_audioPlayer))){
+        return;
+    }
+
+}
+
+void Runner::run() {
+    robot2D::ResourceHandler<robot2D::Texture, Icon> g_icons;
+    g_icons.loadFromFile(Icon::Default, iconPath, true);
+    std::vector<robot2D::Texture> icons = {g_icons.get(Icon::Default)};
+    my_app.setIcon(icons);
+
+
+    my_app.register_state<IntroState>(States::Intro, my_app);
+    my_app.register_state<MenuState>(States::Menu, my_app);
+    my_app.register_state<GameState>(States::Game, my_app, m_context);
+    my_app.setCurrent(States::Menu);
+
+    my_app.run();
 }

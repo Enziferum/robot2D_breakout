@@ -24,6 +24,7 @@ namespace gui {
         void onHover(const robot2D::vec2f&) override;
         void update(float dt) override;
 
+        void setTexture(const robot2D::Texture& texture);
     protected:
         void draw(robot2D::RenderTarget &target, robot2D::RenderStates states)
                 const override;
@@ -36,5 +37,6 @@ namespace gui {
         };
 
         std::function<void()> m_function;
+        const robot2D::Texture* m_texture;
     };
 }

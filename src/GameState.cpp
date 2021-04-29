@@ -23,29 +23,21 @@ source distribution.
 #include <ctime>
 
 #include <robot2D/Core/Keyboard.h>
+#include <robot2D/Util/Logger.h>
 
 #include "game/GameState.h"
 #include "game/Collisions.h"
-#include "game/Audio.h"
+
 #include "game/States.h"
 
-//ini reader
-
-//work on constants where saving ??
-constexpr float speed = 500.f;
-constexpr float ball_radius = 12.5f;
-constexpr int max_lives = 3;
-constexpr unsigned int emitter_new_sz = 2;
-
-const robot2D::vec2f ball_velocity(100.0f, -350.0f);
-const robot2D::vec2f paddle_size(100.f, 20.f);
-
-
-GameState::GameState(robot2D::IStateMachine& machine):
+GameState::GameState(robot2D::IStateMachine& machine, AppContext<ContextID>& context):
     State(machine),
+    m_context(context),
+    m_audioPlayer(nullptr),
+    m_gameConfiguration(nullptr),
     m_keys(),
     m_keysProcessed() ,
-    m_lives(max_lives),
+    m_lives(),
     m_livesSprites(),
     m_bounceTimer(1.5f),
     m_state(mState::Play)
@@ -75,7 +67,7 @@ bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, PowerUpType type)
 }
 
 void GameState::load_resources() {
-    //load textures
+    // resource loading //
     m_textures.loadFromFile(ResourceIDs::Background, "res/textures/cityskyline.png");
     m_textures.loadFromFile(ResourceIDs::Face, "res/textures/awesomeface.png", true);
     m_textures.loadFromFile(ResourceIDs::Block, "res/textures/block.png");
@@ -83,16 +75,16 @@ void GameState::load_resources() {
     m_textures.loadFromFile(ResourceIDs::Paddle, "res/textures/paddle.png", true);
     m_textures.loadFromFile(ResourceIDs::Particle, "res/textures/particle.png", true);
 
-    //powerups
     m_textures.loadFromFile(ResourceIDs::Chaos, "res/textures/powerup_chaos.png", true);
     m_textures.loadFromFile(ResourceIDs::Confuse, "res/textures/powerup_confuse.png", true);
     m_textures.loadFromFile(ResourceIDs::Size, "res/textures/powerup_increase.png", true);
     m_textures.loadFromFile(ResourceIDs::Wallbreaker, "res/textures/powerup_passthrough.png", true);
     m_textures.loadFromFile(ResourceIDs::Speed, "res/textures/powerup_speed.png", true);
     m_textures.loadFromFile(ResourceIDs::Sticky, "res/textures/powerup_sticky.png", true);
-    //powerups
 
     m_fonts.loadFromFile(ResourceIDs::Font, "res/fonts/game_font.ttf");
+
+    // resource loading //
 
     //todo load all from special folder
     Level one;
@@ -117,9 +109,6 @@ void GameState::load_resources() {
     m_levels.push_back(two);
     m_levels.push_back(three);
     m_levels.push_back(four);
-
-    //todo load all from special folder
-
 }
 
 void GameState::setup() {
@@ -127,6 +116,21 @@ void GameState::setup() {
 
     auto size = m_window.get_size();
     m_windowSize = size;
+
+    m_audioPlayer = (AudioPlayer*)(m_context.getBuffer(ContextID::Audio));
+    if(m_audioPlayer == nullptr){
+        LOG_ERROR_E("m_audioPlayer == nullptr, after getting")
+        return;
+    }
+
+    auto configuration = (Configuration*)(m_context.getBuffer(ContextID::Configuration));
+    m_gameConfiguration = &(configuration->getGameConfiguration());
+    if(m_gameConfiguration == nullptr) {
+        LOG_ERROR_E("m_gameConfiguration == nullptr, after getting")
+        return;
+    }
+
+    m_lives = m_gameConfiguration -> max_lives;
 
     load_resources();
 
@@ -146,24 +150,27 @@ void GameState::setup() {
     m_background.setScale(robot2D::vec2f(size.x, size.y));
 
     m_paddle.m_sprite.setTexture(m_textures.get(ResourceIDs::Paddle));
-    m_paddle.setPos(robot2D::vec2f(size.x / 2.f - paddle_size.x / 2,
-                    size.y - paddle_size.y));
-    m_paddle.setSize(paddle_size);
+    m_paddle.setPos(robot2D::vec2f(size.x / 2.f - m_gameConfiguration -> paddle_size.x / 2,
+                    size.y - m_gameConfiguration -> paddle_size.y));
+    m_paddle.setSize(m_gameConfiguration -> paddle_size);
 
 
-    robot2D::vec2f ballPos = robot2D::vec2f(paddle_size.x / 2.0f - ball_radius + m_paddle.m_pos.x,
-                                                    -ball_radius * 2.0f + m_paddle.m_pos.y);
+    robot2D::vec2f ballPos = robot2D::vec2f(m_gameConfiguration -> paddle_size.x / 2.0f -
+                                                    m_gameConfiguration ->ball_radius + m_paddle.m_pos.x,
+                                                    - m_gameConfiguration -> ball_radius * 2.0f + m_paddle.m_pos.y);
 
     m_ball.m_sprite.setTexture(m_textures.get(ResourceIDs::Face));
-    m_ball.velocity = ball_velocity;
+    m_ball.velocity = m_gameConfiguration ->ball_velocity;
     m_ball.border = size.x;
-    m_ball.radius = ball_radius;
+    m_ball.radius = m_gameConfiguration ->ball_radius;
     m_ball.setPos(ballPos);
-    m_ball.setSize(robot2D::vec2f(ball_radius * 2.f, ball_radius * 2.f));
+    m_ball.setSize(robot2D::vec2f(m_gameConfiguration ->ball_radius * 2.f,
+                                  m_gameConfiguration ->ball_radius * 2.f));
 
     auto live_sz = robot2D::vec2f(robot2D::vec2f(30.f, 30.f));
     auto live_start_pos = robot2D::vec2f(m_text.getPos().x + 50, 5);
-    for(int it = 0; it < max_lives; ++it){
+
+    for(int it = 0; it < m_gameConfiguration -> max_lives; ++it){
         robot2D::Sprite sprite;
         sprite.setTexture(m_textures.get(ResourceIDs::Face));
         sprite.setScale(live_sz);
@@ -179,13 +186,14 @@ void GameState::setup() {
         m_state = mState::Play;
     });
 
-    Audio::getInstanse() -> loadFile("res/audio/bleep_1.wav",
-                                        AudioFileID::bleep_1, AudioType::sound);
-    Audio::getInstanse() -> loadFile("res/audio/bleep.wav",
+
+    m_audioPlayer -> loadFile("res/audio/bleep_1.wav",
+                                     AudioFileID::bleep_1, AudioType::sound);
+    m_audioPlayer -> loadFile("res/audio/bleep.wav",
                                      AudioFileID::bleep, AudioType::sound);
-    Audio::getInstanse() -> loadFile("res/audio/solid.wav",
+    m_audioPlayer -> loadFile("res/audio/solid.wav",
                                      AudioFileID::solid, AudioType::sound);
-    Audio::getInstanse() -> loadFile("res/audio/powerup.wav",
+    m_audioPlayer -> loadFile("res/audio/powerup.wav",
                                      AudioFileID::power_up, AudioType::sound);
 }
 
@@ -252,7 +260,7 @@ void GameState::update(float dt) {
 
     m_levels[currlevel].update(dt);
     m_parallax.update(dt);
-    m_particleEmitter.update(dt, emitter_new_sz, m_ball, robot2D::vec2f(6.25f,
+    m_particleEmitter.update(dt, m_gameConfiguration ->emitter_new_sz, m_ball, robot2D::vec2f(6.25f,
                                                          6.25f));
     update_powerups(dt);
 
@@ -260,12 +268,12 @@ void GameState::update(float dt) {
         changeLevel();
 
     m_postProcessing.update(dt);
-    Audio::getInstanse() -> update_sounds();
+    m_audioPlayer -> update_sounds();
 }
 
 void GameState::process_input(float dt) {
     // input update //
-    float velocity = dt * speed;
+    float velocity = dt * m_gameConfiguration ->speed;
 
     if(m_keys[robot2D::A]) {
         if (m_paddle.m_pos.x >= 0.f) {
@@ -355,10 +363,10 @@ void GameState::process_collisions(float dt) {
             if (!box.m_solid) {
                 spawn_power_up(box);
                 box.m_destroyed = true;
-                Audio::getInstanse()->play(AudioFileID::bleep_1);
+                m_audioPlayer->play(AudioFileID::bleep_1);
             } else {
                 m_postProcessing.setValue("shake", true);
-                Audio::getInstanse()->play(AudioFileID::solid);
+                m_audioPlayer->play(AudioFileID::solid);
             }
 
 
@@ -415,7 +423,7 @@ void GameState::process_collisions(float dt) {
 void GameState::reset_game() {
     if(m_lives == 0) {
         //m_machine.pushState(States::Intro);
-        m_lives = max_lives;
+        m_lives = m_gameConfiguration -> max_lives;
         return;
     }
 
@@ -428,10 +436,11 @@ void GameState::reset_game() {
     m_postProcessing.setValue("confuse", false);
 
 
-    m_paddle.setPos(robot2D::vec2f(m_windowSize.x / 2.f - paddle_size.x / 2,
-                                   m_windowSize.y - paddle_size.y));
-    robot2D::vec2f ballPos = robot2D::vec2f(paddle_size.x / 2.0f - ball_radius + m_paddle.m_pos.x,
-                                         -ball_radius * 2.0f + m_paddle.m_pos.y);
+    m_paddle.setPos(robot2D::vec2f(m_windowSize.x / 2.f - m_gameConfiguration ->paddle_size.x / 2,
+                                   m_windowSize.y - m_gameConfiguration ->paddle_size.y));
+    robot2D::vec2f ballPos = robot2D::vec2f(m_gameConfiguration ->paddle_size.x / 2.0f -
+                                                m_gameConfiguration ->ball_radius + m_paddle.m_pos.x,
+                                         -m_gameConfiguration ->ball_radius * 2.0f + m_paddle.m_pos.y);
     m_ball.stuck = true;
     m_ball.setPos(ballPos);
 }
@@ -523,7 +532,7 @@ void GameState::onResize(const robot2D::vec2f& size) {
 }
 
 void GameState::render() {
-    m_postProcessing.preRender();
+    //m_postProcessing.preRender();
     m_window.draw(m_parallax);
     m_window.draw(m_background);
     m_window.draw(m_levels[currlevel]);
@@ -539,8 +548,8 @@ void GameState::render() {
     if(m_state == mState::LevelChange)
         m_window.draw(m_won);
 
-    m_postProcessing.afterRender();
-    m_window.draw(m_postProcessing);
+    //m_postProcessing.afterRender();
+    //m_window.draw(m_postProcessing);
 }
 
 

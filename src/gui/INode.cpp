@@ -6,7 +6,6 @@
 
 namespace gui {
     INode::INode():
-        m_pos(),
         m_pressed(false),
         m_hover(false){}
 
@@ -22,11 +21,4 @@ namespace gui {
 
     }
 
-    void INode::setPosition(float x, float y) {
-        setPosition(robot2D::vec2f(x, y));
-    }
-
-    void INode::setPosition(const robot2D::vec2f &pos) {
-        m_pos = pos;
-    }
 }
