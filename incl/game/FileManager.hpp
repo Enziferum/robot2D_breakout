@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -20,49 +20,31 @@ source distribution.
 *********************************************************************/
 
 #pragma once
+
 #include <vector>
-#include <list>
-#include <map>
+#include <string>
 
-#include <SFML/Audio.hpp>
+#include "Configuration.hpp"
 
-enum class AudioType {
-    none,
-    music,
-    sound
+enum class ResourceType {
+    Texture,
+    Audio,
+    Font,
+    Shader,
+    Level,
+    Config
 };
 
-enum class AudioFileID {
-    breakout,
-    bleep,
-    bleep_1,
-    solid,
-    power_up,
-};
-
-class AudioPlayer{
+class FileManager{
 public:
-    AudioPlayer();
-    ~AudioPlayer() = default;
+    FileManager();
+    ~FileManager() = default;
 
-    bool loadFile(const std::string& filename, AudioFileID id, AudioType type);
+    std::string combinePath(const ResourceType& resourceType, const std::string& localFileName);
+    void setConfiguration(const ResourceConfiguration& configuration);
 
-    void play(AudioFileID, bool looped = false);
-    void stop(AudioFileID);
-
-    void pause(AudioFileID, bool status);
-
-    void setVolume(AudioFileID, const float& volume);
-    const float& getVolume(AudioFileID) const;
-
-    void update_sounds();
-
+    std::vector<std::string> levelsPath();
 private:
-    AudioType getType(AudioFileID id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<AudioFileID, float> m_volumes;
-    std::map<AudioFileID, sf::SoundBuffer> m_soundBuffers;
-    std::map<AudioFileID, AudioType> m_audiotypes;
+    std::string m_basepath;
+    const ResourceConfiguration* m_resourceConfiguration;
 };

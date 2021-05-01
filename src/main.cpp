@@ -19,8 +19,6 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-
-
 #if defined(WIN32)
     #include <windows.h>
 #endif
@@ -44,3 +42,40 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevIns, LPSTR lpszArgument,
     }
     return 0;
 }
+
+//#include <iostream>
+//
+//const std::string resourceDir = "res/";
+//const std::string files = "/*";
+//
+//#include "FileSystem.hpp"
+//
+//int main() {
+//    robot2D::FileSystem manager;
+//    //folder of .exe file
+//    auto curdir = manager.getCurrentDir();
+//    std::cout << curdir << std::endl;
+//    auto fullpath = curdir + resourceDir + files;
+//
+//    auto fi = manager.listFiles(fullpath);
+//    for(auto& f: fi) {
+//        auto p = curdir + resourceDir + f;
+//        if(manager.isDir(p))
+//            std::cout << f <<std::endl;
+//    }
+//
+//    //path = cd + resourseDir + folder + filename
+//    // getCurrentDir() + path from configuration + filename
+//
+//
+//    const std::string currentDir = manager.getCurrentDir();
+//    const std::string textureDir = "res/textures";
+//    const std::string filename = "icon.png";
+//    const std::string slash = "/";
+//
+//    // five features
+//    auto fullResPath = currentDir + textureDir + filename;
+//
+//
+//    return 0;
+//}

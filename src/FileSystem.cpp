@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D_game - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -19,15 +19,41 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#pragma once
+#include "FileSystem.hpp"
+#include "FileSystemImpl.hpp"
 
-class Filesystem{
-public:
-    Filesystem();
-    ~Filesystem() = default;
+namespace robot2D {
+    FileSystem::FileSystem():
+            m_impl(nullptr) {
+        init();
+    }
 
+    FileSystem::~FileSystem() {
+        if(m_impl != nullptr){
+            delete m_impl;
+            m_impl = nullptr;
+        }
+    }
 
-    std::vector<std::string> getFiles(const std::string& directory);
-private:
-    std::string m_basepath;
-};
+    void FileSystem::init() {
+        m_impl = priv::FileSystemImpl::create();
+        if(m_impl == nullptr)
+            return;
+    }
+
+    std::string FileSystem::getCurrentDir() {
+        return m_impl -> getCurrentDir();
+    }
+
+    std::vector<std::string> FileSystem::listFiles(const std::string& path) {
+        return m_impl -> listFiles(path);
+    }
+
+    bool FileSystem::isDir(const std::string& path) {
+        return m_impl -> isDir(path);
+    }
+
+    bool FileSystem::isFile(const std::string& path) {
+        return m_impl -> isFile(path);
+    }
+}

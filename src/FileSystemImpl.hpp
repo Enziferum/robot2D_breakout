@@ -18,51 +18,23 @@ and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any
 source distribution.
 *********************************************************************/
-
 #pragma once
+
 #include <vector>
-#include <list>
-#include <map>
+#include <string>
 
-#include <SFML/Audio.hpp>
+namespace robot2D{
+    namespace priv {
+        class FileSystemImpl{
+        public:
+            virtual ~FileSystemImpl() = 0;
+            static FileSystemImpl* create();
 
-enum class AudioType {
-    none,
-    music,
-    sound
-};
+            virtual std::string getCurrentDir() = 0;
+            virtual std::vector<std::string> listFiles(const std::string& path) = 0;
+            virtual bool isDir(const std::string& path) = 0;
+            virtual bool isFile(const std::string& path) = 0;
 
-enum class AudioFileID {
-    breakout,
-    bleep,
-    bleep_1,
-    solid,
-    power_up,
-};
-
-class AudioPlayer{
-public:
-    AudioPlayer();
-    ~AudioPlayer() = default;
-
-    bool loadFile(const std::string& filename, AudioFileID id, AudioType type);
-
-    void play(AudioFileID, bool looped = false);
-    void stop(AudioFileID);
-
-    void pause(AudioFileID, bool status);
-
-    void setVolume(AudioFileID, const float& volume);
-    const float& getVolume(AudioFileID) const;
-
-    void update_sounds();
-
-private:
-    AudioType getType(AudioFileID id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<AudioFileID, float> m_volumes;
-    std::map<AudioFileID, sf::SoundBuffer> m_soundBuffers;
-    std::map<AudioFileID, AudioType> m_audiotypes;
-};
+        };
+    }
+}

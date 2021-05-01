@@ -20,49 +20,31 @@ source distribution.
 *********************************************************************/
 
 #pragma once
+
 #include <vector>
-#include <list>
-#include <map>
+#include <string>
 
-#include <SFML/Audio.hpp>
 
-enum class AudioType {
-    none,
-    music,
-    sound
-};
+namespace robot2D {
+    namespace priv {
+        class FileSystemImpl;
+    }
 
-enum class AudioFileID {
-    breakout,
-    bleep,
-    bleep_1,
-    solid,
-    power_up,
-};
+    class FileSystem {
+    public:
+        FileSystem();
+        ~FileSystem();
 
-class AudioPlayer{
-public:
-    AudioPlayer();
-    ~AudioPlayer() = default;
+        std::string getCurrentDir();
+        std::vector<std::string> listFiles(const std::string &path);
 
-    bool loadFile(const std::string& filename, AudioFileID id, AudioType type);
+        bool isDir(const std::string &path);
+        bool isFile(const std::string &path);
 
-    void play(AudioFileID, bool looped = false);
-    void stop(AudioFileID);
+    private:
+        void init();
 
-    void pause(AudioFileID, bool status);
-
-    void setVolume(AudioFileID, const float& volume);
-    const float& getVolume(AudioFileID) const;
-
-    void update_sounds();
-
-private:
-    AudioType getType(AudioFileID id);
-private:
-    sf::Music m_music;
-    std::list<sf::Sound> m_sounds;
-    std::map<AudioFileID, float> m_volumes;
-    std::map<AudioFileID, sf::SoundBuffer> m_soundBuffers;
-    std::map<AudioFileID, AudioType> m_audiotypes;
-};
+    private:
+        priv::FileSystemImpl *m_impl;
+    };
+}

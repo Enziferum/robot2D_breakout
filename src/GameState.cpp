@@ -30,6 +30,8 @@ source distribution.
 
 #include "game/States.hpp"
 
+#include "game/FileManager.hpp"
+
 GameState::GameState(robot2D::IStateMachine& machine, AppContext<ContextID>& context):
     State(machine),
     m_context(context),
@@ -66,49 +68,89 @@ bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, PowerUpType type)
     return false;
 }
 
+FileManager fm;
+
 void GameState::load_resources() {
+    auto configuration = (Configuration*)(m_context.getBuffer(ContextID::Configuration));
+    const auto resourceConfiguration = &(configuration->getResourceConfiguration());
+
+    if(resourceConfiguration == nullptr) {
+        LOG_ERROR_E("resourceConfiguration == nullptr, after getting")
+        return;
+    }
+
+    fm.setConfiguration(*resourceConfiguration);
+
+    m_textures.loadFromFile(ResourceIDs::Background,
+                            fm.combinePath(ResourceType::Texture, "cityskyline.png"));
+
+    m_textures.loadFromFile(ResourceIDs::Face,
+                            fm.combinePath(ResourceType::Texture, "awesomeface.png"),
+                            true);
+
+    m_textures.loadFromFile(ResourceIDs::Block,
+                            fm.combinePath(ResourceType::Texture, "block.png"));
+
+    m_textures.loadFromFile(ResourceIDs::Solid,
+                            fm.combinePath(ResourceType::Texture, "block_solid.png"));
+
+    m_textures.loadFromFile(ResourceIDs::Paddle,
+                            fm.combinePath(ResourceType::Texture, "paddle.png"), true);
+
+    m_textures.loadFromFile(ResourceIDs::Particle,
+                            fm.combinePath(ResourceType::Texture, "particle.png"), true);
+
+    m_textures.loadFromFile(ResourceIDs::Chaos,
+                            fm.combinePath(ResourceType::Texture, "powerup_chaos.png"),true);
+
+    m_textures.loadFromFile(ResourceIDs::Confuse,
+                            fm.combinePath(ResourceType::Texture, "powerup_confuse.png"), true);
+
+    m_textures.loadFromFile(ResourceIDs::Size,
+                            fm.combinePath(ResourceType::Texture, "powerup_increase.png"), true);
+
+    m_textures.loadFromFile(ResourceIDs::Wallbreaker,
+                            fm.combinePath(ResourceType::Texture, "powerup_passthrough.png"),
+                            true);
+
+    m_textures.loadFromFile(ResourceIDs::Speed,
+                            fm.combinePath(ResourceType::Texture, "powerup_speed.png"),
+                            true);
+
+    m_textures.loadFromFile(ResourceIDs::Sticky,
+                            fm.combinePath(ResourceType::Texture, "powerup_sticky.png"),
+                            true);
+
+    m_fonts.loadFromFile(ResourceIDs::Font, fm.combinePath(ResourceType::Font,
+                                                           "game_font.ttf"));
+
+    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
+                                             "bleep_1.wav"),
+                              AudioFileID::bleep_1, AudioType::sound);
+    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
+                                             "bleep.wav"),
+                              AudioFileID::bleep, AudioType::sound);
+    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
+                                             "solid.wav"),
+                              AudioFileID::solid, AudioType::sound);
+    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
+                                             "powerup.wav"),
+                              AudioFileID::power_up, AudioType::sound);
+
     // resource loading //
-    m_textures.loadFromFile(ResourceIDs::Background, "res/textures/cityskyline.png");
-    m_textures.loadFromFile(ResourceIDs::Face, "res/textures/awesomeface.png", true);
-    m_textures.loadFromFile(ResourceIDs::Block, "res/textures/block.png");
-    m_textures.loadFromFile(ResourceIDs::Solid, "res/textures/block_solid.png");
-    m_textures.loadFromFile(ResourceIDs::Paddle, "res/textures/paddle.png", true);
-    m_textures.loadFromFile(ResourceIDs::Particle, "res/textures/particle.png", true);
 
-    m_textures.loadFromFile(ResourceIDs::Chaos, "res/textures/powerup_chaos.png", true);
-    m_textures.loadFromFile(ResourceIDs::Confuse, "res/textures/powerup_confuse.png", true);
-    m_textures.loadFromFile(ResourceIDs::Size, "res/textures/powerup_increase.png", true);
-    m_textures.loadFromFile(ResourceIDs::Wallbreaker, "res/textures/powerup_passthrough.png", true);
-    m_textures.loadFromFile(ResourceIDs::Speed, "res/textures/powerup_speed.png", true);
-    m_textures.loadFromFile(ResourceIDs::Sticky, "res/textures/powerup_sticky.png", true);
+    auto paths = fm.levelsPath();
+    if(paths.empty())
+        return;
 
-    m_fonts.loadFromFile(ResourceIDs::Font, "res/fonts/game_font.ttf");
 
-    // resource loading //
-
-    //todo load all from special folder
-    Level one;
-    Level two;
-    Level three;
-    Level four;
-
-    one.loadLevel("res/levels/1.lvl", m_textures, robot2D::vec2f(m_windowSize.x,
+    for(int it = 1; it < paths.size(); ++it){
+        Level level;
+        level.loadLevel(paths[it], m_textures, robot2D::vec2f(m_windowSize.x,
                                                                  m_windowSize.y / 2),
                   robot2D::vec2f(0.f, 50.f));
-    two.loadLevel("res/levels/2.lvl", m_textures, robot2D::vec2f(m_windowSize.x,
-                                                                 m_windowSize.y / 2),
-                  robot2D::vec2f(0.f, 50.f));
-    three.loadLevel("res/levels/3.lvl", m_textures, robot2D::vec2f(m_windowSize.x,
-                                                                   m_windowSize.y / 2),
-                    robot2D::vec2f(0.f, 50.f));
-    four.loadLevel("res/levels/4.lvl", m_textures, robot2D::vec2f(m_windowSize.x,
-                                                                  m_windowSize.y / 2),
-                   robot2D::vec2f(0.f, 50.f));
-
-    m_levels.push_back(one);
-    m_levels.push_back(two);
-    m_levels.push_back(three);
-    m_levels.push_back(four);
+        m_levels.push_back(level);
+    }
 }
 
 void GameState::setup() {
@@ -186,15 +228,6 @@ void GameState::setup() {
         m_state = mState::Play;
     });
 
-
-    m_audioPlayer -> loadFile("res/audio/bleep_1.wav",
-                                     AudioFileID::bleep_1, AudioType::sound);
-    m_audioPlayer -> loadFile("res/audio/bleep.wav",
-                                     AudioFileID::bleep, AudioType::sound);
-    m_audioPlayer -> loadFile("res/audio/solid.wav",
-                                     AudioFileID::solid, AudioType::sound);
-    m_audioPlayer -> loadFile("res/audio/powerup.wav",
-                                     AudioFileID::power_up, AudioType::sound);
 }
 
 void GameState::handleEvents(const robot2D::Event& event) {

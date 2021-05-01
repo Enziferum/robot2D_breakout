@@ -26,27 +26,21 @@ source distribution.
 #include "game/GameState.hpp"
 #include "game/States.hpp"
 #include "game/Runner.hpp"
-
+#include "game/FileManager.hpp"
 
 const std::string resourceiniPath = "res/config.ini";
 const std::string gameiniPath = "res/game.ini";
-const std::string iconPath = "res/textures/icon.png";
-const std::string musicPath = "res/audio/breakout.wav";
 
 Runner::Runner(): my_app{robot2D::vec2u(800, 600),
                          "robot2D Game", true } {
     init();
 }
 
+FileManager fm_r;
 
 void Runner::init() {
     logger::debug = true;
 
-    m_audioPlayer.loadFile(musicPath.c_str(),
-                           AudioFileID::breakout, AudioType::music);
-
-    m_audioPlayer.play(AudioFileID::breakout, true);
-    m_audioPlayer.setVolume(AudioFileID::breakout, 100.f);
 
     if(!m_configuration.loadResources(resourceiniPath)){
         return;
@@ -63,11 +57,20 @@ void Runner::init() {
         return;
     }
 
+
+
+    fm_r.setConfiguration(m_configuration.getResourceConfiguration());
+    m_audioPlayer.loadFile(fm_r.combinePath(ResourceType::Audio, "breakout.wav"),
+                           AudioFileID::breakout, AudioType::music);
+
+    m_audioPlayer.play(AudioFileID::breakout, true);
+    m_audioPlayer.setVolume(AudioFileID::breakout, 100.f);
 }
 
 void Runner::run() {
     robot2D::ResourceHandler<robot2D::Texture, Icon> g_icons;
-    g_icons.loadFromFile(Icon::Default, iconPath, true);
+    g_icons.loadFromFile(Icon::Default, fm_r.combinePath(ResourceType::Texture,
+                                                       "icon.png"), true);
     std::vector<robot2D::Texture> icons = {g_icons.get(Icon::Default)};
     my_app.setIcon(icons);
 

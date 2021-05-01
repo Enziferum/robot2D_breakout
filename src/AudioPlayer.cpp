@@ -24,7 +24,7 @@ AudioPlayer::AudioPlayer() {
 }
 
 
-bool AudioPlayer::loadFile(const char* filename, AudioFileID id, AudioType type) {
+bool AudioPlayer::loadFile(const std::string& filename, AudioFileID id, AudioType type) {
     if(type == AudioType::music) {
         if (!m_music.openFromFile(filename))
             throw std::runtime_error("Music " + std::string(filename) + " could not be loaded.");
