@@ -22,8 +22,8 @@ source distribution.
 #include <robot2D/Util/Logger.h>
 #include <robot2D/Core/Keyboard.h>
 
-#include "game/IntroState.h"
-#include "game/States.h"
+#include "game/IntroState.hpp"
+#include "game/States.hpp"
 
 IntroState::IntroState(robot2D::IStateMachine& machine) :
     State(machine),

@@ -29,8 +29,8 @@ source distribution.
 #include "robot2D/Util/ResourceHandler.h"
 #include <robot2D/Graphics/Shader.h>
 
-#include "GameObject.h"
-#include "IDs.h"
+#include "GameObject.hpp"
+#include "IDs.hpp"
 
 class Level: public robot2D::Drawable {
 public:

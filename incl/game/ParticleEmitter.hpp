@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D_game - Zlib license.
+robot2D - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -19,30 +19,34 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#pragma once
+#include <vector>
 
-#include "GameObject.h"
+#include <robot2D/Graphics/Shader.h>
+#include <robot2D/Graphics/Drawable.h>
 
-enum class PowerUpType{
-    none,
-    size,
-    chaos,
-    confuse,
-    wallbreaker,
-    speed,
-    sticky
-};
+#include "GameObject.hpp"
+#include "Particle.hpp"
 
-class PowerUp: public GameObject{
+
+
+class ParticleEmitter: public robot2D::Drawable{
 public:
-    PowerUp();
-    virtual ~PowerUp() override = default;
+    ParticleEmitter();
+    ~ParticleEmitter()override = default;
 
+    void setTexture(robot2D::Texture& tex);
+    void update(float dt, int new_sz, const BallObject& bind,
+                const robot2D::vec2f& offset);
+protected:
+    void draw(robot2D::RenderTarget &target,
+              robot2D::RenderStates states) const override;
+    void setup();
 
-public:
-    robot2D::vec2f velocity;
-    robot2D::Color color;
-    PowerUpType m_type;
-    float duration;
-    bool activated;
+    int find_first_unused();
+    void respawn_particle(Particle& particle, const BallObject& bind, const robot2D::vec2f& offset);
+private:
+    std::vector<Particle> m_particles;
+    robot2D::ShaderHandler m_particleShader;
+
+    robot2D::Texture* m_texture;
 };

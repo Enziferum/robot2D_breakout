@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -21,32 +21,28 @@ source distribution.
 
 #pragma once
 
-template<typename T = std::string>
-struct AppContext{
-    AppContext();
-    ~AppContext() = default;
+#include "GameObject.hpp"
 
-    bool storeInBuffer(const T& key, void* buff);
-    void* getBuffer(const T& key);
-private:
-    std::unordered_map<T, void*> m_buffer;
+enum class PowerUpType{
+    none,
+    size,
+    chaos,
+    confuse,
+    wallbreaker,
+    speed,
+    sticky
 };
 
-template<typename T>
-AppContext<T>::AppContext(): m_buffer() {}
+class PowerUp: public GameObject{
+public:
+    PowerUp();
+    virtual ~PowerUp() override = default;
 
-template<typename T>
-bool AppContext<T>::storeInBuffer(const T& key, void* buff) {
-    if(buff == nullptr)
-        return false;
-    auto found = m_buffer.find(key);
-    if(found != m_buffer.end())
-        return false;
-    m_buffer.insert(std::pair<T, void*>(key, buff));
-    return true;
-}
 
-template<typename T>
-void* AppContext<T>::getBuffer(const T& key) {
-    return m_buffer.at(key);
-}
+public:
+    robot2D::vec2f velocity;
+    robot2D::Color color;
+    PowerUpType m_type;
+    float duration;
+    bool activated;
+};

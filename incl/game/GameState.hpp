@@ -31,14 +31,14 @@ source distribution.
 #include "robot2D/Graphics/Text.h"
 
 
-#include "InputManager.h"
-#include "Level.h"
-#include "ParticleEmitter.h"
-#include "PostProcessing.h"
-#include "ParallaxEffect.h"
-#include "PowerUp.h"
-#include "Timer.h"
-#include "IDs.h"
+#include "InputManager.hpp"
+#include "Level.hpp"
+#include "ParticleEmitter.hpp"
+#include "PostProcessing.hpp"
+#include "ParallaxEffect.hpp"
+#include "PowerUp.hpp"
+#include "Timer.hpp"
+#include "IDs.hpp"
 
 
 #include "AppContext.hpp"

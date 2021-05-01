@@ -2,7 +2,7 @@
 // Created by support on 02.04.2021.
 //
 
-#include "game/BounceAnimation.h"
+#include "game/BounceAnimation.hpp"
 
 namespace gui {
 

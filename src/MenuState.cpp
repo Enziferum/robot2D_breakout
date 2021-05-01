@@ -21,8 +21,8 @@ source distribution.
 
 #include <robot2D/Util/Logger.h>
 
-#include "game/States.h"
-#include "game/MenuState.h"
+#include "game/States.hpp"
+#include "game/MenuState.hpp"
 #include "game/gui/Button.h"
 
 const std::string back_path = "res/textures/cityskyline.png";

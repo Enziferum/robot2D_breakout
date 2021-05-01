@@ -22,7 +22,7 @@ source distribution.
 #include <robot2D/Graphics/GL.h>
 #include "robot2D/Graphics/RenderTarget.h"
 
-#include "game/ParticleEmitter.h"
+#include "game/ParticleEmitter.hpp"
 
 constexpr int new_particle_sz = 2;
 constexpr int particle_count = 500;

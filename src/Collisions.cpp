@@ -19,7 +19,7 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 #include <cmath>
-#include "game/Collisions.h"
+#include "game/Collisions.hpp"
 
 float length(const robot2D::vec2f& vec){
     return std::sqrt(vec.x * vec.x

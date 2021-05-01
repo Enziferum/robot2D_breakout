@@ -21,20 +21,15 @@ source distribution.
 
 #pragma once
 
-#include <tuple>
-#include "GameObject.h"
+namespace gui {
+    class BounceAnimation{
+    public:
+        BounceAnimation();
+        ~BounceAnimation() = default;
 
-enum class Direction{
-    up,
-    down,
-    left,
-    right
-};
-
-using Collision = std::tuple<bool, Direction, robot2D::vec2f>;
-
-float length(const robot2D::vec2f& vec);
-robot2D::vec2f normalize(const robot2D::vec2f& vec);
-
-bool checkCollision(const GameObject& lob, const GameObject& rob);
-Collision checkCollision(const BallObject& lob, const GameObject& rob);
+        void update(float dt);
+        void play();
+        void pause();
+    private:
+    };
+}

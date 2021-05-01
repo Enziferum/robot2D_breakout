@@ -19,7 +19,7 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/InputManager.h"
+#include "game/InputManager.hpp"
 
 InputManager::InputManager():
     m_keys() {

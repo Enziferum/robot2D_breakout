@@ -21,10 +21,10 @@ source distribution.
 
 #include <robot2D/Util/Logger.h>
 
-#include "game/IntroState.h"
-#include "game/MenuState.h"
-#include "game/GameState.h"
-#include "game/States.h"
+#include "game/IntroState.hpp"
+#include "game/MenuState.hpp"
+#include "game/GameState.hpp"
+#include "game/States.hpp"
 #include "game/Runner.hpp"
 
 
@@ -75,7 +75,7 @@ void Runner::run() {
     my_app.register_state<IntroState>(States::Intro, my_app);
     my_app.register_state<MenuState>(States::Menu, my_app);
     my_app.register_state<GameState>(States::Game, my_app, m_context);
-    my_app.setCurrent(States::Menu);
+    my_app.setCurrent(States::Game);
 
     my_app.run();
 }

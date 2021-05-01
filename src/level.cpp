@@ -27,7 +27,7 @@ source distribution.
 
 #include <robot2D/Graphics/GL.h>
 #include "robot2D/Graphics/RenderTarget.h"
-#include "game/Level.h"
+#include "game/Level.hpp"
 //#include <robot2D/Graphics/Matrix.hpp>
 
 #include <unordered_map>

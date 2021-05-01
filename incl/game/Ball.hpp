@@ -21,7 +21,7 @@ source distribution.
 
 #pragma once
 
-#include "GameObject.h"
+#include "GameObject.hpp"
 
 class Ball: public GameObject {
 public:

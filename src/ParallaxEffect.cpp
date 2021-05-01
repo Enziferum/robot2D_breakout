@@ -19,7 +19,7 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/ParallaxEffect.h"
+#include "game/ParallaxEffect.hpp"
 
 ParallaxEffect::ParallaxEffect():
     m_texture(nullptr) {

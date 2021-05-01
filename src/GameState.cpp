@@ -25,10 +25,10 @@ source distribution.
 #include <robot2D/Core/Keyboard.h>
 #include <robot2D/Util/Logger.h>
 
-#include "game/GameState.h"
-#include "game/Collisions.h"
+#include "game/GameState.hpp"
+#include "game/Collisions.hpp"
 
-#include "game/States.h"
+#include "game/States.hpp"
 
 GameState::GameState(robot2D::IStateMachine& machine, AppContext<ContextID>& context):
     State(machine),

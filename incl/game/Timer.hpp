@@ -21,29 +21,25 @@ source distribution.
 
 #pragma once
 
-#include "robot2D/Extra/State.h"
-#include "robot2D/Extra/IStateMachine.h"
-#include "robot2D/Graphics/Sprite.h"
-#include "robot2D/Graphics/Text.h"
+#include <functional>
+#include <utility>
 
-#include "game/Timer.h"
-
-class IntroState: public robot2D::State{
+//todo be based on chrono
+class Timer{
 public:
-    IntroState(robot2D::IStateMachine& machine);
-    ~IntroState()override = default;
+    Timer();
+    Timer(const float& endTime, bool endless = false);
+    ~Timer() = default;
 
-    void handleEvents(const robot2D::Event& event)override;
-    void update(float dt)override;
-    void render()override;
+    void update(float dt);
+    float elapsed() const;
 
+    void onTick(std::function<void(float dt)>);
+    void reset(float to_time = 0.f);
 private:
-    void setup();
-private:
-    robot2D::Sprite m_background;
-    robot2D::Texture m_texture;
-    robot2D::Text m_text;
-    robot2D::Font m_font;
-
-    Timer m_timer;
+    std::function<void(float)> m_callback;
+    float m_end;
+    float m_start;
+    bool m_endless;
 };
+

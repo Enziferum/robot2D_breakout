@@ -23,7 +23,7 @@ source distribution.
 #include <robot2D/Graphics/RenderTarget.h>
 #include <robot2D/Util/Logger.h>
 
-#include "game/PostProcessing.h"
+#include "game/PostProcessing.hpp"
 
 PostProcessing::PostProcessing():
 m_size(800, 600),

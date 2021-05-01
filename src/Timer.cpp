@@ -2,7 +2,7 @@
 // Created by support on 02.04.2021.
 //
 
-#include "game/Timer.h"
+#include "game/Timer.hpp"
 
 
 constexpr float second = 1000.f;

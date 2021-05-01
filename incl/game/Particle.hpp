@@ -21,32 +21,17 @@ source distribution.
 
 #pragma once
 
-template<typename T = std::string>
-struct AppContext{
-    AppContext();
-    ~AppContext() = default;
+#include <robot2D/Core/Vector2.h>
+#include <robot2D/Graphics/Color.h>
 
-    bool storeInBuffer(const T& key, void* buff);
-    void* getBuffer(const T& key);
-private:
-    std::unordered_map<T, void*> m_buffer;
+struct Particle {
+    Particle();
+    ~Particle() = default;
+
+    bool is_life() const;
+
+    robot2D::vec2f m_pos, m_velocity;
+    //todo make color
+    float r, g, b, alpha;
+    float lifeTime;
 };
-
-template<typename T>
-AppContext<T>::AppContext(): m_buffer() {}
-
-template<typename T>
-bool AppContext<T>::storeInBuffer(const T& key, void* buff) {
-    if(buff == nullptr)
-        return false;
-    auto found = m_buffer.find(key);
-    if(found != m_buffer.end())
-        return false;
-    m_buffer.insert(std::pair<T, void*>(key, buff));
-    return true;
-}
-
-template<typename T>
-void* AppContext<T>::getBuffer(const T& key) {
-    return m_buffer.at(key);
-}

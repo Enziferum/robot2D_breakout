@@ -20,7 +20,7 @@ source distribution.
 *********************************************************************/
 
 #include <iostream>
-#include "game/GameObject.h"
+#include "game/GameObject.hpp"
 #include "robot2D/Graphics/RenderTarget.h"
 
 GameObject::GameObject():

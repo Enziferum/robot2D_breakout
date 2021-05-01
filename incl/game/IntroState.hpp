@@ -19,34 +19,31 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <vector>
+#pragma once
 
-#include <robot2D/Graphics/Shader.h>
-#include <robot2D/Graphics/Drawable.h>
+#include "robot2D/Extra/State.h"
+#include "robot2D/Extra/IStateMachine.h"
+#include "robot2D/Graphics/Sprite.h"
+#include "robot2D/Graphics/Text.h"
 
-#include "GameObject.h"
-#include "Particle.h"
+#include "game/Timer.hpp"
 
-
-
-class ParticleEmitter: public robot2D::Drawable{
+class IntroState: public robot2D::State{
 public:
-    ParticleEmitter();
-    ~ParticleEmitter()override = default;
+    IntroState(robot2D::IStateMachine& machine);
+    ~IntroState()override = default;
 
-    void setTexture(robot2D::Texture& tex);
-    void update(float dt, int new_sz, const BallObject& bind,
-                const robot2D::vec2f& offset);
-protected:
-    void draw(robot2D::RenderTarget &target,
-              robot2D::RenderStates states) const override;
-    void setup();
+    void handleEvents(const robot2D::Event& event)override;
+    void update(float dt)override;
+    void render()override;
 
-    int find_first_unused();
-    void respawn_particle(Particle& particle, const BallObject& bind, const robot2D::vec2f& offset);
 private:
-    std::vector<Particle> m_particles;
-    robot2D::ShaderHandler m_particleShader;
+    void setup();
+private:
+    robot2D::Sprite m_background;
+    robot2D::Texture m_texture;
+    robot2D::Text m_text;
+    robot2D::Font m_font;
 
-    robot2D::Texture* m_texture;
+    Timer m_timer;
 };

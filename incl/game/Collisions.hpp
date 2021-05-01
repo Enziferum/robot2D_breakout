@@ -21,32 +21,20 @@ source distribution.
 
 #pragma once
 
-template<typename T = std::string>
-struct AppContext{
-    AppContext();
-    ~AppContext() = default;
+#include <tuple>
+#include "GameObject.hpp"
 
-    bool storeInBuffer(const T& key, void* buff);
-    void* getBuffer(const T& key);
-private:
-    std::unordered_map<T, void*> m_buffer;
+enum class Direction{
+    up,
+    down,
+    left,
+    right
 };
 
-template<typename T>
-AppContext<T>::AppContext(): m_buffer() {}
+using Collision = std::tuple<bool, Direction, robot2D::vec2f>;
 
-template<typename T>
-bool AppContext<T>::storeInBuffer(const T& key, void* buff) {
-    if(buff == nullptr)
-        return false;
-    auto found = m_buffer.find(key);
-    if(found != m_buffer.end())
-        return false;
-    m_buffer.insert(std::pair<T, void*>(key, buff));
-    return true;
-}
+float length(const robot2D::vec2f& vec);
+robot2D::vec2f normalize(const robot2D::vec2f& vec);
 
-template<typename T>
-void* AppContext<T>::getBuffer(const T& key) {
-    return m_buffer.at(key);
-}
+bool checkCollision(const GameObject& lob, const GameObject& rob);
+Collision checkCollision(const BallObject& lob, const GameObject& rob);
