@@ -73,7 +73,6 @@ void AudioPlayer::setVolume(AudioFileID id, const float& volume) {
     m_volumes[id] = volume;
     if(getType(id) == AudioType::music)
         m_music.setVolume(volume);
-
 }
 
 const float& AudioPlayer::getVolume(AudioFileID id) const {

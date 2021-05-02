@@ -27,7 +27,6 @@ source distribution.
 #include <SFML/Audio.hpp>
 
 enum class AudioType {
-    none,
     music,
     sound
 };

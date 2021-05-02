@@ -293,7 +293,7 @@ void GameState::update(float dt) {
 
     m_levels[currlevel].update(dt);
     m_parallax.update(dt);
-    m_particleEmitter.update(dt, m_gameConfiguration ->emitter_new_sz, m_ball, robot2D::vec2f(6.25f,
+    m_particleEmitter.update(dt, m_gameConfiguration -> emitter_new_sz, m_ball, robot2D::vec2f(6.25f,
                                                          6.25f));
     update_powerups(dt);
 

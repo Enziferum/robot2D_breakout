@@ -1,7 +1,7 @@
 /*********************************************************************
 (c) Alex Raag 2021
 https://github.com/Enziferum
-robot2D - Zlib license.
+robot2D_game - Zlib license.
 This software is provided 'as-is', without any express or
 implied warranty. In no event will the authors be held
 liable for any damages arising from the use of this software.
@@ -19,26 +19,16 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#if defined(WIN32)
-    #include <windows.h>
-#endif
+#include <vector>
+#include "PowerUp.hpp"
 
-#define CONSOLE
+class PowerupSystem {
+public:
+    ~PowerupSystem() = default;
 
-#include "game/Runner.hpp"
+    float update(float dt);
+    std::vector<PowerUp>& get();
 
-#ifdef CONSOLE
-int main()
-#elif WIN32
-int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevIns, LPSTR lpszArgument, int iShow)
-#endif
-{
-    Runner runner;
-    try {
-        runner.run();
-    }
-    catch (...) {
-
-    }
-    return 0;
-}
+private:
+    std::vector<PowerUp> m_powerUps;
+};
