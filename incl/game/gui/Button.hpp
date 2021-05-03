@@ -19,23 +19,42 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/gui/INode.hpp"
+
+#pragma once
+
+#include <functional>
+#include <robot2D/Graphics/Sprite.h>
+
+#include "INode.hpp"
+
 
 namespace gui {
-    INode::INode():
-        m_pressed(false),
-        m_hover(false){}
 
-    INode::~INode() {}
+    class Button: public INode{
+    public:
+        Button();
+        virtual ~Button() override = default;
 
-    void INode::onPress(const robot2D::vec2f&) {
-    }
+        static std::shared_ptr<Button> create();
+        void onTouch(std::function<void()>&& function);
 
-    void INode::onHover(const robot2D::vec2f&) {
-    }
+        void onPress(const robot2D::vec2f&) override;
+        void onHover(const robot2D::vec2f&) override;
+        void update(float dt) override;
 
-    void INode::update(float dt) {
+        void setTexture(const robot2D::Texture& texture);
+    protected:
+        void draw(robot2D::RenderTarget &target, robot2D::RenderStates states)
+                const override;
 
-    }
+    private:
+        enum class State{
+            Normal,
+            Hovered,
+            Pressed
+        };
 
+        std::function<void()> m_function;
+        const robot2D::Texture* m_texture;
+    };
 }

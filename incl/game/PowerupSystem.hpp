@@ -20,15 +20,34 @@ source distribution.
 *********************************************************************/
 
 #include <vector>
-#include "PowerUp.hpp"
+#include <functional>
 
-class PowerupSystem {
+#include <robot2D/Graphics/Drawable.h>
+#include <robot2D/Util/ResourceHandler.h>
+
+#include "PowerUp.hpp"
+#include "IDs.hpp"
+
+class PowerupSystem: public robot2D::Drawable {
 public:
+    using callback = std::function<void(const PowerUpType& )>;
+public:
+    PowerupSystem();
     ~PowerupSystem() = default;
 
-    float update(float dt);
+    void update(float dt);
+    void spawn_powerup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& m_texture,
+                       const robot2D::vec2f& spawn_pos);
+    void setCallback(callback&& func);
+
     std::vector<PowerUp>& get();
+protected:
+    void draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const override;
 
 private:
-    std::vector<PowerUp> m_powerUps;
+    bool otherActive(const PowerUpType& type);
+    bool randomize(const unsigned int& chance);
+private:
+    std::vector<PowerUp> m_power_ups;
+    callback m_func;
 };

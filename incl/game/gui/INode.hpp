@@ -19,23 +19,33 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/gui/INode.hpp"
+#pragma once
 
-namespace gui {
-    INode::INode():
-        m_pressed(false),
-        m_hover(false){}
+#include <memory>
+#include <robot2D/Core/Vector2.h>
+#include <robot2D/Graphics/Drawable.h>
+#include <robot2D/Graphics/Transformable.h>
 
-    INode::~INode() {}
+namespace gui{
 
-    void INode::onPress(const robot2D::vec2f&) {
-    }
+    class INode: public robot2D::Drawable, public robot2D::Transformable {
+    public:
+        using Ptr = std::shared_ptr<INode>;
+    public:
+        INode();
+        virtual ~INode() = 0;
 
-    void INode::onHover(const robot2D::vec2f&) {
-    }
 
-    void INode::update(float dt) {
+        virtual void onPress(const robot2D::vec2f&);
+        virtual void onHover(const robot2D::vec2f&);
+        virtual void update(float dt);
+    protected:
+        void draw(robot2D::RenderTarget &target, robot2D::RenderStates states)
+        const override = 0;
 
-    }
+    protected:
+        bool m_pressed;
+        bool m_hover;
+    };
 
 }

@@ -30,22 +30,20 @@ source distribution.
 #include "robot2D/Util/ResourceHandler.h"
 #include "robot2D/Graphics/Text.h"
 
-
-#include "InputManager.hpp"
-#include "Level.hpp"
-#include "ParticleEmitter.hpp"
-#include "PostProcessing.hpp"
-#include "ParallaxEffect.hpp"
-#include "PowerUp.hpp"
-#include "Timer.hpp"
-#include "IDs.hpp"
-
-
 #include "AppContext.hpp"
 #include "ContextIDs.hpp"
-#include "AudioPlayer.hpp"
 #include "Configuration.hpp"
+#include "IDs.hpp"
 
+#include "AudioPlayer.hpp"
+#include "InputManager.hpp"
+#include "ParticleEmitter.hpp"
+#include "ParallaxEffect.hpp"
+#include "PostProcessing.hpp"
+
+#include "Level.hpp"
+#include "Timer.hpp"
+#include "PowerupSystem.hpp"
 
 class GameState: public robot2D::State {
 public:
@@ -57,30 +55,31 @@ public:
     void render() override;
 private:
     void setup();
-    void load_resources();
+    void setup_configuration();
+    void setup_resources();
+    void setup_ui();
+
+private:
     void onResize(const robot2D::vec2f& size);
 
-
     void process_input(float dt);
-    void update_powerups(float dt);
     void process_collisions(float dt);
 
-    void reset_game();
-    void spawn_power_up(GameObject& box);
     void activate_power(PowerUp& power);
 
+    void reset_game();
     void changeLevel();
 private:
     AppContext<ContextID>& m_context;
     AudioPlayer* m_audioPlayer;
     GameConfiguration* m_gameConfiguration;
 
-
     enum class mState{
         Play,
         Pause,
         LevelChange
     };
+
     mState m_state;
     robot2D::vec2u m_windowSize;
 
@@ -88,28 +87,29 @@ private:
     robot2D::ResourceHandler<robot2D::Font, ResourceIDs> m_fonts;
     robot2D::Sprite m_background;
 
-    //effects
+    // effects //
 
     PostProcessing m_postProcessing;
     ParticleEmitter m_particleEmitter;
     ParallaxEffect m_parallax;
 
-    //effects
+    // effects //
 
     GameObject m_paddle;
     BallObject m_ball;
-    std::vector<PowerUp> m_power_ups;
 
     std::vector<Level> m_levels;
     unsigned int currlevel = 0;
 
-    //gui stuff
+    // gui stuff //
+
     robot2D::Text m_text;
     std::vector<robot2D::Sprite> m_livesSprites;
 
     robot2D::Text m_won;
     int m_lives;
-    //gui stuff
+
+    // gui stuff //
 
     InputManager inputManager;
     //part of input_manager
@@ -118,4 +118,6 @@ private:
 
     // bounce animation //
     Timer m_bounceTimer;
+
+    PowerupSystem m_powerupSystem;
 };

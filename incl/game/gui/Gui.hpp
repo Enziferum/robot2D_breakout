@@ -19,23 +19,28 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/gui/INode.hpp"
+
+#pragma once
+
+#include <vector>
+#include "INode.hpp"
+
+#include <robot2D/Core/Event.h>
 
 namespace gui {
-    INode::INode():
-        m_pressed(false),
-        m_hover(false){}
+    class Gui final:  public robot2D::Drawable{
+    public:
+        Gui();
+        ~Gui() = default;
 
-    INode::~INode() {}
+        void handleEvents(const robot2D::Event& event);
+        void update(float dt);
+        void pack(INode::Ptr node);
+    protected:
+        void draw(robot2D::RenderTarget& target,
+                  robot2D::RenderStates states) const override;
 
-    void INode::onPress(const robot2D::vec2f&) {
-    }
-
-    void INode::onHover(const robot2D::vec2f&) {
-    }
-
-    void INode::update(float dt) {
-
-    }
-
+    private:
+        std::vector<INode::Ptr> m_nodes;
+    };
 }

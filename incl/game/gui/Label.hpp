@@ -19,23 +19,15 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/gui/INode.hpp"
+#pragma once
+
+#include <robot2D/Graphics/Text.h>
+#include "INode.hpp"
 
 namespace gui {
-    INode::INode():
-        m_pressed(false),
-        m_hover(false){}
-
-    INode::~INode() {}
-
-    void INode::onPress(const robot2D::vec2f&) {
-    }
-
-    void INode::onHover(const robot2D::vec2f&) {
-    }
-
-    void INode::update(float dt) {
-
-    }
-
+    class Label: public INode {
+    public:
+        Label();
+        ~Label()override = default;
+    };
 }

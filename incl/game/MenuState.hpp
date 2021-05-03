@@ -28,7 +28,7 @@ source distribution.
 #include "robot2D/Graphics/Sprite.h"
 #include "robot2D/Util/ResourceHandler.h"
 
-#include "gui/Gui.h"
+#include "game/gui/Gui.hpp"
 
 class MenuState: public robot2D::State{
 public:

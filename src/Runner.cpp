@@ -58,13 +58,12 @@ void Runner::init() {
     }
 
 
-
     fm_r.setConfiguration(m_configuration.getResourceConfiguration());
     m_audioPlayer.loadFile(fm_r.combinePath(ResourceType::Audio, "breakout.wav"),
                            AudioFileID::breakout, AudioType::music);
 
+    m_audioPlayer.setVolume(AudioFileID::breakout, 40.f);
     m_audioPlayer.play(AudioFileID::breakout, true);
-    m_audioPlayer.setVolume(AudioFileID::breakout, 100.f);
 }
 
 void Runner::run() {
