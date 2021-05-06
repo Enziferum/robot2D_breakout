@@ -19,49 +19,25 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/Timer.hpp"
+#pragma once
 
+#include "FileSystemImpl.hpp"
 
-constexpr float second = 1000.f;
+namespace robot2D {
+    namespace priv {
+        class MacOSFileSystem: public FileSystemImpl {
+        public:
+            MacOSFileSystem() = default;
+            ~MacOSFileSystem() override = default;
 
-Timer::Timer() :
-        m_end(1.f), m_start(0.f),
-        m_endless(false) {
+        private:
+            std::string getCurrentDir() override;
 
-}
+            std::vector<std::string> listFiles(const std::string &path) override;
 
+            bool isDir(const std::string &path) override;
 
-Timer::Timer(const float &endTime, bool endless) :
-        m_end(endTime), m_start(0.f),
-        m_endless(endless) {
-
-}
-
-void Timer::update(float dt) {
-    if (m_start < m_end)
-        m_start += dt;
-
-    else {
-        if (m_callback)
-            m_callback(0);
-
-        if (m_endless)
-            reset();
+            bool isFile(const std::string &path) override;
+        };
     }
 }
-
-float Timer::elapsed() const {
-    return m_start;
-}
-
-void Timer::onTick(std::function<void(float)> function) {
-    m_callback = std::move(function);
-}
-
-void Timer::reset(float time) {
-    m_start = 0.f;
-    if (time <= 0.f)
-        return;
-    m_end = time;
-}
-

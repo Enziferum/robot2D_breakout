@@ -20,10 +20,15 @@ source distribution.
 *********************************************************************/
 
 #include "FileSystemImpl.hpp"
-#include "WinFileSystem.hpp"
 
 #ifdef WIN32
+#include "WinFileSystem.hpp"
 using FileSystemHandle = robot2D::priv::WinFileSystem;
+#endif
+
+#ifdef __APPLE__
+#include "MacOSFileSystem.hpp"
+using FileSystemHandle = robot2D::priv::MacOSFileSystem;
 #endif
 
 namespace robot2D {

@@ -19,56 +19,56 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <windows.h>
-#include "WinFileSystem.hpp"
-
-namespace robot2D {
-    namespace priv {
-        std::string WinFileSystem::getCurrentDir() {
-            char path[MAX_PATH];
-            GetCurrentDirectoryA(MAX_PATH, path);
-            return std::string(path).append(slash);
-        }
-
-        std::vector<std::string> WinFileSystem::listFiles(const std::string &path) {
-            auto tmp = path + "*";
-            std::vector<std::string> res;
-            WIN32_FIND_DATA data;
-            HANDLE hFind = FindFirstFile(tmp.c_str(), &data);      // DIRECTORY
-
-            if (hFind != INVALID_HANDLE_VALUE) {
-                do {
-                    if (std::string(data.cFileName) == "." ||
-                        std::string(data.cFileName) == "..")
-                        continue;
-                    res.emplace_back(data.cFileName);
-                } while (FindNextFile(hFind, &data));
-                FindClose(hFind);
-            }
-            return res;
-        }
-
-        bool WinFileSystem::isDir(const std::string &path) {
-            DWORD ftyp = GetFileAttributesA(path.c_str());
-            if (ftyp == INVALID_FILE_ATTRIBUTES)
-                return false;  //something is wrong with your path!
-
-            if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
-                return true;
-
-            return false;
-        }
-
-        bool WinFileSystem::isFile(const std::string &path) {
-            DWORD ftyp = GetFileAttributesA(path.c_str());
-            if (ftyp == INVALID_FILE_ATTRIBUTES)
-                return false;
-
-            if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
-                return false;
-
-            return true;
-        }
-    }
-}
+//#include <windows.h>
+//#include "WinFileSystem.hpp"
+//
+//namespace robot2D {
+//    namespace priv {
+//        std::string WinFileSystem::getCurrentDir() {
+//            char path[MAX_PATH];
+//            GetCurrentDirectoryA(MAX_PATH, path);
+//            return std::string(path).append(slash);
+//        }
+//
+//        std::vector<std::string> WinFileSystem::listFiles(const std::string &path) {
+//            auto tmp = path + "*";
+//            std::vector<std::string> res;
+//            WIN32_FIND_DATA data;
+//            HANDLE hFind = FindFirstFile(tmp.c_str(), &data);      // DIRECTORY
+//
+//            if (hFind != INVALID_HANDLE_VALUE) {
+//                do {
+//                    if (std::string(data.cFileName) == "." ||
+//                        std::string(data.cFileName) == "..")
+//                        continue;
+//                    res.emplace_back(data.cFileName);
+//                } while (FindNextFile(hFind, &data));
+//                FindClose(hFind);
+//            }
+//            return res;
+//        }
+//
+//        bool WinFileSystem::isDir(const std::string &path) {
+//            DWORD ftyp = GetFileAttributesA(path.c_str());
+//            if (ftyp == INVALID_FILE_ATTRIBUTES)
+//                return false;  //something is wrong with your path!
+//
+//            if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+//                return true;
+//
+//            return false;
+//        }
+//
+//        bool WinFileSystem::isFile(const std::string &path) {
+//            DWORD ftyp = GetFileAttributesA(path.c_str());
+//            if (ftyp == INVALID_FILE_ATTRIBUTES)
+//                return false;
+//
+//            if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+//                return false;
+//
+//            return true;
+//        }
+//    }
+//}
 
