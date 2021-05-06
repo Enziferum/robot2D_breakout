@@ -22,9 +22,9 @@ source distribution.
 #pragma once
 
 #include <memory>
-#include <robot2D/Core/Vector2.h>
-#include <robot2D/Graphics/Drawable.h>
-#include <robot2D/Graphics/Transformable.h>
+#include <robot2D/Core/Vector2.hpp>
+#include <robot2D/Graphics/Drawable.hpp>
+#include <robot2D/Graphics/Transformable.hpp>
 
 namespace gui {
 

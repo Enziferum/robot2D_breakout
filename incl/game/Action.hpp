@@ -25,7 +25,7 @@ source distribution.
 #include <list>
 #include <utility>
 #include <functional>
-#include <robot2D/Core/Event.h>
+#include <robot2D/Core/Event.hpp>
 
 namespace robot2D {
     class Action {

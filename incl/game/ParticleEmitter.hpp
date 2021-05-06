@@ -23,8 +23,8 @@ source distribution.
 
 #include <vector>
 
-#include <robot2D/Graphics/Shader.h>
-#include <robot2D/Graphics/Drawable.h>
+#include <robot2D/Graphics/Shader.hpp>
+#include <robot2D/Graphics/Drawable.hpp>
 
 #include "GameObject.hpp"
 #include "Ball.hpp"

@@ -21,8 +21,8 @@ source distribution.
 
 #pragma once
 
-#include "robot2D/Extra/App.h"
-#include <robot2D/Util/ResourceHandler.h>
+#include "robot2D/Extra/App.hpp"
+#include <robot2D/Util/ResourceHandler.hpp>
 
 #include "AppContext.hpp"
 #include "ContextIDs.hpp"

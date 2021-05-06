@@ -21,8 +21,8 @@ source distribution.
 
 #pragma once
 
-#include <robot2D/Core/Vector2.h>
-#include <robot2D/Graphics/Color.h>
+#include <robot2D/Core/Vector2.hpp>
+#include <robot2D/Graphics/Color.hpp>
 
 struct Particle {
     Particle();

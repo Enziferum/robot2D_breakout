@@ -18,9 +18,9 @@ and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any
 source distribution.
 *********************************************************************/
-#include <robot2D/Util/Logger.h>
-#include <robot2D/Graphics/RenderTarget.h>
-#include <robot2D/Graphics/RenderStates.h>
+#include <robot2D/Util/Logger.hpp>
+#include <robot2D/Graphics/RenderTarget.hpp>
+#include <robot2D/Graphics/RenderStates.hpp>
 
 #include <game/GameUI.hpp>
 #include <game/MessageIDs.hpp>

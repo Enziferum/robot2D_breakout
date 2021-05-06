@@ -21,10 +21,10 @@ source distribution.
 
 #pragma once
 
-#include <robot2D/Extra/State.h>
-#include <robot2D/Extra/IStateMachine.h>
-#include <robot2D/Util/ResourceHandler.h>
-#include <robot2D/Graphics/Texture.h>
+#include <robot2D/Extra/State.hpp>
+#include <robot2D/Extra/IStateMachine.hpp>
+#include <robot2D/Util/ResourceHandler.hpp>
+#include <robot2D/Graphics/Texture.hpp>
 
 #include "AppContext.hpp"
 #include "ContextIDs.hpp"

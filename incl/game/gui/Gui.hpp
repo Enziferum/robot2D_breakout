@@ -25,7 +25,7 @@ source distribution.
 #include <vector>
 #include "INode.hpp"
 
-#include <robot2D/Core/Event.h>
+#include <robot2D/Core/Event.hpp>
 
 namespace gui {
     class Gui final : public robot2D::Drawable {

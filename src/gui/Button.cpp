@@ -19,11 +19,11 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <robot2D/Graphics/RenderTarget.h>
-#include <robot2D/Graphics/RenderStates.h>
+#include <robot2D/Graphics/RenderTarget.hpp>
+#include <robot2D/Graphics/RenderStates.hpp>
 #include "game/gui/Button.hpp"
 
-#include <robot2D/Util/Logger.h>
+#include <robot2D/Util/Logger.hpp>
 
 namespace gui {
     Button::Button() : INode(),

@@ -21,11 +21,11 @@ source distribution.
 
 #pragma once
 
-#include "robot2D/Extra/State.h"
-#include "robot2D/Extra/IStateMachine.h"
+#include "robot2D/Extra/State.hpp"
+#include "robot2D/Extra/IStateMachine.hpp"
 
-#include "robot2D/Util/ResourceHandler.h"
-#include <robot2D/Graphics/Font.h>
+#include "robot2D/Util/ResourceHandler.hpp"
+#include <robot2D/Graphics/Font.hpp>
 
 #include "game/gui/Gui.hpp"
 #include "game/IDs.hpp"

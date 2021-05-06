@@ -19,7 +19,7 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <robot2D/Graphics/RenderTarget.h>
+#include <robot2D/Graphics/RenderTarget.hpp>
 #include "game/GameObject.hpp"
 
 

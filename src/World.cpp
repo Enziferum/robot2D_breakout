@@ -19,8 +19,8 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <robot2D/Graphics/RenderTarget.h>
-#include <robot2D/Core/Keyboard.h>
+#include <robot2D/Graphics/RenderTarget.hpp>
+#include <robot2D/Core/Keyboard.hpp>
 
 #include "game/World.hpp"
 #include "game/Collisions.hpp"

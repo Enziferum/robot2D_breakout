@@ -23,7 +23,7 @@ source distribution.
 #include <vector>
 
 #include <inih/INIReader.h>
-#include <robot2D/Util/Logger.h>
+#include <robot2D/Util/Logger.hpp>
 
 #include "game/Configuration.hpp"
 

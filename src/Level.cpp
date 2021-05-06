@@ -25,7 +25,7 @@ source distribution.
 #include <map>
 #include <iostream>
 
-#include "robot2D/Graphics/RenderTarget.h"
+#include "robot2D/Graphics/RenderTarget.hpp"
 #include "game/Level.hpp"
 
 

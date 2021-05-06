@@ -20,7 +20,7 @@ source distribution.
 *********************************************************************/
 #pragma once
 
-#include "robot2D/Graphics/Sprite.h"
+#include "robot2D/Graphics/Sprite.hpp"
 
 class GameObject : public robot2D::Drawable {
 public:

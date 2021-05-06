@@ -21,7 +21,7 @@ source distribution.
 
 #pragma once
 
-#include <robot2D/Graphics/Text.h>
+#include <robot2D/Graphics/Text.hpp>
 #include "INode.hpp"
 
 namespace gui {

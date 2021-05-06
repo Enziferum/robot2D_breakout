@@ -2,8 +2,8 @@
 // Created by Necromant on 02.05.2021.
 //
 
-#include <robot2D/Graphics/RenderTarget.h>
-#include <robot2D/Graphics/RenderStates.h>
+#include <robot2D/Graphics/RenderTarget.hpp>
+#include <robot2D/Graphics/RenderStates.hpp>
 
 #include <game/PowerupSystem.hpp>
 

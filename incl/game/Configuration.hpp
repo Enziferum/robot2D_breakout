@@ -22,7 +22,7 @@ source distribution.
 #pragma once
 
 #include <string>
-#include <robot2D/Core/Vector2.h>
+#include <robot2D/Core/Vector2.hpp>
 
 struct ResourceConfiguration {
     mutable std::string audioDir;

@@ -22,8 +22,8 @@ source distribution.
 #include <algorithm>
 #include <ctime>
 
-#include <robot2D/Core/Keyboard.h>
-#include <robot2D/Util/Logger.h>
+#include <robot2D/Core/Keyboard.hpp>
+#include <robot2D/Util/Logger.hpp>
 
 #include "game/GameState.hpp"
 #include "game/States.hpp"

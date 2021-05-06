@@ -23,8 +23,8 @@ source distribution.
 #include <vector>
 #include <functional>
 
-#include <robot2D/Graphics/Drawable.h>
-#include <robot2D/Util/ResourceHandler.h>
+#include <robot2D/Graphics/Drawable.hpp>
+#include <robot2D/Util/ResourceHandler.hpp>
 
 #include "PowerUp.hpp"
 #include "IDs.hpp"

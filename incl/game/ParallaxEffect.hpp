@@ -21,9 +21,9 @@ source distribution.
 
 #pragma once
 
-#include "robot2D/Graphics/Drawable.h"
-#include "robot2D/Graphics/Texture.h"
-#include "robot2D/Graphics/Shader.h"
+#include "robot2D/Graphics/Drawable.hpp"
+#include "robot2D/Graphics/Texture.hpp"
+#include "robot2D/Graphics/Shader.hpp"
 
 class ParallaxEffect : public robot2D::Drawable {
 public:

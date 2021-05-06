@@ -19,8 +19,8 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include <robot2D/Util/Logger.h>
-#include <robot2D/Core/Keyboard.h>
+#include <robot2D/Util/Logger.hpp>
+#include <robot2D/Core/Keyboard.hpp>
 
 #include "game/IntroState.hpp"
 #include "game/States.hpp"

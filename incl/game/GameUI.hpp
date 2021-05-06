@@ -21,9 +21,9 @@ source distribution.
 
 #pragma once
 
-#include <robot2D/Graphics/Drawable.h>
-#include <robot2D/Graphics/Text.h>
-#include <robot2D/Util/ResourceHandler.h>
+#include <robot2D/Graphics/Drawable.hpp>
+#include <robot2D/Graphics/Text.hpp>
+#include <robot2D/Util/ResourceHandler.hpp>
 
 #include "IDs.hpp"
 #include "Message.hpp"

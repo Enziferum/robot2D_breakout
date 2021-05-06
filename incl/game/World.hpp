@@ -21,10 +21,10 @@ source distribution.
 
 #pragma once
 
-#include <robot2D/Util/ResourceHandler.h>
-#include <robot2D/Graphics/Texture.h>
-#include <robot2D/Graphics/Drawable.h>
-#include <robot2D/Core/Event.h>
+#include <robot2D/Util/ResourceHandler.hpp>
+#include <robot2D/Graphics/Texture.hpp>
+#include <robot2D/Graphics/Drawable.hpp>
+#include <robot2D/Core/Event.hpp>
 
 
 #include "MessageBus.hpp"

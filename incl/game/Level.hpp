@@ -24,10 +24,10 @@ source distribution.
 #include <vector>
 #include <string>
 
-#include "robot2D/Graphics/Drawable.h"
-#include "robot2D/Core/Vector2.h"
-#include "robot2D/Util/ResourceHandler.h"
-#include <robot2D/Graphics/Shader.h>
+#include "robot2D/Graphics/Drawable.hpp"
+#include "robot2D/Core/Vector2.hpp"
+#include "robot2D/Util/ResourceHandler.hpp"
+#include <robot2D/Graphics/Shader.hpp>
 
 #include "GameObject.hpp"
 #include "IDs.hpp"
