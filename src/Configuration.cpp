@@ -39,11 +39,11 @@ enum class ResourceID {
 };
 
 
-std::vector<std::string> split(const std::string& text, const std::string& sep){
+std::vector<std::string> split(const std::string &text, const std::string &sep) {
     std::vector<std::string> res;
     std::size_t pos_start = 0U, pos_end, index = sep.length();
 
-    while (( pos_end = text.find(sep, pos_start)) != std::string::npos ) {
+    while ((pos_end = text.find(sep, pos_start)) != std::string::npos) {
         auto token = text.substr(pos_start, pos_end - pos_start);
         pos_start = pos_end + index;
         res.emplace_back(token);
@@ -54,7 +54,7 @@ std::vector<std::string> split(const std::string& text, const std::string& sep){
     return res;
 }
 
-robot2D::vec2f combineFromString(const std::string& text) {
+robot2D::vec2f combineFromString(const std::string &text) {
     auto vec = split(text, sep);
     robot2D::vec2f res = badVector;
     if (vec.empty())
@@ -67,28 +67,27 @@ robot2D::vec2f combineFromString(const std::string& text) {
 }
 
 
-
 Configuration::Configuration() {}
 
-bool Configuration::loadResources(const std::string& path) const {
+bool Configuration::loadResources(const std::string &path) const {
     const std::string resourceSection = "Resources";
 
     std::unordered_map<ResourceID, std::string> resourceIDs = {
-            {ResourceID::Audio, "audioDir"},
-            {ResourceID::Font, "fontDir"},
-            {ResourceID::Level, "levelDir"},
+            {ResourceID::Audio,   "audioDir"},
+            {ResourceID::Font,    "fontDir"},
+            {ResourceID::Level,   "levelDir"},
             {ResourceID::Texture, "textureDir"},
-            {ResourceID::Shader, "shaderDir"},
+            {ResourceID::Shader,  "shaderDir"},
     };
 
 
     INIReader reader(path);
-    if(reader.ParseError() < 0) {
+    if (reader.ParseError() < 0) {
         LOG_ERROR("Can't read path % ", path.c_str());
         return false;
     }
 
-    if (!reader.HasSection(resourceSection)){
+    if (!reader.HasSection(resourceSection)) {
         LOG_ERROR_E("No resources section")
         return false;
     }
@@ -102,24 +101,24 @@ bool Configuration::loadResources(const std::string& path) const {
     return true;
 }
 
-bool Configuration::loadGameSettings(const std::string& path) const {
+bool Configuration::loadGameSettings(const std::string &path) const {
     INIReader reader(path);
-    if(reader.ParseError() < 0) {
+    if (reader.ParseError() < 0) {
         LOG_ERROR("Can't read path % ", path.c_str());
         return false;
     }
 
     const std::string gameSection = "Game";
 
-    if (!reader.HasSection(gameSection)){
+    if (!reader.HasSection(gameSection)) {
         LOG_ERROR_E("No game section")
         return false;
     }
 
     m_gameConfiguration.speed = reader.GetReal(gameSection, "speed", 0);
-    m_gameConfiguration.ball_radius = reader.GetReal(gameSection,"ball_radius", 0);
-    m_gameConfiguration.max_lives = reader.GetInteger(gameSection,"max_lives", 0);
-    m_gameConfiguration.emitter_new_sz = reader.GetInteger(gameSection,"emitter_new_sz", 0);
+    m_gameConfiguration.ball_radius = reader.GetReal(gameSection, "ball_radius", 0);
+    m_gameConfiguration.max_lives = reader.GetInteger(gameSection, "max_lives", 0);
+    m_gameConfiguration.emitter_new_sz = reader.GetInteger(gameSection, "emitter_new_sz", 0);
 
     auto velocity_str = reader.GetString(gameSection, "ball_velocity", "");
     auto paddle_str = reader.GetString(gameSection, "paddle_size", "");

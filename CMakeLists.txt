@@ -20,7 +20,7 @@ if (BUILD_INIH)
     include(cmake/External_Inih.cmake)
     message(STATUS "| Inih include dirs: ${Inih_INCLUDE_DIRS}")
     message(STATUS "| Inih libraries: ${Inih_LIBRARIES}")
-else()
+else ()
     message("don't have find package ")
 endif ()
 
@@ -32,17 +32,17 @@ file(GLOB_RECURSE SRC src/*.cpp)
 set(LIBS robot2D sfml-audio)
 
 add_executable(${PROJECT_NAME} ${SRC})
-if(BUILD_INIH)
+if (BUILD_INIH)
     add_dependencies(${PROJECT_NAME} Inih_ext)
     set(LIBS ${LIBS} ${Inih_LIBRARIES})
-endif()
+endif ()
 
 target_link_libraries(${PROJECT_NAME} ${LIBS})
 
-if(GAME_MODE)
+if (GAME_MODE)
     #todo copy resources libs and etc
-    if(WIN32)
+    if (WIN32)
         #link options to remove console
         add_link_options(-mwindows)
-    endif()
-endif()
+    endif ()
+endif ()

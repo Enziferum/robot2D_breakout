@@ -37,16 +37,22 @@ namespace {
 }
 
 
-class Runner{
+class Runner {
 public:
     Runner();
-    Runner(const Runner&) = delete;
-    Runner(const Runner&&) = delete;
-    Runner& operator=(const Runner&) = delete;
-    Runner& operator=(const Runner&&) = delete;
+
+    Runner(const Runner &) = delete;
+
+    Runner(const Runner &&) = delete;
+
+    Runner &operator=(const Runner &) = delete;
+
+    Runner &operator=(const Runner &&) = delete;
+
     ~Runner() = default;
 
     void run();
+
 private:
     void init();
 

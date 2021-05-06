@@ -25,21 +25,24 @@ source distribution.
 #include <robot2D/Core/Keyboard.h>
 
 
-enum InputMaps{
+enum InputMaps {
     leftMove,
     rightMove,
     stick
 };
 
-class InputManager{
+class InputManager {
 public:
     InputManager();
+
     ~InputManager() = default;
 
 
-    robot2D::Key getKey(const InputMaps& maps);
+    robot2D::Key getKey(const InputMaps &maps);
+
 private:
     void setup_default();
+
 private:
     std::unordered_map<int, robot2D::Key> m_keys;
 };

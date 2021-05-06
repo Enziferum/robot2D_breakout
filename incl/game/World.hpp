@@ -38,26 +38,32 @@ source distribution.
 
 #include "IDs.hpp"
 
-class World: public robot2D::Drawable {
+class World : public robot2D::Drawable {
 public:
-    World(MessageBus& messageBus,
-          robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& textures);
+    World(MessageBus &messageBus,
+          robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &textures);
 
-    World(const World& ) = delete;
-    World(const World&& ) = delete;
-    World& operator=(const World& ) = delete;
-    World& operator=(const World&& ) = delete;
+    World(const World &) = delete;
+
+    World(const World &&) = delete;
+
+    World &operator=(const World &) = delete;
+
+    World &operator=(const World &&) = delete;
+
     ~World() = default;
 
     bool setup(
-               GameConfiguration* gameConfiguration,
-               AudioPlayer* audioPlayer);
+            GameConfiguration *gameConfiguration,
+            AudioPlayer *audioPlayer);
 
-    bool setupLevels(const std::vector<std::string>& paths,
-                     robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& textures);
+    bool setupLevels(const std::vector<std::string> &paths,
+                     robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &textures);
 
-    void handleEvents(const robot2D::Event& event);
-    void forwardMessage(const Message& message);
+    void handleEvents(const robot2D::Event &event);
+
+    void forwardMessage(const Message &message);
+
     void update(float dt);
 
 protected:
@@ -65,19 +71,22 @@ protected:
 
 private:
     void process_input(float dt);
+
     void process_collisions();
 
-    void activate_power(PowerUp& power);
+    void activate_power(PowerUp &power);
 
     void reset_game(bool update_lifes = true);
-    void change_level();
-private:
-    MessageBus& m_messageBus;
 
-    AudioPlayer* m_audioPlayer;
+    void change_level();
+
+private:
+    MessageBus &m_messageBus;
+
+    AudioPlayer *m_audioPlayer;
     PowerupSystem m_powerupSystem;
 
-    GameConfiguration* m_gameConfiguration;
+    GameConfiguration *m_gameConfiguration;
     robot2D::vec2u m_windowSize;
     unsigned int currlevel = 0;
     unsigned int m_lives;
@@ -94,5 +103,5 @@ private:
     bool m_keys[1024];
     bool m_keysProcessed[1024];
 
-    robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& m_textures;
+    robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &m_textures;
 };

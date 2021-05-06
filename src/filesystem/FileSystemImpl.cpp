@@ -23,14 +23,14 @@ source distribution.
 #include "WinFileSystem.hpp"
 
 #ifdef WIN32
-    using FileSystemHandle = robot2D::priv::WinFileSystem;
+using FileSystemHandle = robot2D::priv::WinFileSystem;
 #endif
 
-namespace robot2D  {
+namespace robot2D {
     namespace priv {
         FileSystemImpl::~FileSystemImpl() {}
 
-        FileSystemImpl* FileSystemImpl::create() {
+        FileSystemImpl *FileSystemImpl::create() {
             return new FileSystemHandle();
         }
     }

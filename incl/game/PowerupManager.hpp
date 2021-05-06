@@ -22,14 +22,17 @@ source distribution.
 #pragma once
 
 
-class PowerupManager{
+class PowerupManager {
 public:
     PowerupManager();
+
     ~PowerupManager() = default;
 
     void add();
+
     void update(float dt);
 
     void reset();
+
 private:
 };

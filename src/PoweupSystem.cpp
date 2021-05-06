@@ -11,12 +11,12 @@ const robot2D::vec2f powerup_size = robot2D::vec2f(60.0f, 20.0f);
 const robot2D::vec2f powerup_velocity = robot2D::vec2f(0.f, 150.f);
 
 
-PowerupSystem::PowerupSystem():
-    m_power_ups() {
+PowerupSystem::PowerupSystem() :
+        m_power_ups() {
 }
 
 void PowerupSystem::update(float dt) {
-    for (auto& it: m_power_ups) {
+    for (auto &it: m_power_ups) {
 
         auto vel_copy = it.velocity;
         it.m_pos += vel_copy * dt;
@@ -24,9 +24,9 @@ void PowerupSystem::update(float dt) {
 
         it.duration -= dt;
 
-        if(it.duration <= 0.0f) {
+        if (it.duration <= 0.0f) {
             it.activated = false;
-            if(otherActive(it.m_type))
+            if (otherActive(it.m_type))
                 break;
 
             m_func(it.m_type);
@@ -34,21 +34,19 @@ void PowerupSystem::update(float dt) {
     }
 
     m_power_ups.erase(std::remove_if(m_power_ups.begin(),
-                                     m_power_ups.end(), [](const PowerUp& powerUp){
+                                     m_power_ups.end(), [](const PowerUp &powerUp) {
                 return powerUp.m_destroyed && !powerUp.activated;
-    }),m_power_ups.end());
+            }), m_power_ups.end());
 }
 
 
-
-std::vector<PowerUp>& PowerupSystem::get() {
+std::vector<PowerUp> &PowerupSystem::get() {
     return m_power_ups;
 }
 
 
-
-void PowerupSystem::spawn_powerup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& m_textures,
-                                  const robot2D::vec2f& spawn_pos) {
+void PowerupSystem::spawn_powerup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &m_textures,
+                                  const robot2D::vec2f &spawn_pos) {
     PowerUp power_up;
 
     if (randomize(75)) {
@@ -99,14 +97,14 @@ void PowerupSystem::spawn_powerup(robot2D::ResourceHandler<robot2D::Texture, Res
     m_power_ups.emplace_back(power_up);
 }
 
-bool PowerupSystem::randomize(const unsigned& chance ) {
+bool PowerupSystem::randomize(const unsigned &chance) {
     unsigned int random = rand() % chance;
     return random == 0;
 }
 
-bool PowerupSystem::otherActive(const PowerUpType& type) {
-    for(auto& it: m_power_ups){
-        if(it.activated) {
+bool PowerupSystem::otherActive(const PowerUpType &type) {
+    for (auto &it: m_power_ups) {
+        if (it.activated) {
             if (it.m_type == type)
                 return true;
         }
@@ -114,11 +112,11 @@ bool PowerupSystem::otherActive(const PowerUpType& type) {
     return false;
 }
 
-void PowerupSystem::setCallback(callback&& func) {
+void PowerupSystem::setCallback(callback &&func) {
     m_func = func;
 }
 
-void PowerupSystem::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
-    for(auto& it: m_power_ups)
+void PowerupSystem::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
+    for (auto &it: m_power_ups)
         target.draw(it);
 }

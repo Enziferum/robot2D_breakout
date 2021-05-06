@@ -30,24 +30,30 @@ source distribution.
 #include "Ball.hpp"
 #include "Particle.hpp"
 
-class ParticleEmitter: public robot2D::Drawable{
+class ParticleEmitter : public robot2D::Drawable {
 public:
     ParticleEmitter();
-    ~ParticleEmitter()override = default;
 
-    void setTexture(robot2D::Texture& tex);
-    void update(float dt, int new_sz, const BallObject& bind,
-                const robot2D::vec2f& offset);
+    ~ParticleEmitter() override = default;
+
+    void setTexture(robot2D::Texture &tex);
+
+    void update(float dt, int new_sz, const BallObject &bind,
+                const robot2D::vec2f &offset);
+
 protected:
     void draw(robot2D::RenderTarget &target,
               robot2D::RenderStates states) const override;
+
     void setup();
 
     int find_first_unused();
-    void respawn_particle(Particle& particle, const BallObject& bind, const robot2D::vec2f& offset);
+
+    void respawn_particle(Particle &particle, const BallObject &bind, const robot2D::vec2f &offset);
+
 private:
     std::vector<Particle> m_particles;
     robot2D::ShaderHandler m_particleShader;
 
-    robot2D::Texture* m_texture;
+    robot2D::Texture *m_texture;
 };

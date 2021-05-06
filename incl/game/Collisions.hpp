@@ -25,7 +25,7 @@ source distribution.
 #include "GameObject.hpp"
 #include "Ball.hpp"
 
-enum class Direction{
+enum class Direction {
     up,
     down,
     left,
@@ -34,8 +34,10 @@ enum class Direction{
 
 using Collision = std::tuple<bool, Direction, robot2D::vec2f>;
 
-float length(const robot2D::vec2f& vec);
-robot2D::vec2f normalize(const robot2D::vec2f& vec);
+float length(const robot2D::vec2f &vec);
 
-bool isCollide(const GameObject& lob, const GameObject& rob);
-Collision isCollide(const BallObject& lob, const GameObject& rob);
+robot2D::vec2f normalize(const robot2D::vec2f &vec);
+
+bool isCollide(const GameObject &lob, const GameObject &rob);
+
+Collision isCollide(const BallObject &lob, const GameObject &rob);

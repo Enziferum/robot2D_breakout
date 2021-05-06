@@ -33,14 +33,15 @@ const std::string font_path = "res/fonts/game_font.ttf";
 
 const auto button_size = robot2D::vec2f(200, 50);
 
+
 MenuState::MenuState(robot2D::IStateMachine& machine, AppContext<ContextID>& context) :
 State(machine),
-m_context(context){
+m_context(context) {
     setup();
 }
 
-void MenuState::handleEvents(const robot2D::Event& event) {
-    if(event.type == robot2D::Event::Resized){}
+void MenuState::handleEvents(const robot2D::Event &event) {
+    if (event.type == robot2D::Event::Resized) {}
     m_gui.handleEvents(event);
 }
 
@@ -70,8 +71,8 @@ void MenuState::load_resources() {
     }
 
     if(!m_fonts.loadFromFile(ResourceIDs::Font, fm.combinePath(ResourceType::Font,
-                                                               "game_font.ttf"))){
-        LOG_ERROR("Can't load font % \n",  font_path.c_str())
+                                                               "game_font.ttf"))) {
+        LOG_ERROR("Can't load font % \n", font_path.c_str())
     }
 }
 
@@ -123,14 +124,16 @@ void MenuState::setup() {
     end_btn -> setLabel(end_label);
 
     end_btn -> onTouch([this](){
-        m_window.close();
+       m_window.close();
     });
 
     m_gui.pack(start_btn);
     m_gui.pack(end_btn);
 
+
     m_background.setTexture(m_textures.get(ResourceIDs::Background));
     m_background.setScale(robot2D::vec2f(size.x, size.y));
 }
+
 
 

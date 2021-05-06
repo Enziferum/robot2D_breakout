@@ -29,6 +29,7 @@ namespace robot2D {
     class Renderable {
     public:
         Renderable();
+
         virtual  ~Renderable() = 0;
 
 

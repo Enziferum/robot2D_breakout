@@ -27,8 +27,8 @@ source distribution.
 constexpr int new_particle_sz = 2;
 constexpr int particle_count = 500;
 
-ParticleEmitter::ParticleEmitter(): m_particles(),
-m_texture(nullptr){
+ParticleEmitter::ParticleEmitter() : m_particles(),
+                                     m_texture(nullptr) {
     setup();
 }
 
@@ -44,23 +44,23 @@ void ParticleEmitter::setup() {
 //        return;
 //    }
 
-    for(int it = 0; it < particle_count; ++it)
+    for (int it = 0; it < particle_count; ++it)
         m_particles.emplace_back(Particle());
 }
 
 
-void ParticleEmitter::update(float dt, int new_sz, const BallObject& bind,
-                             const robot2D::vec2f& offset) {
+void ParticleEmitter::update(float dt, int new_sz, const BallObject &bind,
+                             const robot2D::vec2f &offset) {
     //add new particles
-    for(int it = 0; it < new_sz; ++it){
+    for (int it = 0; it < new_sz; ++it) {
         int unusedParticle = find_first_unused();
         respawn_particle(m_particles[unusedParticle], bind, offset);
     }
 
     //update current
-    for(auto& it: m_particles){
+    for (auto &it: m_particles) {
         it.lifeTime -= dt;
-        if(it.is_life()){
+        if (it.is_life()) {
             auto vec_copy = it.m_velocity;
             it.m_pos -= vec_copy * dt;
             it.alpha -= dt * 2.5f;
@@ -69,19 +69,19 @@ void ParticleEmitter::update(float dt, int new_sz, const BallObject& bind,
 }
 
 
-void ParticleEmitter::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
+void ParticleEmitter::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     m_particleShader.use();
 
-    for(auto& it: m_particles){
-        if(!it.is_life())
+    for (auto &it: m_particles) {
+        if (!it.is_life())
             continue;
 
         m_particleShader.set_parameter("offset", it.m_pos);
         m_particleShader.set_parameter("color", it.r, it.g, it.b, it.alpha);
 
         states.texture = m_texture;
-        states.shader = const_cast<robot2D::ShaderHandler*>(&m_particleShader);
+        states.shader = const_cast<robot2D::ShaderHandler *>(&m_particleShader);
 
         target.draw(states);
     }
@@ -89,16 +89,17 @@ void ParticleEmitter::draw(robot2D::RenderTarget& target, robot2D::RenderStates 
 }
 
 unsigned int lastUsedParticle = 0;
+
 int ParticleEmitter::find_first_unused() {
-    for (unsigned int it = lastUsedParticle; it < particle_count; ++it){
-        if (m_particles[it].lifeTime <= 0.0f){
+    for (unsigned int it = lastUsedParticle; it < particle_count; ++it) {
+        if (m_particles[it].lifeTime <= 0.0f) {
             lastUsedParticle = it;
             return it;
         }
     }
     // otherwise, do a linear search
-    for (unsigned int it = 0; it < lastUsedParticle; ++it){
-        if (m_particles[it].lifeTime <= 0.0f){
+    for (unsigned int it = 0; it < lastUsedParticle; ++it) {
+        if (m_particles[it].lifeTime <= 0.0f) {
             lastUsedParticle = it;
             return it;
         }
@@ -107,8 +108,8 @@ int ParticleEmitter::find_first_unused() {
     return 0;
 }
 
-void ParticleEmitter::respawn_particle(Particle& particle, const BallObject& obj,
-                                       const robot2D::vec2f& offset) {
+void ParticleEmitter::respawn_particle(Particle &particle, const BallObject &obj,
+                                       const robot2D::vec2f &offset) {
     float random = ((rand() % 100) - 50) / 10.0f;
     float rColor = 0.5f + ((rand() % 100) / 100.0f);
 
@@ -123,7 +124,7 @@ void ParticleEmitter::respawn_particle(Particle& particle, const BallObject& obj
     particle.m_velocity = vel_copy * 0.1f;
 }
 
-void ParticleEmitter::setTexture(robot2D::Texture& tex) {
+void ParticleEmitter::setTexture(robot2D::Texture &tex) {
     m_texture = &tex;
 }
 

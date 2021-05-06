@@ -37,10 +37,10 @@ MessageBus::MessageBus() :
 
 }
 
-const Message& MessageBus::poll() {
-    const Message& msg = *reinterpret_cast<Message *>(out_ptr);
+const Message &MessageBus::poll() {
+    const Message &msg = *reinterpret_cast<Message *>(out_ptr);
     //move pointer to next message
-    out_ptr += (MessageSize + msg.m_buffer_sz );
+    out_ptr += (MessageSize + msg.m_buffer_sz);
     current_count--;
     return msg;
 }

@@ -25,11 +25,10 @@ source distribution.
 
 #include <robot2D/Util/Logger.h>
 
-namespace gui{
-    Button::Button(): INode(),
-    m_function(nullptr),
-    m_texture(nullptr)
-    {
+namespace gui {
+    Button::Button() : INode(),
+                       m_function(nullptr),
+                       m_texture(nullptr) {
 
     }
 
@@ -37,8 +36,8 @@ namespace gui{
         return std::make_shared<Button>();
     }
 
-    void Button::onPress(const robot2D::vec2f& mpos) {
-        if(!m_texture)
+    void Button::onPress(const robot2D::vec2f &mpos) {
+        if (!m_texture)
             return;
 
         // local bounds //
@@ -47,34 +46,35 @@ namespace gui{
             m_pressed = true;
     }
 
-    void Button::onHover(const robot2D::vec2f& mpos) {
+    void Button::onHover(const robot2D::vec2f &mpos) {
 
     }
 
     void Button::update(float dt) {
-        if(m_pressed && m_function){
+        if (m_pressed && m_function) {
             m_function();
             m_pressed = false;
         }
     }
 
-    void Button::setTexture(const robot2D::Texture& texture) {
+    void Button::setTexture(const robot2D::Texture &texture) {
         m_texture = &texture;
-        auto size = m_texture -> get_size();
+        auto size = m_texture->get_size();
         setSize(robot2D::vec2f(size.x, size.y));
     }
 
-    void Button::onTouch(std::function<void()>&& function) {
+    void Button::onTouch(std::function<void()> &&function) {
         m_function = function;
     }
 
-    void Button::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
-        if(!m_texture)
+    void Button::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
+        if (!m_texture)
             return;
 
-        auto t = getTransform();
-        t = t.scale(m_size);
-        states.transform *= t;
+        auto transform = getTransform();
+        transform = transform.scale(m_size);
+
+        states.transform *= transform;
         states.texture = m_texture;
         states.color = robot2D::Color::White;
         target.draw(states);

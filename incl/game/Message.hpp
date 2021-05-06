@@ -42,7 +42,7 @@ public:
     ID id = -1;
 
     template<typename T>
-    const T& unpack() const {
+    const T &unpack() const {
         assert(sizeof(T) == m_buffer_sz);
         return *static_cast<T *>(m_buffer);
     }

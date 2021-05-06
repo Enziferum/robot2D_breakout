@@ -32,14 +32,18 @@ source distribution.
 #include "game/AppContext.hpp"
 #include "game/ContextIDs.hpp"
 
-class PauseState: public robot2D::State{
+class PauseState : public robot2D::State {
 public:
+
     PauseState(robot2D::IStateMachine& machine, AppContext<ContextID>& );
     ~PauseState()override = default;
 
-    void handleEvents(const robot2D::Event& event);
+    void handleEvents(const robot2D::Event &event) override;
+
     void update(float dt) override;
+
     void render() override;
+
 private:
     void setup();
     void load_resources();

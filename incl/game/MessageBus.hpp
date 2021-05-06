@@ -30,12 +30,13 @@ static constexpr std::size_t MessageSize = sizeof(Message);
 class MessageBus final {
 public:
     MessageBus();
+
     ~MessageBus() = default;
 
-    const Message& poll();
+    const Message &poll();
 
     template<typename T>
-    T* post(Message::ID id);
+    T *post(Message::ID id);
 
     std::size_t bus_size() const;
 
@@ -46,27 +47,27 @@ private:
     std::vector<char> in_buffer;
     std::vector<char> out_buffer;
 
-    char* in_ptr;
-    char* out_ptr;
+    char *in_ptr;
+    char *out_ptr;
 
     unsigned int wait_count;
     unsigned int current_count;
 };
 
 template<typename T>
-T* MessageBus::post(Message::ID id) {
+T *MessageBus::post(Message::ID id) {
     //alloc buffer
     auto dataSize = sizeof(T);
 
     assert(dataSize < 128);
     //alloc not from buffer
-    auto msg = new (in_ptr)Message();
+    auto msg = new(in_ptr)Message();
     in_ptr += MessageSize;
     //need to store in memory block
-    msg -> id = id;
-    msg -> m_buffer_sz = dataSize;
-    msg -> m_buffer = new (in_ptr)T();
+    msg->id = id;
+    msg->m_buffer_sz = dataSize;
+    msg->m_buffer = new(in_ptr)T();
     in_ptr += dataSize;
     wait_count++;
-    return static_cast<T*>(msg-> m_buffer);
+    return static_cast<T *>(msg->m_buffer);
 }

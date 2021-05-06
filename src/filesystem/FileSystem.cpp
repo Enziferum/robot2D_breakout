@@ -23,13 +23,13 @@ source distribution.
 #include "FileSystemImpl.hpp"
 
 namespace robot2D {
-    FileSystem::FileSystem():
+    FileSystem::FileSystem() :
             m_impl(nullptr) {
         init();
     }
 
     FileSystem::~FileSystem() {
-        if(m_impl != nullptr){
+        if (m_impl != nullptr) {
             delete m_impl;
             m_impl = nullptr;
         }
@@ -37,23 +37,23 @@ namespace robot2D {
 
     void FileSystem::init() {
         m_impl = priv::FileSystemImpl::create();
-        if(m_impl == nullptr)
+        if (m_impl == nullptr)
             return;
     }
 
     std::string FileSystem::getCurrentDir() {
-        return m_impl -> getCurrentDir();
+        return m_impl->getCurrentDir();
     }
 
-    std::vector<std::string> FileSystem::listFiles(const std::string& path) {
-        return m_impl -> listFiles(path);
+    std::vector<std::string> FileSystem::listFiles(const std::string &path) {
+        return m_impl->listFiles(path);
     }
 
-    bool FileSystem::isDir(const std::string& path) {
-        return m_impl -> isDir(path);
+    bool FileSystem::isDir(const std::string &path) {
+        return m_impl->isDir(path);
     }
 
-    bool FileSystem::isFile(const std::string& path) {
-        return m_impl -> isFile(path);
+    bool FileSystem::isFile(const std::string &path) {
+        return m_impl->isFile(path);
     }
 }

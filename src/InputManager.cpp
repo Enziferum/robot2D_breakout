@@ -21,11 +21,10 @@ source distribution.
 
 #include "game/InputManager.hpp"
 
-InputManager::InputManager():
-    m_keys() {
+InputManager::InputManager() :
+        m_keys() {
     setup_default();
 }
-
 
 
 void InputManager::setup_default() {
@@ -35,7 +34,7 @@ void InputManager::setup_default() {
 
 robot2D::Key InputManager::getKey(const InputMaps &maps) {
     auto found = m_keys.find(maps);
-    if(found == m_keys.end())
+    if (found == m_keys.end())
         return robot2D::Key::Unknown;
     return found->second;
 }

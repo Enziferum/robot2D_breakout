@@ -11,7 +11,7 @@ namespace gui {
     }
 
     void BounceAnimation::update(float dt) {
-        (void)dt;
+        (void) dt;
     }
 
     void BounceAnimation::play() {

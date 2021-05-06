@@ -21,7 +21,7 @@ source distribution.
 
 #pragma once
 
-enum class ContextID{
+enum class ContextID {
     Configuration,
     Audio,
     Window

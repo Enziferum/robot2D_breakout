@@ -21,16 +21,16 @@ source distribution.
 #include <cmath>
 #include "game/Collisions.hpp"
 
-float length(const robot2D::vec2f& vec){
+float length(const robot2D::vec2f &vec) {
     return std::sqrt(vec.x * vec.x
-                        + vec.y * vec.y);
+                     + vec.y * vec.y);
 }
 
-float clamp(float value, float min, float max){
+float clamp(float value, float min, float max) {
     return std::max(min, std::min(max, value));
 }
 
-robot2D::vec2f normalize(const robot2D::vec2f& vec){
+robot2D::vec2f normalize(const robot2D::vec2f &vec) {
     robot2D::vec2f res;
 
     float inv_len = 1.f / length(vec);
@@ -40,24 +40,23 @@ robot2D::vec2f normalize(const robot2D::vec2f& vec){
     return res;
 }
 
-float dot(const robot2D::vec2f& left, const robot2D::vec2f& right){
+float dot(const robot2D::vec2f &left, const robot2D::vec2f &right) {
     float x = left.x * right.x;
     float y = left.y * right.y;
     return x + y;
 }
 
-Direction find_direction(const robot2D::vec2f& vec){
+Direction find_direction(const robot2D::vec2f &vec) {
     robot2D::vec2f compass[] = {
-            robot2D::vec2f(0.0f, 1.0f),	// up
-            robot2D::vec2f(1.0f, 0.0f),	// right
-            robot2D::vec2f(0.0f, -1.0f),	// down
-            robot2D::vec2f(-1.0f, 0.0f)	// left
+            robot2D::vec2f(0.0f, 1.0f),    // up
+            robot2D::vec2f(1.0f, 0.0f),    // right
+            robot2D::vec2f(0.0f, -1.0f),    // down
+            robot2D::vec2f(-1.0f, 0.0f)    // left
     };
     float max = 0.0f;
     unsigned int best_match = -1;
 
-    for (unsigned int i = 0; i < 4; i++)
-    {
+    for (unsigned int i = 0; i < 4; i++) {
         float dot_product = dot(normalize(vec), compass[i]);
         if (dot_product > max) {
             max = dot_product;
@@ -66,35 +65,35 @@ Direction find_direction(const robot2D::vec2f& vec){
     }
 
     Direction direction;
-    if(best_match == 0)
+    if (best_match == 0)
         direction = Direction::up;
-    if(best_match == 1)
+    if (best_match == 1)
         direction = Direction::right;
-    if(best_match == 2)
+    if (best_match == 2)
         direction = Direction::down;
-    if(best_match == 3)
+    if (best_match == 3)
         direction = Direction::left;
 
     return direction;
 }
 
-bool isCollide(const GameObject& lob, const GameObject& rob) {
+bool isCollide(const GameObject &lob, const GameObject &rob) {
     bool collisionX = lob.m_pos.x + lob.m_size.x >= rob.m_pos.x
-            && rob.m_pos.x + rob.m_size.x >= lob.m_pos.x;
+                      && rob.m_pos.x + rob.m_size.x >= lob.m_pos.x;
     bool collisionY = lob.m_pos.y + lob.m_size.y >= rob.m_pos.y
                       && rob.m_pos.y + rob.m_size.y >= lob.m_pos.y;
 
     return collisionX && collisionY;
 }
 
-Collision isCollide(const BallObject& lob, const GameObject& rob) {
+Collision isCollide(const BallObject &lob, const GameObject &rob) {
     robot2D::vec2f center(lob.m_pos.x + lob.radius,
-                        lob.m_pos.y + lob.radius);
+                          lob.m_pos.y + lob.radius);
 
     robot2D::vec2f aabb_half_extents(rob.m_size.x / 2.f,
-                                   rob.m_size.y / 2.f);
+                                     rob.m_size.y / 2.f);
     robot2D::vec2f aabb_center(rob.m_pos.x + aabb_half_extents.x,
-                             rob.m_pos.y + aabb_half_extents.y);
+                               rob.m_pos.y + aabb_half_extents.y);
     robot2D::vec2f distance = center - aabb_center;
     robot2D::vec2f clamped;
     clamped.x = clamp(distance.x, -aabb_half_extents.x, aabb_half_extents.x);

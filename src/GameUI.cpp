@@ -33,11 +33,11 @@ GameUI::GameUI() {
 
 }
 
-void GameUI::setup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& textures, Configuration& configuration) {
+void GameUI::setup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &textures, Configuration &configuration) {
     FileManager fm;
     fm.setConfiguration(configuration.getResourceConfiguration());
     m_fonts.loadFromFile(ResourceIDs::Font,
-                         fm.combinePath(ResourceType::Font,"game_font.ttf"));
+                         fm.combinePath(ResourceType::Font, "game_font.ttf"));
 
     m_livesText.setText("Lives:");
     m_livesText.setPos(lives_pos);
@@ -46,7 +46,7 @@ void GameUI::setup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& text
     auto live_start_pos = robot2D::vec2f(m_livesText.getPos().x + 50, 5);
 
     m_lives = configuration.getGameConfiguration().max_lives;
-    for(auto it = 0; it < m_lives; ++it){
+    for (auto it = 0; it < m_lives; ++it) {
         robot2D::Sprite sprite;
         sprite.setTexture(textures.get(ResourceIDs::Face));
         sprite.setScale(live_sz);
@@ -61,13 +61,13 @@ void GameUI::setup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& text
     m_scoreText.setFont(m_fonts.get(ResourceIDs::Font));
 }
 
-void GameUI::handleMessage(const Message& msg) {
-    if(msg.id == messageIDs::LivesUpdate){
+void GameUI::handleMessage(const Message &msg) {
+    if (msg.id == messageIDs::LivesUpdate) {
         auto data = msg.unpack<LivesEvent>();
         m_lives = data.new_lives;
     }
 
-    if(msg.id == messageIDs::ScoreUpdate) {
+    if (msg.id == messageIDs::ScoreUpdate) {
         auto data = msg.unpack<ScoreEvent>();
         m_score += data.new_score;
         m_scoreText.setText("Score: " + std::to_string(m_score));
@@ -75,14 +75,14 @@ void GameUI::handleMessage(const Message& msg) {
 }
 
 void GameUI::update(float dt) {
-    (void)dt;
+    (void) dt;
 }
 
-void GameUI::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
+void GameUI::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
     target.draw(m_livesText);
     target.draw(m_scoreText);
-    for(int it = 0; it < m_lives; ++it)
-        target.draw( m_livesSprites[it]);
+    for (int it = 0; it < m_lives; ++it)
+        target.draw(m_livesSprites[it]);
 }
 
 

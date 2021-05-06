@@ -22,7 +22,7 @@ source distribution.
 #include <windows.h>
 #include "WinFileSystem.hpp"
 
-namespace robot2D  {
+namespace robot2D {
     namespace priv {
         std::string WinFileSystem::getCurrentDir() {
             char path[MAX_PATH];
@@ -30,7 +30,7 @@ namespace robot2D  {
             return std::string(path).append(slash);
         }
 
-        std::vector<std::string> WinFileSystem::listFiles(const std::string& path) {
+        std::vector<std::string> WinFileSystem::listFiles(const std::string &path) {
             auto tmp = path + "*";
             std::vector<std::string> res;
             WIN32_FIND_DATA data;
@@ -38,8 +38,8 @@ namespace robot2D  {
 
             if (hFind != INVALID_HANDLE_VALUE) {
                 do {
-                    if(std::string(data.cFileName) == "." ||
-                            std::string(data.cFileName) == "..")
+                    if (std::string(data.cFileName) == "." ||
+                        std::string(data.cFileName) == "..")
                         continue;
                     res.emplace_back(data.cFileName);
                 } while (FindNextFile(hFind, &data));

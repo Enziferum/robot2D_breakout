@@ -25,9 +25,9 @@ source distribution.
 namespace gui {
     Label::Label() {}
 
-    void Label::onPress(const robot2D::vec2f& f) {}
+    void Label::onPress(const robot2D::vec2f &f) {}
 
-    void Label::onHover(const robot2D::vec2f& f) {}
+    void Label::onHover(const robot2D::vec2f &f) {}
 
     void Label::update(float dt) {}
 
@@ -57,6 +57,5 @@ namespace gui {
     void Label::setScale(const robot2D::vec2f& factor) {
         Transformable::setScale(factor);
     }
-
 
 }

@@ -25,12 +25,13 @@ source distribution.
 #include "INode.hpp"
 
 namespace gui {
-    class Label: public INode {
+    class Label : public INode {
     public:
         using Ptr = std::shared_ptr<Label>;
     public:
         Label();
-        ~Label()override = default;
+
+        ~Label() override = default;
 
         void onPress(const robot2D::vec2f &f) override;
 

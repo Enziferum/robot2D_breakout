@@ -44,14 +44,18 @@ struct GameConfiguration {
 class Configuration {
 public:
     Configuration();
+
     ~Configuration() = default;
 
 
-    bool loadResources(const std::string& path) const;
-    bool loadGameSettings(const std::string& path) const;
+    bool loadResources(const std::string &path) const;
 
-    GameConfiguration& getGameConfiguration();
-    ResourceConfiguration& getResourceConfiguration();
+    bool loadGameSettings(const std::string &path) const;
+
+    GameConfiguration &getGameConfiguration();
+
+    ResourceConfiguration &getResourceConfiguration();
+
 private:
     GameConfiguration m_gameConfiguration;
     ResourceConfiguration m_resourceConfiguration;

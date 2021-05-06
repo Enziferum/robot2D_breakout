@@ -29,8 +29,6 @@ source distribution.
 #include "game/Level.hpp"
 
 
-
-
 std::map<int, robot2D::Color> tile_colors = {
         {1, robot2D::Color::from_gl(0.8f, 0.8f, 0.7f, 0.1f)},
         {2, robot2D::Color::from_gl(0.2f, 0.6f, 1.0f, 0.1f)},
@@ -40,33 +38,32 @@ std::map<int, robot2D::Color> tile_colors = {
 };
 
 
-Level::Level():
-m_tiles(),
-m_size(),
-rw(0),
-rh(0)
-{}
+Level::Level() :
+        m_tiles(),
+        m_size(),
+        rw(0),
+        rh(0) {}
 
-bool Level::loadLevel(const std::string& path, const robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& handler,
-                      const robot2D::vec2f& size, const robot2D::vec2f& offset) {
+bool Level::loadLevel(const std::string &path, const robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &handler,
+                      const robot2D::vec2f &size, const robot2D::vec2f &offset) {
 
     std::ifstream file(path.c_str());
-    if(!file.is_open())
+    if (!file.is_open())
         return false;
 
     std::string line;
     std::vector<std::vector<unsigned int>> rows;
-    while (std::getline(file, line)){
+    while (std::getline(file, line)) {
         std::vector<unsigned int> row;
         line.erase(std::remove(line.begin(), line.end(), ' '),
                    line.end());
-        for(auto& c: line)
-            row.push_back((unsigned int)(c - '0'));
+        for (auto &c: line)
+            row.push_back((unsigned int) (c - '0'));
         rows.push_back(row);
     }
     file.close();
 
-    if(rows.empty())
+    if (rows.empty())
         return false;
 
     robot2D::vec2f tile_sz;
@@ -78,19 +75,18 @@ bool Level::loadLevel(const std::string& path, const robot2D::ResourceHandler<ro
 
     m_size = size;
 
-    for(int y = 0; y < rh; ++y){
-        for(int x = 0; x < rw; ++x){
-            auto& c = rows[y][x];
-            if(c < 1 ||  c > 5)
+    for (int y = 0; y < rh; ++y) {
+        for (int x = 0; x < rw; ++x) {
+            auto &c = rows[y][x];
+            if (c < 1 || c > 5)
                 continue;
 
             LevelBlock object;
             object.block_id = rh - y;
-            if(c == 1){
+            if (c == 1) {
                 object.m_solid = true;
                 object.m_sprite.setTexture(handler.get(ResourceIDs::Solid));
-            }
-            else{
+            } else {
                 object.m_sprite.setTexture(handler.get(ResourceIDs::Block));
             }
 
@@ -113,14 +109,14 @@ bool Level::loadLevel(const std::string& path, const robot2D::ResourceHandler<ro
 
 void Level::update(float dt) {
     m_tiles.erase(std::remove_if(m_tiles.begin(), m_tiles.end(),
-                                 [](const GameObject& object){
-        return object.m_destroyed;
-    }),m_tiles.end());
+                                 [](const GameObject &object) {
+                                     return object.m_destroyed;
+                                 }), m_tiles.end());
 }
 
 void Level::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
-    for(auto& it: m_tiles){
-        if(it.m_destroyed)
+    for (auto &it: m_tiles) {
+        if (it.m_destroyed)
             continue;
 
         target.draw(it, states);
@@ -130,7 +126,7 @@ void Level::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) co
 bool Level::destroyed() const {
     bool res = true;
 
-    for(auto& it: m_tiles)
+    for (auto &it: m_tiles)
         res *= it.m_destroyed;
 
     return res;
@@ -140,25 +136,25 @@ std::vector<LevelBlock> &Level::getTiles() {
     return m_tiles;
 }
 
-void Level::onResize(const robot2D::vec2f& size) {
-    if(m_size == size)
+void Level::onResize(const robot2D::vec2f &size) {
+    if (m_size == size)
         return;
 
     //new tile_sz, for example == 1000 / 15, 800 / 8
     robot2D::vec2f tile_sz(size.x / rw,
                            size.y / rh);
 
-    for(auto& it: m_tiles) {
+    for (auto &it: m_tiles) {
         auto old_pos = it.m_pos;
         std::cout << old_pos.x << ":" << old_pos.y << std::endl;
         it.setSize(tile_sz);
 
-        if(old_pos == robot2D::vec2f())
+        if (old_pos == robot2D::vec2f())
             continue;
 
         int it_x = int(size.x / old_pos.x);
         int it_y = 0;
-        if(old_pos.y != 0)
+        if (old_pos.y != 0)
             it_y = int(size.y / old_pos.y);
 
 

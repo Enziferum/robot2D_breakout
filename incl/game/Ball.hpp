@@ -24,13 +24,16 @@ source distribution.
 #include "GameObject.hpp"
 
 
-class BallObject: public GameObject {
+class BallObject : public GameObject {
 public:
     BallObject();
+
     ~BallObject() = default;
 
     void move(float dt);
-    void reset(const robot2D::vec2f& pos, const robot2D::vec2f& vel);
+
+    void reset(const robot2D::vec2f &pos, const robot2D::vec2f &vel);
+
 public:
     robot2D::vec2f velocity;
 

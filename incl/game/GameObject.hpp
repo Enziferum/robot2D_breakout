@@ -22,16 +22,20 @@ source distribution.
 
 #include "robot2D/Graphics/Sprite.h"
 
-class GameObject: public robot2D::Drawable {
+class GameObject : public robot2D::Drawable {
 public:
     GameObject();
+
     ~GameObject() = default;
 
-    void setPos(const robot2D::vec2f& pos);
-    void setSize(const robot2D::vec2f& size);
+    void setPos(const robot2D::vec2f &pos);
+
+    void setSize(const robot2D::vec2f &size);
+
 protected:
     void draw(robot2D::RenderTarget &target,
               robot2D::RenderStates states) const override;
+
 public:
     robot2D::Sprite m_sprite;
     robot2D::vec2f m_size;

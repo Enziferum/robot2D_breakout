@@ -29,13 +29,16 @@ source distribution.
 #include "Message.hpp"
 #include "Configuration.hpp"
 
-class GameUI: public robot2D::Drawable {
+class GameUI : public robot2D::Drawable {
 public:
     GameUI();
+
     ~GameUI() = default;
 
-    void setup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& textures, Configuration& configuration);
-    void handleMessage(const Message& msg);
+    void setup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &textures, Configuration &configuration);
+
+    void handleMessage(const Message &msg);
+
     void update(float dt);
 
 protected:

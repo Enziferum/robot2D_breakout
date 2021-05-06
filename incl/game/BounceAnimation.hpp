@@ -22,14 +22,18 @@ source distribution.
 #pragma once
 
 namespace gui {
-    class BounceAnimation{
+    class BounceAnimation {
     public:
         BounceAnimation();
+
         ~BounceAnimation() = default;
 
         void update(float dt);
+
         void play();
+
         void pause();
+
     private:
     };
 }

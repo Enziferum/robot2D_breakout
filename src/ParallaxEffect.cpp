@@ -21,8 +21,8 @@ source distribution.
 
 #include "game/ParallaxEffect.hpp"
 
-ParallaxEffect::ParallaxEffect():
-    m_texture(nullptr) {
+ParallaxEffect::ParallaxEffect() :
+        m_texture(nullptr) {
 
 }
 
@@ -31,19 +31,19 @@ void ParallaxEffect::setTexture(const robot2D::Texture &texture) {
 }
 
 void ParallaxEffect::update(float dt) {
-    (void)dt;
+    (void) dt;
 }
 
 void ParallaxEffect::draw(robot2D::RenderTarget &, robot2D::RenderStates states) const {
-    (void)states;
-    if(!m_texture)
+    (void) states;
+    if (!m_texture)
         return;
 }
 
 void ParallaxEffect::setup_GL() {
-    if(!m_shaderHandler.createShader(robot2D::shaderType::vertex, ""))
+    if (!m_shaderHandler.createShader(robot2D::shaderType::vertex, ""))
         return;
-    if(!m_shaderHandler.createShader(robot2D::shaderType::fragment, ""))
+    if (!m_shaderHandler.createShader(robot2D::shaderType::fragment, ""))
         return;
 
     m_shaderHandler.use();

@@ -24,24 +24,30 @@ source distribution.
 #include "robot2D/Graphics/Drawable.h"
 #include "robot2D/Graphics/Shader.h"
 
-class PostProcessing: public robot2D::Drawable{
+class PostProcessing : public robot2D::Drawable {
 public:
     PostProcessing();
+
     ~PostProcessing() override = default;
 
-    void set_size(const robot2D::vec2u& size);
+    void set_size(const robot2D::vec2u &size);
 
     void update(float dt);
+
     void preRender();
+
     void afterRender();
 
-    void setValue(const std::string& id, const bool& value);
+    void setValue(const std::string &id, const bool &value);
+
 protected:
-    virtual void draw(robot2D::RenderTarget& target, robot2D::RenderStates states)const override;
+    virtual void draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const override;
 
 private:
     void setup_GL();
+
     void init_RenderData();
+
 private:
     robot2D::ShaderHandler m_effectShader;
     robot2D::Texture m_texture;

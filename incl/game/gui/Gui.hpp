@@ -28,16 +28,20 @@ source distribution.
 #include <robot2D/Core/Event.h>
 
 namespace gui {
-    class Gui final:  public robot2D::Drawable{
+    class Gui final : public robot2D::Drawable {
     public:
         Gui();
+
         ~Gui() = default;
 
-        void handleEvents(const robot2D::Event& event);
+        void handleEvents(const robot2D::Event &event);
+
         void update(float dt);
+
         void pack(INode::Ptr node);
+
     protected:
-        void draw(robot2D::RenderTarget& target,
+        void draw(robot2D::RenderTarget &target,
                   robot2D::RenderStates states) const override;
 
     private:

@@ -32,9 +32,9 @@ source distribution.
 const std::string resourceiniPath = "res/config.ini";
 const std::string gameiniPath = "res/game.ini";
 
-Runner::Runner(): m_bus(),
-                  my_app{robot2D::vec2u(800, 600),
-                         "robot2D Game", true } {
+Runner::Runner() : m_bus(),
+                   my_app{robot2D::vec2u(800, 600),
+                          "robot2D Game", true} {
     init();
 }
 
@@ -44,18 +44,18 @@ void Runner::init() {
     logger::debug = true;
 
 
-    if(!m_configuration.loadResources(resourceiniPath)){
+    if (!m_configuration.loadResources(resourceiniPath)) {
         return;
     }
 
-    if(!m_configuration.loadGameSettings(gameiniPath)){
+    if (!m_configuration.loadGameSettings(gameiniPath)) {
         return;
     }
 
-    if(!m_context.storeInBuffer(ContextID::Configuration, (void*)(&m_configuration))) {
+    if (!m_context.storeInBuffer(ContextID::Configuration, (void *) (&m_configuration))) {
         return;
     }
-    if(!m_context.storeInBuffer(ContextID::Audio, (void*)(&m_audioPlayer))){
+    if (!m_context.storeInBuffer(ContextID::Audio, (void *) (&m_audioPlayer))) {
         return;
     }
 
@@ -71,7 +71,7 @@ void Runner::init() {
 void Runner::run() {
     robot2D::ResourceHandler<robot2D::Texture, Icon> g_icons;
     g_icons.loadFromFile(Icon::Default, fm_r.combinePath(ResourceType::Texture,
-                                                       "icon.png"), true);
+                                                         "icon.png"), true);
     std::vector<robot2D::Texture> icons = {g_icons.get(Icon::Default)};
     my_app.setIcon(icons);
 

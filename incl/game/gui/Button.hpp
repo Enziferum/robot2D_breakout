@@ -19,7 +19,6 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-
 #pragma once
 
 #include <functional>
@@ -27,19 +26,22 @@ source distribution.
 
 #include "INode.hpp"
 
-
 namespace gui {
 
-    class Button: public INode {
+    class Button : public INode {
     public:
         Button();
+
         virtual ~Button() override = default;
 
         static std::shared_ptr<Button> create();
-        void onTouch(std::function<void()>&& function);
 
-        void onPress(const robot2D::vec2f&) override;
-        void onHover(const robot2D::vec2f&) override;
+        void onTouch(std::function<void()> &&function);
+
+        void onPress(const robot2D::vec2f &) override;
+
+        void onHover(const robot2D::vec2f &) override;
+
         void update(float dt) override;
 
         void setTexture(const robot2D::Texture& texture);
@@ -47,9 +49,10 @@ namespace gui {
         robot2D::FloatRect getLocalBounds() const;
 
         robot2D::FloatRect getGlobalBounds() const;
+
     protected:
         void draw(robot2D::RenderTarget &target, robot2D::RenderStates states)
-                const override;
+        const override;
 
     protected:
         enum class State{
@@ -59,6 +62,7 @@ namespace gui {
         };
 
         std::function<void()> m_function;
-        const robot2D::Texture* m_texture;
+        const robot2D::Texture *m_texture;
     };
+
 }

@@ -20,7 +20,9 @@ source distribution.
 *********************************************************************/
 
 #if defined(WIN32)
-    #include <windows.h>
+
+#include <windows.h>
+
 #endif
 
 #define CONSOLE
@@ -28,6 +30,7 @@ source distribution.
 #include "game/Runner.hpp"
 
 #ifdef CONSOLE
+
 int main()
 #elif WIN32
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevIns, LPSTR lpszArgument, int iShow)

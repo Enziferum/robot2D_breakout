@@ -33,28 +33,33 @@ source distribution.
 #include "IDs.hpp"
 
 
-struct LevelBlock: public GameObject {
+struct LevelBlock : public GameObject {
     unsigned int block_id;
 };
 
-class Level: public robot2D::Drawable {
+class Level : public robot2D::Drawable {
 public:
     Level();
+
     ~Level() = default;
 
 
-    bool loadLevel(const std::string& path, const robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& handler,
-                   const robot2D::vec2f& size, const robot2D::vec2f& offset = robot2D::vec2f());
+    bool loadLevel(const std::string &path, const robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &handler,
+                   const robot2D::vec2f &size, const robot2D::vec2f &offset = robot2D::vec2f());
 
     void update(float dt);
-    void onResize(const robot2D::vec2f& size);
+
+    void onResize(const robot2D::vec2f &size);
 
     bool destroyed() const;
-    std::vector<LevelBlock>& getTiles();
+
+    std::vector<LevelBlock> &getTiles();
+
 protected:
 
-    void draw(robot2D::RenderTarget& target,
+    void draw(robot2D::RenderTarget &target,
               robot2D::RenderStates states) const override;
+
 private:
     std::vector<LevelBlock> m_tiles;
     robot2D::vec2f m_size;

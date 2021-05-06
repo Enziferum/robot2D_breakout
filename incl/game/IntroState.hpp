@@ -28,17 +28,21 @@ source distribution.
 
 #include "game/Timer.hpp"
 
-class IntroState: public robot2D::State{
+class IntroState : public robot2D::State {
 public:
-    IntroState(robot2D::IStateMachine& machine);
-    ~IntroState()override = default;
+    IntroState(robot2D::IStateMachine &machine);
 
-    void handleEvents(const robot2D::Event& event)override;
-    void update(float dt)override;
-    void render()override;
+    ~IntroState() override = default;
+
+    void handleEvents(const robot2D::Event &event) override;
+
+    void update(float dt) override;
+
+    void render() override;
 
 private:
     void setup();
+
 private:
     robot2D::Sprite m_background;
     robot2D::Texture m_texture;

@@ -35,16 +35,19 @@ enum class ResourceType {
     Config
 };
 
-class FileManager{
+class FileManager {
 public:
     FileManager();
+
     ~FileManager() = default;
 
-    std::string combinePath(const ResourceType& resourceType, const std::string& localFileName);
-    void setConfiguration(const ResourceConfiguration& configuration);
+    std::string combinePath(const ResourceType &resourceType, const std::string &localFileName);
+
+    void setConfiguration(const ResourceConfiguration &configuration);
 
     std::vector<std::string> levelsPath();
+
 private:
     std::string m_basepath;
-    const ResourceConfiguration* m_resourceConfiguration;
+    const ResourceConfiguration *m_resourceConfiguration;
 };

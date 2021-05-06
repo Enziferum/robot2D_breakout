@@ -23,14 +23,14 @@ source distribution.
 #include "game/GameObject.hpp"
 
 
-GameObject::GameObject():
-m_solid(false),
-m_destroyed(false),
-color(robot2D::Color::White) {
+GameObject::GameObject() :
+        m_solid(false),
+        m_destroyed(false),
+        color(robot2D::Color::White) {
 
 }
 
-void GameObject::setSize(const robot2D::vec2f& size) {
+void GameObject::setSize(const robot2D::vec2f &size) {
     m_size = size;
     m_sprite.setScale(m_size);
 }
@@ -40,7 +40,7 @@ void GameObject::setPos(const robot2D::vec2f &pos) {
     m_sprite.setPosition(m_pos);
 }
 
-void GameObject::draw(robot2D::RenderTarget& target,
+void GameObject::draw(robot2D::RenderTarget &target,
                       robot2D::RenderStates states) const {
     states.color = color;
     target.draw(m_sprite, states);

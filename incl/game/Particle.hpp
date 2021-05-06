@@ -26,6 +26,7 @@ source distribution.
 
 struct Particle {
     Particle();
+
     ~Particle() = default;
 
     bool is_life() const;

@@ -35,8 +35,9 @@ struct vec3 {
     float g;
     float b;
 
-    vec3(float _r, float _g, float _b):
-            r(_r), g(_g), b(_b){}
+    vec3(float _r, float _g, float _b) :
+            r(_r), g(_g), b(_b) {}
+
     ~vec3() = default;
 };
 
@@ -47,32 +48,31 @@ const vec3 stickyColor = vec3(1.f, 0.5f, 1.f);
 
 FileManager fm;
 
-GameState::GameState(robot2D::IStateMachine& machine, AppContext<ContextID>& context, MessageBus& bus):
-    State(machine),
-    m_context(context),
-    m_audioPlayer(nullptr),
-    m_gameConfiguration(nullptr),
-    m_state(mState::Play),
-    m_livesSprites(),
-    m_bounceTimer(1.5f),
-    m_bus(bus),
-    m_world(m_bus, m_textures)
-    {
+GameState::GameState(robot2D::IStateMachine &machine, AppContext<ContextID> &context, MessageBus &bus) :
+        State(machine),
+        m_context(context),
+        m_audioPlayer(nullptr),
+        m_gameConfiguration(nullptr),
+        m_state(mState::Play),
+        m_livesSprites(),
+        m_bounceTimer(1.5f),
+        m_bus(bus),
+        m_world(m_bus, m_textures) {
 
     setup();
 }
 
 
 void GameState::setup_configuration() {
-    m_audioPlayer = (AudioPlayer*)(m_context.getBuffer(ContextID::Audio));
-    if(m_audioPlayer == nullptr){
+    m_audioPlayer = (AudioPlayer *) (m_context.getBuffer(ContextID::Audio));
+    if (m_audioPlayer == nullptr) {
         LOG_ERROR_E("m_audioPlayer == nullptr, after getting")
         return;
     }
 
-    auto configuration = (Configuration*)(m_context.getBuffer(ContextID::Configuration));
+    auto configuration = (Configuration *) (m_context.getBuffer(ContextID::Configuration));
     m_gameConfiguration = &(configuration->getGameConfiguration());
-    if(m_gameConfiguration == nullptr) {
+    if (m_gameConfiguration == nullptr) {
         LOG_ERROR_E("m_gameConfiguration == nullptr, after getting")
         return;
     }
@@ -80,10 +80,10 @@ void GameState::setup_configuration() {
 }
 
 void GameState::setup_resources() {
-    auto configuration = (Configuration*)(m_context.getBuffer(ContextID::Configuration));
+    auto configuration = (Configuration *) (m_context.getBuffer(ContextID::Configuration));
     const auto resourceConfiguration = &(configuration->getResourceConfiguration());
 
-    if(resourceConfiguration == nullptr) {
+    if (resourceConfiguration == nullptr) {
         LOG_ERROR_E("resourceConfiguration == nullptr, after getting")
         return;
     }
@@ -110,7 +110,7 @@ void GameState::setup_resources() {
                             fm.combinePath(ResourceType::Texture, "particle.png"), true);
 
     m_textures.loadFromFile(ResourceIDs::Chaos,
-                            fm.combinePath(ResourceType::Texture, "powerup_chaos.png"),true);
+                            fm.combinePath(ResourceType::Texture, "powerup_chaos.png"), true);
 
     m_textures.loadFromFile(ResourceIDs::Confuse,
                             fm.combinePath(ResourceType::Texture, "powerup_confuse.png"), true);
@@ -133,26 +133,26 @@ void GameState::setup_resources() {
     m_fonts.loadFromFile(ResourceIDs::Font, fm.combinePath(ResourceType::Font,
                                                            "game_font.ttf"));
 
-    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
-                                             "bleep_1.wav"),
-                              AudioFileID::bleep_1, AudioType::sound);
-    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
-                                             "bleep.wav"),
-                              AudioFileID::bleep, AudioType::sound);
-    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
-                                             "solid.wav"),
-                              AudioFileID::solid, AudioType::sound);
-    m_audioPlayer -> loadFile(fm.combinePath(ResourceType::Audio,
-                                             "powerup.wav"),
-                              AudioFileID::power_up, AudioType::sound);
+    m_audioPlayer->loadFile(fm.combinePath(ResourceType::Audio,
+                                           "bleep_1.wav"),
+                            AudioFileID::bleep_1, AudioType::sound);
+    m_audioPlayer->loadFile(fm.combinePath(ResourceType::Audio,
+                                           "bleep.wav"),
+                            AudioFileID::bleep, AudioType::sound);
+    m_audioPlayer->loadFile(fm.combinePath(ResourceType::Audio,
+                                           "solid.wav"),
+                            AudioFileID::solid, AudioType::sound);
+    m_audioPlayer->loadFile(fm.combinePath(ResourceType::Audio,
+                                           "powerup.wav"),
+                            AudioFileID::power_up, AudioType::sound);
 
     // resource loading //
 
     auto paths = fm.levelsPath();
-    if(paths.empty())
+    if (paths.empty())
         return;
 
-    if(!m_world.setupLevels(paths, m_textures)){
+    if (!m_world.setupLevels(paths, m_textures)) {
         return;
     }
 
@@ -166,37 +166,37 @@ void GameState::setup() {
     setup_resources();
 
     m_bounceTimer.onTick([this](float dt) {
-        (void)dt;
+        (void) dt;
         m_bounceTimer.reset();
         m_state = mState::Play;
         LOG_INFO_E("Tick timer \n")
         auto msg = m_bus.post<LevelEvent>(messageIDs::LevelChangeEnd);
-        msg -> update_level = true;
+        msg->update_level = true;
     });
 
-    if(!m_world.setup(m_gameConfiguration, m_audioPlayer)) {
+    if (!m_world.setup(m_gameConfiguration, m_audioPlayer)) {
         return;
     }
 }
 
-void GameState::handleEvents(const robot2D::Event& event) {
+void GameState::handleEvents(const robot2D::Event &event) {
     if (event.type == robot2D::Event::Resized) {
         onResize(robot2D::vec2f(event.size.widht, event.size.heigth));
     }
 
-    if(m_state == mState::Pause) {
-        if(event.type == robot2D::Event::KeyPressed) {
+    if (m_state == mState::Pause) {
+        if (event.type == robot2D::Event::KeyPressed) {
             if (event.key.code == robot2D::Key::ESCAPE)
                 m_state = mState::Play;
         }
         return;
     }
 
-    if(m_state == mState::LevelChange) {
+    if (m_state == mState::LevelChange) {
 
     }
 
-    if(m_state == mState::Play) {
+    if (m_state == mState::Play) {
         if (event.type == robot2D::Event::KeyPressed) {
             if (event.key.code == robot2D::Key::ESCAPE) {
                 //m_state = mState::Pause;
@@ -217,18 +217,18 @@ void GameState::handleEvents(const robot2D::Event& event) {
     }
 }
 
-void GameState::onResize(const robot2D::vec2f& size) {
+void GameState::onResize(const robot2D::vec2f &size) {
     //m_windowSize = robot2D::vec2u(size.x, size.y);
     //m_background.setScale(robot2D::vec2f(size.x, size.y));
     //m_levels[currlevel].onResize(size);
 }
 
-void GameState::forwardMessage(const Message& msg) {
-    if(msg.id == messageIDs::LevelChange) {
+void GameState::forwardMessage(const Message &msg) {
+    if (msg.id == messageIDs::LevelChange) {
         changeLevel();
     }
 
-    if(msg.id == messageIDs::LivesEnd){
+    if (msg.id == messageIDs::LivesEnd) {
         m_machine.pushState(States::Intro);
         return;
     }
@@ -239,14 +239,14 @@ void GameState::forwardMessage(const Message& msg) {
 
 void GameState::update(float dt) {
     while (!m_bus.empty()) {
-        const auto& m = m_bus.poll();
+        const auto &m = m_bus.poll();
         forwardMessage(m);
     }
 
-    if(m_state == mState::Pause)
+    if (m_state == mState::Pause)
         return;
 
-    if(m_state == mState::LevelChange){
+    if (m_state == mState::LevelChange) {
         m_bounceTimer.update(dt);
         return;
     }

@@ -25,9 +25,9 @@ source distribution.
 #include "game/IntroState.hpp"
 #include "game/States.hpp"
 
-IntroState::IntroState(robot2D::IStateMachine& machine) :
-    State(machine),
-    m_timer(){
+IntroState::IntroState(robot2D::IStateMachine &machine) :
+        State(machine),
+        m_timer() {
 
     setup();
 }
@@ -37,12 +37,12 @@ void IntroState::setup() {
     auto tex_path = "res/textures/robot2D.png";
     auto font_path = "res/fonts/game_font.ttf";
 
-    if(!m_texture.loadFromFile(tex_path, true)) {
+    if (!m_texture.loadFromFile(tex_path, true)) {
         LOG_ERROR("Cant load texture %", tex_path);
         return;
     }
 
-    if(!m_font.loadFromFile(font_path, 20)) {
+    if (!m_font.loadFromFile(font_path, 20)) {
         LOG_ERROR("Cant load font %", font_path);
         return;
     }
@@ -53,7 +53,7 @@ void IntroState::setup() {
 
 
     m_background.setPosition(robot2D::vec2f(size.x / 2.f - tx_size.x / 2,
-                                          size.y / 2.f - tx_size.y / 2));
+                                            size.y / 2.f - tx_size.y / 2));
 
     auto back_size = m_background.getPosition();
     m_text.setFont(m_font);
@@ -61,16 +61,16 @@ void IntroState::setup() {
     m_text.setPos(robot2D::vec2f(back_size + tx_size));
 
 
-    m_timer.onTick([this](float dt){
+    m_timer.onTick([this](float dt) {
         m_timer.reset();
         m_machine.popState();
         m_machine.pushState(States::Menu);
     });
 }
 
-void IntroState::handleEvents(const robot2D::Event& event) {
-    if(event.type == robot2D::Event::KeyPressed && event.key.code == robot2D::SPACE){
-        if(m_timer.elapsed() >= 1.f){
+void IntroState::handleEvents(const robot2D::Event &event) {
+    if (event.type == robot2D::Event::KeyPressed && event.key.code == robot2D::SPACE) {
+        if (m_timer.elapsed() >= 1.f) {
             m_machine.pushState(States::Game);
         }
     }

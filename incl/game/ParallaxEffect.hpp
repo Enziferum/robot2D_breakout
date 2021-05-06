@@ -25,19 +25,23 @@ source distribution.
 #include "robot2D/Graphics/Texture.h"
 #include "robot2D/Graphics/Shader.h"
 
-class ParallaxEffect: public robot2D::Drawable{
+class ParallaxEffect : public robot2D::Drawable {
 public:
     ParallaxEffect();
+
     ~ParallaxEffect() = default;
 
-    void setTexture(const robot2D::Texture& texture);
+    void setTexture(const robot2D::Texture &texture);
+
     void update(float dt);
+
 protected:
-    virtual void draw(robot2D::RenderTarget&, robot2D::RenderStates states) const override;
+    virtual void draw(robot2D::RenderTarget &, robot2D::RenderStates states) const override;
 
 private:
     void setup_GL();
+
 private:
     robot2D::ShaderHandler m_shaderHandler;
-    const robot2D::Texture* m_texture;
+    const robot2D::Texture *m_texture;
 };

@@ -22,31 +22,34 @@ source distribution.
 #pragma once
 
 template<typename T = std::string>
-struct AppContext{
+struct AppContext {
     AppContext();
+
     ~AppContext() = default;
 
-    bool storeInBuffer(const T& key, void* buff);
-    void* getBuffer(const T& key);
+    bool storeInBuffer(const T &key, void *buff);
+
+    void *getBuffer(const T &key);
+
 private:
-    std::unordered_map<T, void*> m_buffer;
+    std::unordered_map<T, void *> m_buffer;
 };
 
 template<typename T>
 AppContext<T>::AppContext(): m_buffer() {}
 
 template<typename T>
-bool AppContext<T>::storeInBuffer(const T& key, void* buff) {
-    if(buff == nullptr)
+bool AppContext<T>::storeInBuffer(const T &key, void *buff) {
+    if (buff == nullptr)
         return false;
     auto found = m_buffer.find(key);
-    if(found != m_buffer.end())
+    if (found != m_buffer.end())
         return false;
-    m_buffer.insert(std::pair<T, void*>(key, buff));
+    m_buffer.insert(std::pair<T, void *>(key, buff));
     return true;
 }
 
 template<typename T>
-void* AppContext<T>::getBuffer(const T& key) {
+void *AppContext<T>::getBuffer(const T &key) {
     return m_buffer.at(key);
 }

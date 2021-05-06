@@ -21,7 +21,7 @@ source distribution.
 
 #pragma once
 
-enum class ResourceIDs{
+enum class ResourceIDs {
     Background,
     Face,
     Block,

@@ -20,6 +20,7 @@ source distribution.
 *********************************************************************/
 
 #pragma once
+
 #include <vector>
 #include <list>
 #include <map>
@@ -39,25 +40,29 @@ enum class AudioFileID {
     power_up,
 };
 
-class AudioPlayer{
+class AudioPlayer {
 public:
     AudioPlayer();
+
     ~AudioPlayer() = default;
 
-    bool loadFile(const std::string& filename, AudioFileID id, AudioType type);
+    bool loadFile(const std::string &filename, AudioFileID id, AudioType type);
 
     void play(AudioFileID, bool looped = false);
+
     void stop(AudioFileID);
 
     void pause(AudioFileID, bool status);
 
-    void setVolume(AudioFileID, const float& volume);
-    const float& getVolume(AudioFileID) const;
+    void setVolume(AudioFileID, const float &volume);
+
+    const float &getVolume(AudioFileID) const;
 
     void update_sounds();
 
 private:
     AudioType getType(AudioFileID id);
+
 private:
     sf::Music m_music;
     std::list<sf::Sound> m_sounds;

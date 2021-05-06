@@ -33,17 +33,22 @@ source distribution.
 #include "game/AppContext.hpp"
 #include "game/ContextIDs.hpp"
 
-class MenuState: public robot2D::State{
+class MenuState : public robot2D::State {
 public:
     MenuState(robot2D::IStateMachine& machine, AppContext<ContextID>& );
     ~MenuState()override = default;
 
-    void handleEvents(const robot2D::Event& event);
+    void handleEvents(const robot2D::Event &event) override;
+
     void update(float dt) override;
+
     void render() override;
+
 private:
     void setup();
+
     void load_resources();
+
 private:
     AppContext<ContextID> m_context;
 

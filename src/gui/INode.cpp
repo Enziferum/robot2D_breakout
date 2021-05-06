@@ -22,20 +22,20 @@ source distribution.
 #include "game/gui/INode.hpp"
 
 namespace gui {
-    INode::INode():
-        m_pressed(false),
-        m_hover(false){}
+    INode::INode() :
+            m_pressed(false),
+            m_hover(false) {}
 
     INode::~INode() {}
 
-    void INode::onPress(const robot2D::vec2f&) {
+    void INode::onPress(const robot2D::vec2f &) {
     }
 
-    void INode::onHover(const robot2D::vec2f&) {
+    void INode::onHover(const robot2D::vec2f &) {
     }
 
     void INode::update(float dt) {
-        (void)dt;
+        (void) dt;
     }
 
 }

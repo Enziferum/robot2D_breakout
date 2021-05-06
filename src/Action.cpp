@@ -27,12 +27,12 @@ namespace robot2D {
         return false;
     }
 
-    bool Action::operator==(const Event& evt) const {
+    bool Action::operator==(const Event &evt) const {
         return event.type == evt.type;
     }
 
-    bool Action::operator==(const Action& other) const {
+    bool Action::operator==(const Action &other) const {
         return (event.type == other.event.type)
-        && (other._type == _type);
+               && (other._type == _type);
     }
 }

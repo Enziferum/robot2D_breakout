@@ -33,12 +33,15 @@ namespace robot2D {
     class FileSystem {
     public:
         FileSystem();
+
         ~FileSystem();
 
         std::string getCurrentDir();
+
         std::vector<std::string> listFiles(const std::string &path);
 
         bool isDir(const std::string &path);
+
         bool isFile(const std::string &path);
 
     private:

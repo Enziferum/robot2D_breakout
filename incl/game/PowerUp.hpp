@@ -23,7 +23,7 @@ source distribution.
 
 #include "GameObject.hpp"
 
-enum class PowerUpType{
+enum class PowerUpType {
     none,
     size,
     chaos,
@@ -33,9 +33,10 @@ enum class PowerUpType{
     sticky
 };
 
-class PowerUp: public GameObject{
+class PowerUp : public GameObject {
 public:
     PowerUp();
+
     virtual ~PowerUp() override = default;
 
 

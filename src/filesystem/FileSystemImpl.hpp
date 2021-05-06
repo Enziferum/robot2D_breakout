@@ -23,17 +23,21 @@ source distribution.
 #include <vector>
 #include <string>
 
-namespace robot2D{
+namespace robot2D {
     namespace priv {
-        class FileSystemImpl{
+        class FileSystemImpl {
         public:
             virtual ~FileSystemImpl() = 0;
-            static FileSystemImpl* create();
+
+            static FileSystemImpl *create();
 
             virtual std::string getCurrentDir() = 0;
-            virtual std::vector<std::string> listFiles(const std::string& path) = 0;
-            virtual bool isDir(const std::string& path) = 0;
-            virtual bool isFile(const std::string& path) = 0;
+
+            virtual std::vector<std::string> listFiles(const std::string &path) = 0;
+
+            virtual bool isDir(const std::string &path) = 0;
+
+            virtual bool isFile(const std::string &path) = 0;
 
         };
     }

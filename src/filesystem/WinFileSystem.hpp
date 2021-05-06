@@ -23,17 +23,22 @@ source distribution.
 
 #include "FileSystemImpl.hpp"
 
-namespace robot2D{
-    namespace priv{
-        class WinFileSystem: public FileSystemImpl {
+namespace robot2D {
+    namespace priv {
+        class WinFileSystem : public FileSystemImpl {
         public:
             WinFileSystem() = default;
-            ~WinFileSystem()override = default;
+
+            ~WinFileSystem() override = default;
 
             std::string getCurrentDir() override;
+
             std::vector<std::string> listFiles(const std::string &path) override;
+
             bool isDir(const std::string &path) override;
+
             bool isFile(const std::string &path) override;
+
         private:
             std::string slash = "/";
         };

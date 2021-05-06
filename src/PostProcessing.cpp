@@ -25,25 +25,25 @@ source distribution.
 
 #include "game/PostProcessing.hpp"
 
-PostProcessing::PostProcessing():
-m_size(800, 600),
-m_shake(false),
-m_chaos(false),
-m_confuse(false){
+PostProcessing::PostProcessing() :
+        m_size(800, 600),
+        m_shake(false),
+        m_chaos(false),
+        m_confuse(false) {
     setup_GL();
 }
 
 
 void PostProcessing::update(float dt) {
     m_dt = dt;
-    if(m_shake && m_shake_time > 0.f) {
+    if (m_shake && m_shake_time > 0.f) {
         m_shake_time -= dt;
-        if(m_shake_time <= 0.0f)
+        if (m_shake_time <= 0.0f)
             m_shake = false;
     }
 }
 
-void PostProcessing::draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const {
+void PostProcessing::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
     m_effectShader.use();
     m_effectShader.set_parameter("shake", m_shake);
     m_effectShader.set_parameter("chaos", m_chaos);
@@ -52,7 +52,7 @@ void PostProcessing::draw(robot2D::RenderTarget& target, robot2D::RenderStates s
 
     states.texture = &m_texture;
     states.customVao = &VAO;
-    states.shader = const_cast<robot2D::ShaderHandler*>(&m_effectShader);
+    states.shader = const_cast<robot2D::ShaderHandler *>(&m_effectShader);
     target.draw(states);
 }
 
@@ -60,12 +60,12 @@ void PostProcessing::draw(robot2D::RenderTarget& target, robot2D::RenderStates s
 void PostProcessing::setup_GL() {
     return;
 
-    if(!m_effectShader.createShader(robot2D::shaderType::vertex,"res/shaders/effects.vs")) {
+    if (!m_effectShader.createShader(robot2D::shaderType::vertex, "res/shaders/effects.vs")) {
         LOG_ERROR("Can't process % ", "res/shaders/effects.vs")
         return;
     }
 
-    if(!m_effectShader.createShader(robot2D::shaderType::fragment,"res/shaders/effects.fs")) {
+    if (!m_effectShader.createShader(robot2D::shaderType::fragment, "res/shaders/effects.fs")) {
         LOG_ERROR("Can't process % ", "res/shaders/effects.fs")
         return;
     }
@@ -82,7 +82,7 @@ void PostProcessing::setup_GL() {
     // attach MS render buffer object to framebuffer
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, RBO);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        LOG_ERROR_E( "ERROR::POSTPROCESSOR: Failed to initialize MSFBO")
+        LOG_ERROR_E("ERROR::POSTPROCESSOR: Failed to initialize MSFBO")
 
     // also initialize the FBO/texture to blit multisampled color-buffer to; used for shader operations (for postprocessing effects)
     glBindFramebuffer(GL_FRAMEBUFFER, FBO);
@@ -99,23 +99,23 @@ void PostProcessing::setup_GL() {
 
     float offset = 1.0f / 300.0f;
     float offsets[9][2] = {
-            { -offset,  offset  },  // top-left
-            {  0.0f,    offset  },  // top-center
-            {  offset,  offset  },  // top-right
-            { -offset,  0.0f    },  // center-left
-            {  0.0f,    0.0f    },  // center-center
-            {  offset,  0.0f    },  // center - right
-            { -offset, -offset  },  // bottom-left
-            {  0.0f,   -offset  },  // bottom-center
-            {  offset, -offset  }   // bottom-right
+            {-offset, offset},  // top-left
+            {0.0f,    offset},  // top-center
+            {offset,  offset},  // top-right
+            {-offset, 0.0f},  // center-left
+            {0.0f,    0.0f},  // center-center
+            {offset,  0.0f},  // center - right
+            {-offset, -offset},  // bottom-left
+            {0.0f,    -offset},  // bottom-center
+            {offset,  -offset}   // bottom-right
     };
 
     //allow shaders to set directly
 
-    glUniform2fv(glGetUniformLocation(m_effectShader.getProgram(), "offsets"), 9, (float*)offsets);
+    glUniform2fv(glGetUniformLocation(m_effectShader.getProgram(), "offsets"), 9, (float *) offsets);
     int edge_kernel[9] = {
             -1, -1, -1,
-            -1,  8, -1,
+            -1, 8, -1,
             -1, -1, -1
     };
     glUniform1iv(glGetUniformLocation(m_effectShader.getProgram(), "edge_kernel"), 9, edge_kernel);
@@ -143,7 +143,7 @@ void PostProcessing::afterRender() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // binds both READ and WRITE framebuffer to default framebuffer
 }
 
-void PostProcessing::set_size(const robot2D::vec2u& size) {
+void PostProcessing::set_size(const robot2D::vec2u &size) {
     m_size = size;
 }
 
@@ -154,12 +154,12 @@ void PostProcessing::init_RenderData() {
     float vertices[] = {
             // pos        // tex
             -1.0f, -1.0f, 0.0f, 0.0f,
-            1.0f,  1.0f, 1.0f, 1.0f,
-            -1.0f,  1.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 0.0f, 1.0f,
 
             -1.0f, -1.0f, 0.0f, 0.0f,
             1.0f, -1.0f, 1.0f, 0.0f,
-            1.0f,  1.0f, 1.0f, 1.0f
+            1.0f, 1.0f, 1.0f, 1.0f
     };
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -169,17 +169,17 @@ void PostProcessing::init_RenderData() {
 
     glBindVertexArray(VAO);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
-void PostProcessing::setValue(const std::string& id, const bool& value) {
-    if(id == "chaos")
-        m_chaos =  value;
-    if(id == "confuse")
-        m_confuse =  value;
-    if(id == "shake") {
+void PostProcessing::setValue(const std::string &id, const bool &value) {
+    if (id == "chaos")
+        m_chaos = value;
+    if (id == "confuse")
+        m_confuse = value;
+    if (id == "shake") {
         m_shake = value;
         m_shake_time = 0.05f;
     }

@@ -49,25 +49,34 @@ source distribution.
 #include "MessageBus.hpp"
 #include "GameUI.hpp"
 
-class GameState: public robot2D::State {
+class GameState : public robot2D::State {
 public:
-    GameState(robot2D::IStateMachine& machine, AppContext<ContextID>&, MessageBus& bus);
+    GameState(robot2D::IStateMachine &machine, AppContext<ContextID> &, MessageBus &bus);
+
     ~GameState() override = default;
 
-    void handleEvents(const robot2D::Event& event) override;
+    void handleEvents(const robot2D::Event &event) override;
+
     void update(float dt) override;
+
     void render() override;
+
 private:
     void setup();
+
     void setup_configuration();
+
     void setup_resources();
 
-    void forwardMessage(const Message& msg);
+    void forwardMessage(const Message &msg);
+
 private:
-    void onResize(const robot2D::vec2f& size);
+    void onResize(const robot2D::vec2f &size);
+
     void changeLevel();
+
 private:
-    enum class mState{
+    enum class mState {
         Play,
         Pause,
         LevelChange
@@ -75,12 +84,12 @@ private:
 
     mState m_state;
 
-    MessageBus& m_bus;
-    AppContext<ContextID>& m_context;
-    GameConfiguration* m_gameConfiguration;
+    MessageBus &m_bus;
+    AppContext<ContextID> &m_context;
+    GameConfiguration *m_gameConfiguration;
     GameUI m_gameUI;
     World m_world;
-    AudioPlayer* m_audioPlayer;
+    AudioPlayer *m_audioPlayer;
     Timer m_bounceTimer;
 
     robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> m_textures;

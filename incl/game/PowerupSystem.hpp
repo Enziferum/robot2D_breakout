@@ -29,25 +29,31 @@ source distribution.
 #include "PowerUp.hpp"
 #include "IDs.hpp"
 
-class PowerupSystem: public robot2D::Drawable {
+class PowerupSystem : public robot2D::Drawable {
 public:
-    using callback = std::function<void(const PowerUpType& )>;
+    using callback = std::function<void(const PowerUpType &)>;
 public:
     PowerupSystem();
+
     ~PowerupSystem() = default;
 
     void update(float dt);
-    void spawn_powerup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs>& m_texture,
-                       const robot2D::vec2f& spawn_pos);
-    void setCallback(callback&& func);
 
-    std::vector<PowerUp>& get();
+    void spawn_powerup(robot2D::ResourceHandler<robot2D::Texture, ResourceIDs> &m_texture,
+                       const robot2D::vec2f &spawn_pos);
+
+    void setCallback(callback &&func);
+
+    std::vector<PowerUp> &get();
+
 protected:
-    void draw(robot2D::RenderTarget& target, robot2D::RenderStates states) const override;
+    void draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const override;
 
 private:
-    bool otherActive(const PowerUpType& type);
-    bool randomize(const unsigned int& chance);
+    bool otherActive(const PowerUpType &type);
+
+    bool randomize(const unsigned int &chance);
+
 private:
     std::vector<PowerUp> m_power_ups;
     callback m_func;

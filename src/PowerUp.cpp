@@ -21,8 +21,8 @@ source distribution.
 
 #include "game/PowerUp.hpp"
 
-PowerUp::PowerUp():
-    GameObject(), activated(false){
+PowerUp::PowerUp() :
+        GameObject(), activated(false) {
 
 }
 
