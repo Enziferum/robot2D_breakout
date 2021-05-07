@@ -19,49 +19,32 @@ and must not be misrepresented as being the original software.
 source distribution.
 *********************************************************************/
 
-#include "game/Timer.hpp"
+#include <filesystem>
+#include "MacOSFileSystem.hpp"
 
+namespace robot2D {
+    namespace priv {
+        namespace fs = std::__fs::filesystem;
 
-constexpr float second = 1000.f;
+        std::string MacOSFileSystem::getCurrentDir() {
+            return fs::current_path().string();
+        }
 
-Timer::Timer() :
-        m_end(1.f), m_start(0.f),
-        m_endless(false) {
+        std::vector<std::string> MacOSFileSystem::listFiles(const std::string &path) {
+            std::vector<std::string> res;
+            for (const auto & entry : fs::directory_iterator(path)) {
+                auto p = '/' + entry.path().string();
+                res.emplace_back(p);
+            }
+            return res;
+        }
 
-}
+        bool MacOSFileSystem::isDir(const std::string &path) {
+            return true;
+        }
 
-
-Timer::Timer(const float &endTime, bool endless) :
-        m_end(endTime), m_start(0.f),
-        m_endless(endless) {
-
-}
-
-void Timer::update(float dt) {
-    if (m_start < m_end)
-        m_start += dt;
-
-    else {
-        if (m_callback)
-            m_callback(0);
-
-        if (m_endless)
-            reset();
+        bool MacOSFileSystem::isFile(const std::string &path) {
+            return true;
+        }
     }
 }
-
-float Timer::elapsed() const {
-    return m_start;
-}
-
-void Timer::onTick(std::function<void(float)> function) {
-    m_callback = std::move(function);
-}
-
-void Timer::reset(float time) {
-    m_start = 0.f;
-    if (time <= 0.f)
-        return;
-    m_end = time;
-}
-

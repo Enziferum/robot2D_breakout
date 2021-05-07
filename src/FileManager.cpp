@@ -33,6 +33,9 @@ std::string FileManager::combinePath(const ResourceType &resourceType, const std
 
     robot2D::FileSystem fileSystem;
     std::string fullPath = m_basepath;
+#ifdef __APPLE__
+    fullPath += '/';
+#endif
     if (resourceType == ResourceType::Audio)
         fullPath += m_resourceConfiguration->audioDir;
 
@@ -65,8 +68,14 @@ std::vector<std::string> FileManager::levelsPath() {
         return std::vector<std::string>();
 
     robot2D::FileSystem fs;
+#ifdef __APPLE__
+    m_basepath += '/';
+#endif
     auto levelPath = m_basepath + m_resourceConfiguration->levelDir + "/";
     auto levels = fs.listFiles(levelPath);
+#ifdef __APPLE__
+    return levels;
+#endif
     for (auto &level: levels)
         res.emplace_back(levelPath + level);
     return res;
