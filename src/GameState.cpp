@@ -169,7 +169,6 @@ void GameState::setup() {
         (void) dt;
         m_bounceTimer.reset();
         m_state = mState::Play;
-        LOG_INFO_E("Tick timer \n")
         auto msg = m_bus.post<LevelEvent>(messageIDs::LevelChangeEnd);
         msg->update_level = true;
     });

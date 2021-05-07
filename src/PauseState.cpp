@@ -88,7 +88,7 @@ void PauseState::setup() {
     start_btn -> scale(robot2D::vec2f (button_size.x / sz.x, button_size.y / sz.y));
 
     auto start_bounds = start_btn -> getGlobalBounds();
-    auto center = robot2D::vec2f(start_bounds.lx + start_bounds.width / 2 - 12,
+    auto center = robot2D::vec2f(start_bounds.lx + start_bounds.width / 2 - 28,
                                  start_bounds.ly + start_bounds.height / 2 - 8);
     start_label -> setPosition(center);
 
@@ -111,7 +111,7 @@ void PauseState::setup() {
     end_btn -> setPosition(robot2D::vec2f(end_pos.x, end_pos.y + 100 - button_size.y / 2));
 
     auto end_bounds = end_btn -> getGlobalBounds();
-    center = robot2D::vec2f(end_bounds.lx + end_bounds.width / 2 - 12,
+    center = robot2D::vec2f(end_bounds.lx + end_bounds.width / 2 - 28,
                             end_bounds.ly + end_bounds.height / 2 - 8);
 
     end_label -> setPosition(center);

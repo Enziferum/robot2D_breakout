@@ -30,11 +30,11 @@ source distribution.
 
 
 std::map<int, robot2D::Color> tile_colors = {
-        {1, robot2D::Color::from_gl(0.8f, 0.8f, 0.7f, 0.1f)},
-        {2, robot2D::Color::from_gl(0.2f, 0.6f, 1.0f, 0.1f)},
-        {3, robot2D::Color::from_gl(0.0f, 0.7f, 0.0f, 0.1f)},
-        {4, robot2D::Color::from_gl(0.8f, 0.8f, 0.4f, 0.1f)},
-        {5, robot2D::Color::from_gl(1.0f, 0.5f, 0.0, 0.1f)},
+        {1, robot2D::Color::from_gl(0.8f, 0.8f, 0.7f)},
+        {2, robot2D::Color::from_gl(0.2f, 0.6f, 1.0f)},
+        {3, robot2D::Color::from_gl(0.0f, 0.7f, 0.0f)},
+        {4, robot2D::Color::from_gl(0.8f, 0.8f, 0.4f)},
+        {5, robot2D::Color::from_gl(1.0f, 0.5f, 0.0)},
 };
 
 
@@ -99,6 +99,7 @@ bool Level::loadLevel(const std::string &path, const robot2D::ResourceHandler<ro
             object.m_sprite.setPosition(pos);
             object.m_sprite.setScale(tile_sz);
             object.m_sprite.setColor(tile_colors[c]);
+            object.m_state = LevelBlock::BlockState::Alive;
 
             m_tiles.push_back(object);
         }
@@ -108,15 +109,21 @@ bool Level::loadLevel(const std::string &path, const robot2D::ResourceHandler<ro
 }
 
 void Level::update(float dt) {
+    for(auto& it: m_tiles){
+        if(it.m_state == LevelBlock::BlockState::Destroy)
+            it.destroyAnimation(dt);
+    }
+
     m_tiles.erase(std::remove_if(m_tiles.begin(), m_tiles.end(),
-                                 [](const GameObject &object) {
-                                     return object.m_destroyed;
+                                 [](const LevelBlock &object) {
+                                     return object.m_state == LevelBlock::BlockState::Died;
                                  }), m_tiles.end());
 }
 
 void Level::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) const {
     for (auto &it: m_tiles) {
-        if (it.m_destroyed)
+
+        if(it.m_state == LevelBlock::BlockState::Died)
             continue;
 
         target.draw(it, states);
@@ -126,8 +133,10 @@ void Level::draw(robot2D::RenderTarget &target, robot2D::RenderStates states) co
 bool Level::destroyed() const {
     bool res = true;
 
-    for (auto &it: m_tiles)
-        res *= it.m_destroyed;
+    for(auto &it: m_tiles){
+        if(it.m_state != LevelBlock::BlockState::Died)
+            return false;
+    }
 
     return res;
 }

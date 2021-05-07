@@ -26,6 +26,7 @@ source distribution.
 #include "game/Collisions.hpp"
 #include "game/MessageIDs.hpp"
 
+#include <robot2D/Util/Logger.hpp>
 
 const float add_size = 50.f;
 const float speed_multiplier = 1.2;
@@ -40,7 +41,8 @@ World::World(MessageBus &messageBus, robot2D::ResourceHandler<robot2D::Texture, 
         m_gameConfiguration(nullptr),
         m_keys(),
         m_keysProcessed(),
-        m_textures(textures) {
+        m_textures(textures),
+        m_state(Play){
 
     m_windowSize.x = 800;
     m_windowSize.y = 600;
@@ -137,11 +139,15 @@ void World::forwardMessage(const Message &message) {
         auto msg = message.unpack<LevelEvent>();
         if (currlevel < m_levels.size() - 1 && msg.update_level) {
             ++currlevel;
+            m_state = Play;
         }
     }
 }
 
 void World::update(float dt) {
+    if(m_state == LevelChange)
+        return;
+
     float m_border = m_windowSize.y;
 
     process_input(dt);
@@ -150,7 +156,7 @@ void World::update(float dt) {
 
     m_levels[currlevel].update(dt);
     m_parallax.update(dt);
-    //m_particleEmitter.update(dt, m_gameConfiguration -> emitter_new_sz, m_ball, emitter_offset1);
+    //m_particleEmitter.update(dt, m_gameConfiguration -> emitter_new_sz, m_ball, emitter_offset);
     m_postProcessing.update(dt);
     m_audioPlayer->update_sounds();
     m_powerupSystem.update(dt);
@@ -197,7 +203,7 @@ void World::process_input(float dt) {
 void World::process_collisions() {
 
     for (auto &box: m_levels[currlevel].getTiles()) {
-        if (box.m_destroyed)
+        if (box.m_state == LevelBlock::BlockState::Destroy)
             continue;
 
         auto collision = isCollide(m_ball, box);
@@ -206,7 +212,7 @@ void World::process_collisions() {
 
             if (!box.m_solid) {
                 m_powerupSystem.spawn_powerup(m_textures, box.m_pos);
-                box.m_destroyed = true;
+                box.m_state = LevelBlock::BlockState::Destroy;
                 auto msg = m_messageBus.post<ScoreEvent>(messageIDs::ScoreUpdate);
                 msg->new_score = box.block_id * score_multiplier;
                 m_audioPlayer->play(AudioFileID::bleep_1);
@@ -327,6 +333,7 @@ void World::reset_game(bool update_lifes) {
 void World::change_level() {
     reset_game(false);
     auto msg = m_messageBus.post<LevelEvent>(messageIDs::LevelChange);
+    m_state = LevelChange;
 }
 
 

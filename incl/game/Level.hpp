@@ -35,6 +35,21 @@ source distribution.
 
 struct LevelBlock : public GameObject {
     unsigned int block_id;
+
+    enum class BlockState{
+        Alive,
+        Destroy,
+        Died
+    };
+
+    void destroyAnimation(float dt) {
+        color.alpha -= dt;
+        m_sprite.setColor(color);
+        if(color.alpha <= 0)
+            m_state = BlockState::Died;
+    }
+
+    mutable BlockState m_state;
 };
 
 class Level : public robot2D::Drawable {

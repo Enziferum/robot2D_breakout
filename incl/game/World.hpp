@@ -81,6 +81,13 @@ private:
     void change_level();
 
 private:
+    enum WorldState {
+        Play,
+        LevelChange
+    };
+
+    WorldState m_state;
+
     MessageBus &m_messageBus;
 
     AudioPlayer *m_audioPlayer;

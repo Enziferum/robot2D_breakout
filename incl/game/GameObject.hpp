@@ -42,5 +42,5 @@ public:
     robot2D::vec2f m_pos;
     bool m_solid;
     bool m_destroyed;
-    robot2D::Color color;
+    mutable robot2D::Color color;
 };
